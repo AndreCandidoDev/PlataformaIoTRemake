@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <h3>Obrigado  {{ usuario }} por utilizar nosso sistema</h3>
+    <br>
+    <h4>Anote seu Token de autenticação para usar a API do sistema</h4>
+    <p><b>Token</b> {{ token }}</p>
+    <br><br>
+    <p>No header da requisição utilize-o da seguinte forma:</p><br>
+    <h5>Authorization: Token {{ token }}</h5>
+    <br>
+    <a href="{% url 'dashboard' %}">Voltar</a>
+{% endblock %}

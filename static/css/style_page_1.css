@@ -1,0 +1,97 @@
+*{
+	padding: 0;
+	margin: 0;
+	font-family: Helvetica, Arial;
+}
+
+header {
+	background-image: linear-gradient(to right, #1fdbff, #2e6ca4 130%);
+	margin-top: 5px;
+	padding: 15px 50px 100px 0;
+}
+
+#logo{
+	padding: 5px 0 0 20px;
+	float: left;
+	color: #1f4e79;
+	font-size: 30px;
+	text-align: left;
+	text-indent: 10px;
+}
+
+#telinha {
+	float: right;
+	background-image: linear-gradient(to bottom, #e6fcff, white 130%);
+	min-height: 500px;
+	display: block;
+	border: solid;
+	width: 76%;
+	text-align: center;
+	Color: #c2c2a3;
+	margin: 0 0 20px 20px;
+}
+
+
+#botao23d {
+	border-radius: 10px;
+	background-color: white;
+	font-size: 20px;
+	margin-top: 20px;
+}
+
+#botao23d:hover {
+	transition-duration: 0.3s;
+	background-color: #1fdbff; 
+}
+
+.botoes {
+	float: left;
+	display: block;
+	padding: 200px 10px;
+	
+}
+
+button{
+	font-size: 25px;
+	padding: 7px 80px;
+	margin: 20px;
+}
+
+nav {
+	padding: 20px 0 20px 150px;
+}
+
+nav a{
+	margin: 0 90px 0 0;
+	text-decoration: none;
+	font-size: 25px;
+	display: inline;
+	color: black;
+}
+
+#proximo {
+	position:relative;
+	margin-top: 500px 0;
+	float: right;
+	padding: 0 0 20px 0;
+}
+
+#passos {
+	padding: 20px 0 20px 270px;
+	text-align: center;
+}
+
+footer {
+	clear: both; 
+	background-image: linear-gradient(to right, #1fdbff, #2e6ca4 130%);
+	text-align: center;
+	color: #1f4e79;
+	padding: 10px 0 10px 0;
+	margin-bottom: 5px;
+}
+
+.container {
+	width: 1340px;
+	margin: auto;
+	
+}

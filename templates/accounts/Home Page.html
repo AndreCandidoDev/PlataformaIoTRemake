@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="style_home_page.css"/>
+		<link rel="stylesheet" href="public/css/bootstrap.min.css">
+
+		<style>
+			body {
+			  font-family: "Lato", sans-serif;
+			}
+
+			.sidepanel  {
+			  width: 0;
+			  position: absolute; /*posição lista itens fixa!*/
+			  height: 50px;
+			  top: 0;
+			  left: 0;
+			  background-color: #111;
+			  overflow-x: hidden;
+			  transition: 0.5s;
+			  padding-top: 70px; /*distancia ate o X*/
+			}
+
+			.sidepanel a {
+			  padding: 8px 8px 8px 20px;
+			  text-decoration: none;
+			  font-size: 20px;
+			  color: white;
+			  display: block;
+			  transition: 0.3s;
+			}
+
+			.sidepanel a:hover {
+			  color: #1f4e79;
+			}
+
+			.sidepanel .closebtn { /*dentro lista opções*/
+			  position: absolute;  /*posição do X fixa!*/
+			  top: 0;
+			  right: 25px;
+			  font-size: 36px;
+			}
+
+			.openbtn { /*menu hamburger*/
+				font-size: 20px;
+				cursor: pointer;
+				background-color: #111;
+				color: white; /*cor do hamburger*/
+				padding: 10px 15px;
+				border: none;
+			}
+
+			.openbtn:hover {
+			  background-color:#444;
+			}
+		</style>
+		<title>Dashboard</title>
+	</head>
+
+	<!-- exibe essa tela se estiver logado -->
+	<body>
+		<!-- <header>
+            <div id="logo">
+				<a href="Home Page.html"><p>WATA <sub>SoluIoTns</sub></p></a>
+            </div>
+        </header> -->
+
+		<header>
+			<div id="logo">
+				<p>WATA <sub>SoluIoTns</sub></p>
+			</div>
+			<div id="foto">
+				<img src="img_user_default.png" width="70" height="70">
+			</div>
+			<div id="usuario">
+				<a href="">Configurações da Conta</a> <!-- update account data -->
+				<a href="">Sair</a>
+			</div>
+		</header>
+
+		<div class="container">
+			
+				<div id="ambientes">
+					<a href="#">Ambiente 1</a>
+					<a href="#">Ambiente 2</a>
+					<a href="#">Ambiente 3</a>
+				</div>
+				<div>
+					<div class="position-absolute">
+						<div id="mySidepanel" class="sidepanel fixed-top">
+							<a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+							<a class="dropdown-item" href="Stage1.html">Novo Ambiente</a>
+							<a class="dropdown-item" href="Stage2.html">Novos Dispositivos</a>
+							<a class="dropdown-item" href="Stage3.html">Alterar Posição</a>
+							<a class="dropdown-item" href="{% url 'register_login:graphs' %}">Relatórios</a>
+							<a class="dropdown-item" href="#">Configuração do Ambiente</a>
+						</div>
+
+						<button id="hamburger" class="openbtn mt-5 ml-4 pb-2 pl-5 pr-5" onclick="openNav()">☰</button>
+					</div>
+
+					<div id="telinha">
+						<strong>Bem vindo(a)! :)</strong>
+						<h4>Dashboard aqui</h4>
+					</div>
+				</div>
+			<!--/div-->
+			<footer> WATA Solutions </footer>
+		</div>
+		<script href="public/js/bootstrap.min.js"></script>
+		<script>
+			function openNav() {
+			  document.getElementById("mySidepanel").style.width = "270px";
+			  document.getElementById("mySidepanel").style.height = "320px";
+			  document.getElementById("mySidepanel").style.marginLeft = "24px";
+			  document.getElementById("mySidepanel").style.marginTop = "93px";
+			  document.getElementById("mySidepanel").style.backgroundColor = "#2e6ca4";
+			}
+
+			function closeNav() {
+			  document.getElementById("mySidepanel").style.width = "0";
+			}
+		</script>
+	</body>
+</html>

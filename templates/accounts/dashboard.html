@@ -1,0 +1,209 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<!--navbar com logo e links de configurações e logout-->
+      <header>
+              <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
+                <nav class="my-2 my-md-0 mr-md-3">
+                  <a class="btn btn-outline-primary" href="{% url 'apidoc' %}" >Documentação da API</a>
+                </nav>
+                  <nav class="my-2 my-md-0 mr-md-3">
+                    <a class="btn btn-outline-primary" href="{% url 'token' %}">Obter token de autenticação</a>
+                  </nav>
+                  <nav class="my-2 my-md-0 mr-md-3">
+                  <a class="btn btn-outline-primary" href="{% url 'deviceregister' request.user.id %}" id="botao">Registrar dispositivo</a>
+                </nav>
+                <nav class="my-2 my-md-0 mr-md-3">
+                      <a class="btn btn-outline-danger" href="{% url 'logout' %}">Logout</a>
+                </nav>
+          </div>
+      </header>
+
+      <section>
+            <br><br>
+
+            <div class="row">
+                <div class="col-md-6">
+					<div class="card" >
+						<div class="card-body" style="text-align:center">
+                            <h5>Meus dispositivos</h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Nome</th>
+                                        <th scope="col">Placa</th>
+                                        <th scope="col">Tipo</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                {% for device in devices %}
+                                        <tr>
+                                            <td>{{ device.id }}</td>
+                                            <td>{{ device.nome }}</td>
+                                            <td>{{ device.placa }}</td>
+                                            <td>{{ device.tipo }}</td>
+                                         </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+							<h6 class="card-title">Total de dispositivos: {{ counter }}</h6>
+						</div>
+					</div>
+				</div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h4>Minha conta</h4>
+                            <img src="{% static 'images/img_user_default.png' %}" height="55" width="55">
+                            <br><br>
+                            <h5>Plano: gratuito</h5>
+<!--                            colocar mecanismo dinamico para os limites-->
+                            <h5>Limite de dispositivos: 5</h5>
+                            <h5>Limite de medições/iterações: 100/dia</h5>
+                            <br>
+                            <a href="" class="btn btn-outline-primary">Mudar plano</a>
+                            <a href="" class="btn btn-outline-primary">Configurações de perfil</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h4>Ultimas medições</h4>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dispositivo</th>
+                                        <th scope="col">Leitura</th>
+                                        <th scope="col">Unidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for leitura in ultimas_leituras %}
+                                        <tr>
+                                            <td>{{ leitura.dispositivo.nome }}</td>
+                                            <td>{{ leitura.dado }}</td>
+                                            <td>{{ leitura.unidade }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h5>Uso da cota do plano</h5>
+                            <canvas id="myChart" width="15" height="7"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          <br><br>
+
+          <div class="row">
+              <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h5><b>Controle de atuadores</b></h5>
+                            <br>
+                            <h3>Feature disponivel em breve</h3>
+                        </div>
+                    </div>
+                </div>
+          </div>
+          <br><br>
+          <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h5><b>Estatísticas</b></h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dispositivo</th>
+                                        <th scope="col">Quantidade de medições</th>
+                                        <th scope="col">Tipo</th>
+                                        <th scope="col">Ativo desde</th>
+                                        <th scope="col">Grafico de medições</th>
+                                        <th scope="col">Relatório</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for device in devices %}
+                                        <tr>
+                                            <td>{{ device.nome }}</td>
+                                            <td>{{ device.dados.count }}</td>
+                                            <td>{{ device.tipo }}</td>
+                                            <td>{{ device.criacao }}</td>
+                                            <td><a href="{% url 'devicegraphic' device.id %}">Ver grafico</a></td>
+                                            <td><a href="{% url 'devicestatistics' device.id %}">Relatório</a></td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+<!--            <a href="" class="btn btn-primary">Minhas medições</a>-->
+<!--            <a href="" class="btn btn-primary">Configurações da conta</a>-->
+            <!--  Tabela com os dados    -->
+            <!--    Grafico a partir dos dados  -->
+            <div class="resultados"></div>
+      </section>
+
+
+<!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>-->
+    <script>
+    //adaptar conforme dados de dispositivos e da quantidade de dispositivo
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+      </script>
+      <script src="{% static 'js/main_dashboard.js' %}"></script>
+{% endblock %}

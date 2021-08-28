@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block main %}
+   <section class="section-content padding-y">
+	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+		<header class="mb-4"><h4 class="card-title">Registrar dispositivo</h4></header>
+		<form action="{% url 'deviceregister' request.user.id %}" method="POST">
+			{% csrf_token %}
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label>Nome</label>
+						{{ form.nome }}
+					</div> <!-- form-group end.// -->
+					<div class="form-group col-md-6">
+						<label>Placa</label>
+						{{ form.placa }}
+					</div> <!-- form-group end.// -->
+                    <div class="form-group col-md-6">
+						<label>Tipo</label>
+						{{ form.tipo }}
+					</div> <!-- form-group end.// -->
+				</div> <!-- form-row end.// -->
+			    <div class="form-group">
+			        <button type="submit" class="btn btn-primary btn-block">Register</button>
+			    </div> <!-- form-group// -->
+			</form>
+		  	<a href="{% url 'dashboard' %}">Voltar</a>
+		</article><!-- card-body.// -->
+    </div> <!-- card .// -->
+    <br><br>
+</section>
+{% endblock %}

@@ -1,0 +1,160 @@
+*{
+	padding: 0;
+	margin: 0;
+	font-family: Helvetica, Arial;
+}
+
+header {
+	background-image: linear-gradient(to right, #1fdbff, #2e6ca4 130%);
+	margin-top: 5px;
+	padding: 15px 50px 100px 0;
+}
+
+#logo{
+	padding: 5px 0 0 20px;
+	float: left;
+	color: #1f4e79;
+	font-size: 30px;
+	text-align: left;
+	text-indent: 10px;
+	
+}
+
+#foto {
+	float: right;
+	padding: 5px 0 0 5px;
+}
+
+img {
+	border-radius: 50%;
+}
+
+/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+
+#usuario {
+	float: right;
+	color: white;
+}
+
+#usuario a {
+	background-color: white;
+	color: #008080;
+	display: block;
+	padding: 5px 15px;
+	text-decoration: none;
+	font-size: 15px;
+	text-align: center;
+	margin: 10px;
+}
+
+#usuario a:hover {
+	background-color: #2e6ca4;
+	color: white;
+	transition-duration: 0.5s;
+}
+
+/*@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@*/
+
+/**************************************************/
+
+#menu {
+	float: left;
+	width: 25%;
+	text-shadow: 1px 1px 1px #111111;
+	margin: 60px 0 5px 0;
+	height: auto;
+	background-color: #2e6ca4;
+}
+
+#menu a{
+	background-color: #2e6ca4;
+	color: white;
+	display: block;
+	padding: 20px 10px;
+	text-decoration: none;
+	font-size: 22px;
+}
+
+#menu a:hover{
+	transition-duration: 0.75s;
+	background-color: #1f4e79;
+}
+
+/***************************************************/
+
+/*##################################################*/
+
+#ambientes {
+	float: right;
+	min-height: 50px;
+	padding: 40px 10px 30px 10px;
+}
+
+#ambientes a {
+	background-color: #2e6ca4;
+	color: white;
+	padding: 10px 30px;
+	margin: 0 30px 30px 50px;
+	text-decoration: none;
+	font-size: 25px;
+}
+
+#ambientes a:hover {
+	transition-duration: 0.75s;
+	background-color: #1fdbff;
+}
+
+/*##################################################*/
+
+#telinha {
+	float: right;
+	background-image: linear-gradient(to bottom, #e6fcff, white 130%);
+	min-height: 800px;
+	display: block;
+	border: solid;
+	width: 73%;
+	text-align: center;
+	font-size: 30px;
+	Color: #c2c2a3;
+	margin: 0 0 20px 20px;
+}
+
+.botoes {
+	float: left;
+	display: block;
+	padding: 200px 10px;
+	
+}
+
+button{
+	font-size: 25px;
+	padding: 7px 80px;
+	margin: 20px;
+}
+
+nav {
+	padding: 20px 0 20px 150px;
+}
+
+nav a{
+	margin: 0 90px 0 0;
+	text-decoration: none;
+	font-size: 25px;
+	display: inline;
+	color: black;
+}
+
+footer {
+	clear: both; 
+	background-image: linear-gradient(to right, #1fdbff, #2e6ca4 130%);
+	text-align: center;
+	color: #1f4e79;
+	padding: 10px 0 10px 0;
+	margin-bottom: 5px;
+}
+
+.container {
+	width: 1340px;
+	height: 2000px;
+	margin: auto;
+}

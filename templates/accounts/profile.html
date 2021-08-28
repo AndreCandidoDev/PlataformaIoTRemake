@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset = "UTF-8">
+		<link type="text/css" rel="stylesheet" href="style_register.css">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
+		<link href="public/css/bootstrap.min.css" rel="stylesheet">
+		
+		<title>Atualizar perfil</title>
+		<script>
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(function() {
+		  'use strict';
+		  window.addEventListener('load', function() {
+			// Fetch all the forms we want to apply custom Bootstrap validation styles to
+			var forms = document.getElementsByClassName('needs-validation');
+			// Loop over them and prevent submission
+			var validation = Array.prototype.filter.call(forms, function(form) {
+			  form.addEventListener('submit', function(event) {
+				if (form.checkValidity() === false) {
+				  event.preventDefault();
+				  event.stopPropagation();
+				}
+				form.classList.add('was-validated');
+			  }, false);
+			});
+		  }, false);
+		})();
+		</script>
+	</head>
+
+	<body>
+	<!-- amostra, não será necessário por enquanto -->
+		<div class="container">
+			<header> 
+				<div id="logo">
+					<p>WATA <sub>SoluIoTns</sub></p>
+				</div>
+			<header>
+		</div>
+			
+		
+		<nav>
+			<form class="needs-validation " novalidate>
+			    <div class="form-group col-md-6">
+					<label for="cpfcnpj"><b>CPF</b></label>
+					<input type="cpfcnpj" class="form-control" id="cpfcnpj" required>
+					<div class="invalid-feedback">Preencha este campo.</div>
+				</div>
+				
+				<div class="form-group col-md-6">
+					<div class="form-group">
+						<label for="inputAddress"><b>Endereço</b></label>
+						<input type="text" class="form-control" id="inputAddress" placeholder="1234 Main St" required>
+					</div>
+					<div class="invalid-feedback">Preencha este campo.</div>
+				</div>
+				
+				<!-- <div class="form-group col-md-10">
+					<div class="form-group">
+						<label for="inputAddress2"><b>Logradouro</b></label>
+						<input type="text" class="form-control" id="inputAddress2" placeholder="Apartamento, Av., condomínio, etc" required>
+					</div>
+					<div class="invalid-feedback">Preencha este campo.</div>
+				</div> -->
+				
+				<div class="form-row col-md-10">
+					<div class="form-group col-md-4">
+						<label for="inputCity"><b>Cidade</b></label>
+						<input type="text" class="form-control" id="inputCity" required>
+					</div>
+					<div class="invalid-feedback">Preencha este campo.</div>
+					
+					<div class="form-group">
+						<label for="inputState"><b>Estado</b></label>
+						<select class="custom-select" required>
+							<option value="">Selecione ...</option>
+							<option>Acre</option>
+							<option>Alagoas</option>
+							<option>Amapá</option>
+							<option>Amazonas</option>
+							<option>Bahia</option>
+							<option>Ceará</option>
+							<option>Distrito Federal</option>
+							<option>Espírito Santo</option>
+							<option>Goiás</option>
+							<option>Maranhão</option>
+							<option>Mato Grosso</option>
+							<option>Mato Grosso do Sul</option>
+							<option>Minas Gerais</option>
+							<option>Pará</option>
+							<option>Paraíba</option>
+							<option>Paraná</option>
+							<option>Pernambuco</option>
+							<option>Piauí</option>
+							<option>Rio de Janeiro</option>
+							<option>Rio Grande do Norte</option>
+							<option>Rio Grande do Sul</option>
+							<option>Rondônia</option>
+							<option>Roraima</option>
+							<option>Santa Catarina</option>
+							<option>São Paulo</option>
+							<option>Sergipe</option>
+							<option>Tocantins</option>
+						</select>
+						<div class="invalid-feedback">Preencha este campo.</div>
+					</div>
+					
+					
+					
+					
+					<div class="form-group col-md-2">
+						<label for="inputZip"><b>CEP</b></label>
+						<input type="text" class="form-control" id="inputZip" required>
+					</div>
+					<div class="invalid-feedback">Preencha este campo.</div>
+				</div>
+				<button class="btn btn-primary ml-3" type="submit">Atualizar perfil</button>
+			</form>
+		</nav>
+	</body>
+</html>
