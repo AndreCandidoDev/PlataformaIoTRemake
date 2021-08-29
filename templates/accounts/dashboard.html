@@ -44,11 +44,13 @@
                                             <td>{{ device.nome }}</td>
                                             <td>{{ device.placa }}</td>
                                             <td>{{ device.tipo }}</td>
+                                            <td><a href=""><i class="bi bi-pencil-fill"></i></a></td>
+                                            <td><a href=""><i class="bi bi-trash-fill"></i></a></td>
                                          </tr>
                                 {% endfor %}
                                 </tbody>
                             </table>
-							<h6 class="card-title">Total de dispositivos: {{ counter }}</h6>
+                            <h6 class="card-title"><b>Total de dispositivos: {{ counter }}</b></h6>
 						</div>
 					</div>
 				</div>
@@ -109,6 +111,28 @@
                 </div>
             </div>
 
+          <br><br>
+
+          <div class="row">
+              <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h5><b>Controle de sensores</b></h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Dispositivo sensor</th>
+                                        <th scope="col">Limite mínimo</th>
+                                        <th scope="col">Limite maximo</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Acessar configurações</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+          </div>
           <br><br>
 
           <div class="row">

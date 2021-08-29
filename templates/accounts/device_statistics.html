@@ -1,5 +1,65 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  <h1>Estatisca de </h1>
+  <h1>Estatisticas de {{ device.nome }}</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body" style="text-align:center">
+          <h5>Leituras obtidas</h5>
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th scope="col">Leitura</th>
+                <th scope="col">Unidade</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for dado in dados %}
+                <tr>
+                  <td>{{ dado.dado }}</td>
+                  <td>{{ dado.unidade }}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-body" style="text-align:center">
+          <h5>Estatísticas</h5>
+          <br>
+            {% if not estatisticas.error %}
+              <h6>Media das leituras {{ estatisticas.media }}</h6>
+              <h6>Mediana: {{ estatisticas.mediana }}</h6>
+              <h6>Moda: {{ estatisticas.moda }}</h6>
+            {% else %}
+              <h6>Dados não numéricos, não é possivel calcular as estatisticas</h6>
+              <h6 style="color: red">Data e hora da(s) medição(ões) {{ estatisticas.media }}</h6>
+            {% endif %}
+        </div>
+      </div>
+      <br>
+      <div class="card">
+        <div class="card-body" style="text-align:center">
+          <h5>Exportar dados</h5>
+          <br>
+          <table>
+            <tr>
+              <th scope="col"><a href="">Exportar como csv</a></th>
+              <th scope="col"><a href="">Exportar como JSON</a></th>
+              <th scope="col"><a href="">Exportar como PDF</a></th>
+              <th scope="col"><a href="">Exportar como xlsx</a></th>
+              <th scope="col"><a href="">Exportar como XML</a></th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br><br>
+  <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar para o dashboard</a>
 {% endblock %}

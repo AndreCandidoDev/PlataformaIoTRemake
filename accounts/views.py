@@ -14,6 +14,7 @@ from .models import Account
 from rest_framework.authtoken.models import Token
 
 
+# ============================================================================================================
 @login_required(login_url='login')
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
@@ -33,6 +34,8 @@ def device_register(request, pk):
     }
     return render(request, 'accounts/deviceregister.html', context)
 
+
+# =============================================================================================================
 
 @login_required(login_url='login')
 def apidoc(request):
@@ -209,6 +212,66 @@ def device_graphic(request, pk):   # precisa de ajustes
     return render(request, 'accounts/device_graphic.html', context)
 
 
+# ==============================================================================================================
+import statistics
+
+
+class Estatisticas:
+    def __init__(self, dados):
+        self.dados = dados
+        self.dates = dados
+        self.flag_error = False
+
+    def conv_data_to_string(self):
+        aux = []
+        for i in self.dados:
+            aux.append(float(i.dado))
+        return aux
+
+    def conv_datetime_to_string(self):
+        aux = []
+        for i in self.dates:
+            datas = str(i.criacao)
+            conv = datas.split(' ')
+            hora_format = conv[1].split('.')[0]
+            aux.append(f'{conv[0]}-{hora_format}')
+        return aux
+
+    def error(self):
+        dates = self.conv_datetime_to_string()
+        print(dates)
+        self.flag_error = True
+        return dates
+
+    def media(self):
+        try:  # calcula para dados numericos
+            self.dados = self.conv_data_to_string()
+            return statistics.mean(self.dados)
+        except:  # mostra quantas leituras foram obtidas
+            return self.error()
+
+    def mediana(self):
+        if self.flag_error:
+            pass
+        else:
+            return statistics.median(self.dados)
+
+    def moda(self):
+        if self.flag_error:
+            pass
+        else:
+            return statistics.mode(self.dados)
+
+
 def device_statistics(request, pk):
     device = Dispositivo.objects.get(id=pk)
-    return render(request, 'accounts/device_statistics.html')
+    dados = Dados.objects.filter(dispositivo=device)
+    est = Estatisticas(dados)
+    estatisticas = {
+        'media': est.media(),
+        'mediana': est.mediana(),
+        'moda': est.moda(),
+        'error': est.flag_error
+    }
+    context = {'device': device, 'dados': dados, 'estatisticas': estatisticas}
+    return render(request, 'accounts/device_statistics.html', context)
