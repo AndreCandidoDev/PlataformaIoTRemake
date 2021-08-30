@@ -1,6 +1,6 @@
 from django import forms
 from .models import Account
-from devicesapi.models import Dispositivo
+from devicesapi.models import Dispositivo, Configuracoes
 
 
 class AccountForm(forms.ModelForm):
@@ -39,3 +39,9 @@ class DispositivoForm(forms.ModelForm):
     class Meta:
         model = Dispositivo
         fields = ['nome', 'placa', 'tipo']
+
+
+class ConfiguracaoForm(forms.ModelForm):
+    class Meta:
+        model = Configuracoes
+        fields = ['limite_inferior', 'limite_superior']

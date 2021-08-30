@@ -1,20 +1,20 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from devicesapi.models import Dispositivo, Dados
-from .forms import AccountForm, DispositivoForm
+from devicesapi.models import Dispositivo, Dados, Configuracoes
+from .forms import AccountForm, DispositivoForm, ConfiguracaoForm
 from .models import Account
 from rest_framework.authtoken.models import Token
 
 
-# ============================================================================================================
+# ===========================================Create, Update and Delete device=================================
 @login_required(login_url='login')
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
@@ -25,7 +25,9 @@ def device_register(request, pk):
             placa = form.cleaned_data['placa']
             tipo = form.cleaned_data['tipo']
             dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, placa=placa, tipo=tipo)
+            configuracao = Configuracoes.objects.create(dispositivo=dispositivo)
             dispositivo.save()
+            configuracao.save()
             return redirect('dashboard')
     else:
         form = DispositivoForm()
@@ -33,6 +35,31 @@ def device_register(request, pk):
         'form': form
     }
     return render(request, 'accounts/deviceregister.html', context)
+
+
+# bug, ao atualizar esta criando dispositivo  --> resolvido removendo o action do form html
+@login_required(login_url='login')
+def device_update(request, pk):
+    device = get_object_or_404(Dispositivo, pk=pk)
+    if request.method == 'POST':
+        form = DispositivoForm(request.POST, instance=device)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = DispositivoForm(instance=device)
+    context = {'form': form, 'atualizar': True}
+    return render(request, 'accounts/deviceupdate.html', context)
+
+
+@login_required(login_url='login')
+def device_delete(request, pk):
+    device = get_object_or_404(Dispositivo, pk=pk)
+    if request.method == 'POST':
+        device.delete()
+        return redirect('dashboard')
+    context = {'device': device}
+    return render(request, 'accounts/devicedelete.html', context)
 
 
 # =============================================================================================================
@@ -180,20 +207,44 @@ def resetpassword(request):
         return render(request, 'accounts/resetpassword.html')
 
 
+# =============================================================================================================
 @login_required(login_url='login')
 def dashboard(request):
     user = request.user
     devices = Dispositivo.objects.filter(usuario=user)
     leituras = []
+    confs = []
     for i in devices:
         dados = Dados.objects.filter(dispositivo=i)
+        try:
+            configuracoes = Configuracoes.objects.get(dispositivo=i)
+            confs.append(configuracoes)
+        except:
+            pass
         ultimo = dados.last()
         leituras.append(ultimo)
     contagem = devices.count()
-    context = {'devices': devices, 'counter': contagem, 'ultimas_leituras': leituras}
+    print(confs)
+    context = {'devices': devices, 'counter': contagem, 'ultimas_leituras': leituras, 'confs': confs}
     return render(request, 'accounts/dashboard.html', context)
 
 
+@login_required(login_url='login')
+def device_conf(request, pk):
+    configuracao = get_object_or_404(Configuracoes, pk=pk)
+    print(configuracao)
+    if request.method == 'POST':
+        form = ConfiguracaoForm(request.POST, instance=configuracao)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = ConfiguracaoForm(instance=configuracao)
+    context = {'form': form}
+    return render(request, 'accounts/deviceconf.html', context)
+
+
+@login_required(login_url='login')
 def device_graphic(request, pk):   # precisa de ajustes
     device = Dispositivo.objects.get(id=pk)
     dados = Dados.objects.filter(dispositivo=device)
@@ -263,6 +314,7 @@ class Estatisticas:
             return statistics.mode(self.dados)
 
 
+@login_required(login_url='login')
 def device_statistics(request, pk):
     device = Dispositivo.objects.get(id=pk)
     dados = Dados.objects.filter(dispositivo=device)
@@ -275,3 +327,5 @@ def device_statistics(request, pk):
     }
     context = {'device': device, 'dados': dados, 'estatisticas': estatisticas}
     return render(request, 'accounts/device_statistics.html', context)
+
+# ==============================================================================================================

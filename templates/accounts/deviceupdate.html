@@ -5,7 +5,7 @@
 	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
       <article class="card-body">
 		<header class="mb-4"><h4 class="card-title">Registrar dispositivo</h4></header>
-		<form action="{% url 'deviceregister' request.user.id %}" method="POST">
+		<form  method="POST">
 			{% csrf_token %}
 				<div class="form-row">
 					<div class="form-group col-md-6">
@@ -21,8 +21,12 @@
 						{{ form.tipo }}
 					</div> <!-- form-group end.// -->
 				</div> <!-- form-row end.// -->
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-block">Registrar</button>
+			    <div class="form-group">
+					{% if atualizar %}
+						<button type="submit" class="btn btn-primary btn-block">Atualizar</button>
+			        {% else %}
+						<button type="submit" class="btn btn-primary btn-block">Registrar</button>
+			    	{% endif %}
 				</div> <!-- form-group// -->
 			</form>
 		  	<a href="{% url 'dashboard' %}">Voltar</a>

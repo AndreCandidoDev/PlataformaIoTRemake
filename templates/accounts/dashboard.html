@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block main %}
-<!--navbar com logo e links de configurações e logout-->
       <header>
               <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
                 <nav class="my-2 my-md-0 mr-md-3">
@@ -44,8 +43,8 @@
                                             <td>{{ device.nome }}</td>
                                             <td>{{ device.placa }}</td>
                                             <td>{{ device.tipo }}</td>
-                                            <td><a href=""><i class="bi bi-pencil-fill"></i></a></td>
-                                            <td><a href=""><i class="bi bi-trash-fill"></i></a></td>
+                                            <td><a href="{% url 'deviceupdate' device.id %}"><i class="bi bi-pencil-fill"></i></a></td>
+                                            <td><a href="{% url 'devicedelete' device.id %}"><i class="bi bi-trash-fill"></i></a></td>
                                          </tr>
                                 {% endfor %}
                                 </tbody>
@@ -61,6 +60,7 @@
                             <h4>Minha conta</h4>
                             <img src="{% static 'images/img_user_default.png' %}" height="55" width="55">
                             <br><br>
+                            <h5>{{ request.user.email }}</h5>
                             <h5>Plano: gratuito</h5>
 <!--                            colocar mecanismo dinamico para os limites-->
                             <h5>Limite de dispositivos: 5</h5>
@@ -113,35 +113,37 @@
 
           <br><br>
 
+          <!--          CRUD for devicesetup-->
           <div class="row">
               <div class="col-md-12">
                     <div class="card">
                         <div class="card-body" style="text-align:center">
-                            <h5><b>Controle de sensores</b></h5>
+                            <h5><b>Controle de dispositivos</b></h5>
+                            <br><br>
                             <table class="table table-striped">
                                 <thead>
                                     <tr>
-                                        <th scope="col">Dispositivo sensor</th>
+                                        <th scope="col">ID</th>
+                                        <th scope="col">Dispositivo</th>
                                         <th scope="col">Limite mínimo</th>
                                         <th scope="col">Limite maximo</th>
-                                        <th scope="col">Status</th>
                                         <th scope="col">Acessar configurações</th>
+                                        <th scope="col">Acessar controle de dados</th>
                                     </tr>
                                 </thead>
+                                    <tbody>
+                                        {% for conf in confs %}
+                                            <tr>
+                                                <td>{{ conf.id }}</td>
+                                                <td>{{ conf.dispositivo }}</td>
+                                                <td>{{ conf.limite_inferior }}</td>
+                                                <td>{{ conf.limite_superior }}</td>
+                                                <td><a href="{% url 'deviceconf' conf.id %}">Editar</a></td>
+                                                <td><a href="">Acessar</a></td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
                             </table>
-                        </div>
-                    </div>
-                </div>
-          </div>
-          <br><br>
-
-          <div class="row">
-              <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body" style="text-align:center">
-                            <h5><b>Controle de atuadores</b></h5>
-                            <br>
-                            <h3>Feature disponivel em breve</h3>
                         </div>
                     </div>
                 </div>

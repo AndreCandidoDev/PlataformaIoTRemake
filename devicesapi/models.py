@@ -31,6 +31,15 @@ class Dispositivo(Base):
         return self.nome
 
 
+class Configuracoes(Base):
+    dispositivo = models.ForeignKey(Dispositivo, related_name='configuracoes', on_delete=models.CASCADE)
+    limite_inferior = models.CharField(max_length=255, default='0')
+    limite_superior = models.CharField(max_length=255, default='100')
+
+    def __str__(self):
+        return str(self.dispositivo)
+
+
 class Dados(Base):
     dispositivo = models.ForeignKey(Dispositivo, related_name='dados', on_delete=models.CASCADE)
     unidade = models.CharField(max_length=255)
