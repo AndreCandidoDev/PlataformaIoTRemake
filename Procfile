@@ -1,1 +1,1 @@
-web: gunicorn PlataformaIoT.wsgi --log-file -
+web: gunicorn plataforma.wsgi --log-file -
