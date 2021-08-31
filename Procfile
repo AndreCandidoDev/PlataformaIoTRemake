@@ -1,0 +1,1 @@
+web: gunicorn PlataformaIoT.wsgi --log-file -
