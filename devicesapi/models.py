@@ -6,7 +6,6 @@ class Base(models.Model):
     criacao = models.DateTimeField(auto_now_add=True)
     atualizacao = models.DateTimeField(auto_now_add=True)
     ativo = models.BooleanField(default=True)
-    # usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
 
     class Meta:
         abstract = True
@@ -52,3 +51,18 @@ class Dados(Base):
 
     def __str__(self):
         return f'Dados de {self.dispositivo}'
+
+
+class Mensagens(Base):
+    dispositivo = models.ForeignKey(Dispositivo, related_name='mensagens', on_delete=models.CASCADE)
+    alerta = models.CharField(max_length=255)
+    mensagem = models.CharField(max_length=255)
+    is_critic = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Mensagens'
+        verbose_name_plural = 'Mensagens'
+        ordering = ['id']
+
+    def __str__(self):
+        return f'{self.alerta} em {self.dispositivo}'

@@ -1,13 +1,21 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <h3>Obrigado  {{ usuario }} por utilizar nosso sistema</h3>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Obrigado  <b>{{ usuario }}</b> por utilizar nosso sistema</h3>
+                    <br><br>
+                    <h4>Anote seu Token de autenticação para usar a API do sistema</h4>
+                </div>
+                <div class="card-body">
+                    <h4><b>Token {{ token }}</b></h4>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
-    <h4>Anote seu Token de autenticação para usar a API do sistema</h4>
-    <p><b>Token</b> {{ token }}</p>
-    <br><br>
-    <p>No header da requisição utilize-o da seguinte forma:</p><br>
-    <h5>Authorization: Token {{ token }}</h5>
-    <br>
-    <a href="{% url 'dashboard' %}">Voltar</a>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
 {% endblock %}

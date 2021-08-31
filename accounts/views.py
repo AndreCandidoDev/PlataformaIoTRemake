@@ -8,7 +8,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from devicesapi.models import Dispositivo, Dados, Configuracoes
+from devicesapi.models import Dispositivo, Dados, Configuracoes, Mensagens
 from .forms import AccountForm, DispositivoForm, ConfiguracaoForm
 from .models import Account
 from rest_framework.authtoken.models import Token
@@ -224,7 +224,6 @@ def dashboard(request):
         ultimo = dados.last()
         leituras.append(ultimo)
     contagem = devices.count()
-    print(confs)
     context = {'devices': devices, 'counter': contagem, 'ultimas_leituras': leituras, 'confs': confs}
     return render(request, 'accounts/dashboard.html', context)
 
@@ -232,7 +231,6 @@ def dashboard(request):
 @login_required(login_url='login')
 def device_conf(request, pk):
     configuracao = get_object_or_404(Configuracoes, pk=pk)
-    print(configuracao)
     if request.method == 'POST':
         form = ConfiguracaoForm(request.POST, instance=configuracao)
         if form.is_valid():
@@ -290,7 +288,6 @@ class Estatisticas:
 
     def error(self):
         dates = self.conv_datetime_to_string()
-        print(dates)
         self.flag_error = True
         return dates
 
@@ -328,4 +325,35 @@ def device_statistics(request, pk):
     context = {'device': device, 'dados': dados, 'estatisticas': estatisticas}
     return render(request, 'accounts/device_statistics.html', context)
 
+
 # ==============================================================================================================
+
+def device_messages(request, pk):
+    device = Dispositivo.objects.get(id=pk)
+    flag_not_messages = False
+    flag_not_critc = False
+    critcs_msgs = []
+    msgs = []
+    try:
+        mensagens = Mensagens.objects.filter(dispositivo=device)
+        if len(mensagens) > 0:
+            for i in mensagens:
+                if i.is_critic is True:
+                    critcs_msgs.append(i)
+                else:
+                    msgs.append(i)
+        else:
+            flag_not_critc = True
+            flag_not_messages = True
+    except:
+        flag_not_messages = True
+    if len(critcs_msgs) == 0:
+        flag_not_critc = True
+    context = {
+                'device': device,
+                'mensagens': msgs,
+                'criticas': critcs_msgs,
+                'flag_not_messages': flag_not_messages,
+                'flag_not_critc': flag_not_critc
+    }
+    return render(request, 'accounts/device_messages.html', context)

@@ -127,8 +127,8 @@
                                         <th scope="col">Dispositivo</th>
                                         <th scope="col">Limite mínimo</th>
                                         <th scope="col">Limite maximo</th>
-                                        <th scope="col">Acessar configurações</th>
-                                        <th scope="col">Acessar controle de dados</th>
+                                        <th scope="col">Editar configurações</th>
+                                        <th scope="col">Acessar alertas</th>
                                     </tr>
                                 </thead>
                                     <tbody>
@@ -139,7 +139,7 @@
                                                 <td>{{ conf.limite_inferior }}</td>
                                                 <td>{{ conf.limite_superior }}</td>
                                                 <td><a href="{% url 'deviceconf' conf.id %}">Editar</a></td>
-                                                <td><a href="">Acessar</a></td>
+                                                <td><a href="{% url 'devicemessages' conf.id %}">Acessar</a></td>
                                             </tr>
                                         {% endfor %}
                                     </tbody>

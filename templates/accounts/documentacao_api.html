@@ -1,112 +1,113 @@
 {% extends 'base.html' %}
 
 {% block main %}
-    <h3>Antes de tudo obtenha o token de autenticação da API</h3>
-    <a href="{% url 'token' %}" class="btn btn-primary">Obter Token</a>
-    <br><br>
-    <h3>Métodos</h3>
-    <br>
-    <h4>Em todos utilize o seguinte o header:</h4>
-    <h5>Authorization: Token your_token</h5>
-    <br><br>
-    <h4>Métodos GET</h4>
-    <br>
-    <h5>Obter todos dispositivos cadastrados: <b>api/v1/dispositivos/</b></h5>
-    <h5>Response: <b>status 200</b></h5>
-    <h5>[
-        {
-        "id": 2,
-        "nome": "teste-temperatura",
-        "placa": "esp8266",
-        "tipo": "Sensor",
-        "dados": [
-        {
-        "id": 1,
-        "dispositivo": 2,
-        "unidade": "celsius",
-        "dado": "30",
-        "criacao": "2021-08-26T11:40:14.413672-03:00"
-        }...]
-        ...}</h5>
-    <br><br>
-    <h5>Obter determinado dispositivo: <b>api/v1/dispositivos/id_dipositivo/</b></h5>
-    <h5>Response: <b>status 200</b></h5>
-    <h5>[
-        {
-        "id": 2,
-        "nome": "teste-temperatura",
-        "placa": "esp8266",
-        "tipo": "Sensor",
-        "dados": [
-        {
-        "id": 1,
-        "dispositivo": 2,
-        "unidade": "celsius",
-        "dado": "30",
-        "criacao": "2021-08-26T11:40:14.413672-03:00"
-        }...] }</h5>
-    <br><br>
-    <h5>Obter todos as medições de todos dispositivo: <b>api/v1/dados</b></h5>
-    <h5>Response: <b>status 200</b></h5>
-    <h5>
-        [
-            {
-                "id": 1,
-                "dispositivo": 2,
-                "unidade": "celsius",
-                "dado": "30",
-                "criacao": "2021-08-26T11:40:14.413672-03:00"
-            }, ...]
-    </h5>
-    <br><br>
-    <h5>Obter determinada medição <b>api/v1/dados/numero_inteiro_maior_de_zero</b></h5>
-    <h5>Response: <b>status 200</b></h5>
-    <h5>
-        [
-            {
-                "id": 1,
-                "dispositivo": 2,
-                "unidade": "celsius",
-                "dado": "30",
-                "criacao": "2021-08-26T11:40:14.413672-03:00"
-            }, ...]
-    </h5>
-    <br><br>
-    <h4>Métodos POST</h4>
-    <br>
-    <h5>Criar novo dispositivo</h5>
-    <p>Nota: para registrar um novo dispositivo voce pode utilizar o registro de dispositivo<br>
-    diretamente na plataforma</p>
-    <h5>Endpoint: POST <b>api/v1/dispositivos/</b></h5>
-    <h5>header: Authorization: Token your_token</h5>
-    <h5>body:<br> Media type: application/json <br>
-    {"usuario":"seu email cadastrado", "nome": "nome do dipositivo", "placa":"placa do dispositivo",
-        "ativo":"true"}</h5>
-    <h5>Response: status 201<br>
-    {
-    "id": 3,
-    "nome": "teste-luminosisdade",
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Obter o dipositivo pelo id</h5>
+                    <h6>Method: GET</h6>
+                    <h6>Endpoint: <b>api/v1/dispositivos/id_dipositivo/</b></h6>
+                    <h6>Headers: <b>Authorization: Token your_token</b></h6>
+                </div>
+                <div class="card-body">
+                    <h6>Response: <b>status 200</b></h6><br>
+                    <h6>{
+    "id": 5,
+    "nome": "teste-temperatura",
     "placa": "esp8266",
     "tipo": "Sensor",
-    "dados": [],
-    "criacao": "2021-08-27T10:19:54.576620-03:00",
-    "ativo": true
-        }</h5>
-    <br><br>
-    <h5>Criar uma nova leitura</h5>
-    <h5>Endpoint: POST <b>api/v1/dados/</b></h5>
-    <h5>header: Authorization: Token your_token</h5>
-    <h5>body:<br> Media type: application/json <br>
-    {"dispositivo":"nome do dispositivo registrado", "unidade":"qualquer unidade", "dado":"qualquer valor"}</h5>
-    <h5>Response: 201<br>
+    "dados": [
         {
-        "id": 7,
-        "dispositivo": 3,
-        "unidade": "Esta ligado",
-        "dado": "true",
-        "criacao": "2021-08-27T10:42:37.810685-03:00"
+            "dispositivo": 5
+            "unidade": "celsius",
+            "dado": "30",
+            "criacao": "2021-08-31T15:11:36.666903-03:00"
+        }, ...
+    ],
+    "configuracoes": [
+        {
+            "limite_inferior": "0",
+            "limite_superior": "100"
         }
-    </h5>
-    <br>
-    <a href="{% url 'dashboard' %}" class="btn btn-primary">Voltar</a>
+    ],
+    "mensagens": [
+        {
+            "alerta": "Teste",
+            "mensagem": "apenas um teste",
+            "is_critic": false
+        }, ...
+    ],
+    "criacao": "2021-08-31T10:31:00.110277-03:00",
+    "ativo": true
+}</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Criar uma nova leitura</h5>
+                    <h6>Method: POST</h6>
+                    <h6>Endpoint: <b>api/v1/dados/</b></h6>
+                    <h6>header: <b>Authorization: Token your_token</b></h6>
+                    <br>
+                     <h6>body:<br><b>Media type: application/json <br>
+                        {"dispositivo":"nome do dispositivo registrado", "unidade":"qualquer unidade", "dado":"qualquer valor"}
+                     </b>
+                     </h6>
+                </div>
+                <div class="card-body">
+                    <h6>Response: <b>status 201</b><br><br>
+                        {
+                        "id": 7,
+                        "dispositivo": 3,
+                        "unidade": "algo",
+                        "dado": "true",
+                        "criacao": "2021-08-27T10:42:37.810685-03:00" }
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Criar um novo alerta</h5>
+                    <h6>Method: POST</h6>
+                    <h6>Endpoint: <b>api/v1/mensagens/</b></h6>
+                    <h6>header: <b>Authorization: Token your_token</b></h6>
+                    <br>
+                    <h6>body:<br><b>Media type: application/json<br>
+                        {
+                        "dispositivo": "nome do dispositivo",
+                        "alerta": "Seu alerta",
+                        "mensagem": "Sua mensagem",
+                        "is_critic": true se for critico ou false se não for
+                        }</b>
+                    </h6>
+                </div>
+                <div class="card-body">
+                    <h6>body:<br><b>Media type: application/json<br>
+                        {
+                            "dispositivo": 5,
+                            "alerta": "teste doc",
+                            "mensagem": "teste para doc",
+                            "is_critic": false
+                        }
+                        </b>
+                    </h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
 {% endblock %}
