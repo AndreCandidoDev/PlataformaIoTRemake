@@ -16,6 +16,8 @@ from .views import device_update
 from .views import device_delete
 from .views import device_conf
 from .views import device_messages
+from .views import profile_register
+from .views import profile_update
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -34,5 +36,7 @@ urlpatterns = [
     path('deviceupdate/<int:pk>/', device_update, name='deviceupdate'),
     path('devicedelete/<int:pk>/', device_delete, name='devicedelete'),
     path('deviceconf/<int:pk>/', device_conf, name='deviceconf'),
-    path('devicemessages/<int:pk>/', device_messages, name='devicemessages')
+    path('devicemessages/<int:pk>/', device_messages, name='devicemessages'),
+    path('profileregister/', profile_register, name='profileregister'),
+    path('profileupdate/<int:pk>/', profile_update, name='profileupdate')
 ]

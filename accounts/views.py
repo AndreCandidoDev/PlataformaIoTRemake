@@ -9,9 +9,44 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from devicesapi.models import Dispositivo, Dados, Configuracoes, Mensagens
-from .forms import AccountForm, DispositivoForm, ConfiguracaoForm
-from .models import Account
+from .forms import AccountForm, DispositivoForm, ConfiguracaoForm, UserProfileForm
+from .models import Account, UserProfile
 from rest_framework.authtoken.models import Token
+
+
+# ============================Profile and Billing=============================================================
+@login_required(login_url='login')
+def profile_register(request):
+    user = request.user
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST or None)
+        if form.is_valid():
+            cpf = form.cleaned_data['cpf']
+            endereco_completo = form.cleaned_data['endereco_completo']
+            cep = form.cleaned_data['cep']
+            cidade = form.cleaned_data['cidade']
+            estado = form.cleaned_data['estado']
+            perfil = UserProfile.objects.create(user=user, cpf=cpf, endereco_completo=endereco_completo,
+                                                cep=cep, cidade=cidade, estado=estado)
+            perfil.save()
+            return redirect('dashboard')
+    else:
+        form = UserProfileForm()
+    context = {'form': form}
+    return render(request, 'accounts/profileregister.html', context)
+
+
+def profile_update(request, pk):
+    profile = get_object_or_404(UserProfile, pk=pk)
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=profile)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = UserProfileForm(instance=profile)
+    context = {'form': form}
+    return render(request, 'accounts/profileupdate.html', context)
 
 
 # ===========================================Create, Update and Delete device=================================
@@ -212,6 +247,13 @@ def resetpassword(request):
 def dashboard(request):
     user = request.user
     devices = Dispositivo.objects.filter(usuario=user)
+    flag_has_profile = True
+    try:  # check if current user has profile
+        profile = UserProfile.objects.get(user=user)
+        print(profile)
+        flag_has_profile = True
+    except:
+        flag_has_profile = False
     leituras = []
     confs = []
     for i in devices:
@@ -224,7 +266,12 @@ def dashboard(request):
         ultimo = dados.last()
         leituras.append(ultimo)
     contagem = devices.count()
-    context = {'devices': devices, 'counter': contagem, 'ultimas_leituras': leituras, 'confs': confs}
+    print(flag_has_profile)
+    context = {'devices': devices,
+               'counter': contagem,
+               'ultimas_leituras': leituras,
+               'confs': confs,
+               'flag_has_profile': flag_has_profile}
     return render(request, 'accounts/dashboard.html', context)
 
 
