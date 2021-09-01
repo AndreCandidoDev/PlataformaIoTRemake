@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account
+from .models import Account, UserProfile
 from devicesapi.models import Dispositivo, Configuracoes
 
 
@@ -45,3 +45,18 @@ class ConfiguracaoForm(forms.ModelForm):
     class Meta:
         model = Configuracoes
         fields = ['limite_inferior', 'limite_superior']
+
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['cpf', 'endereco_completo', 'cep', 'cidade', 'estado']
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['cpf'].widget.attrs['placeholder'] = 'Apenas digítos'
+        self.fields['cpf'].widget.attrs['max_length'] = 11
+        self.fields['cep'].widget.attrs['placeholder'] = 'Apenas digítos'
+        self.fields['cep'].widget.attrs['max_length'] = 8
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'

@@ -18,179 +18,196 @@
                 </nav>
           </div>
       </header>
-
       <section>
-            <br><br>
-
-            <div class="row">
-                <div class="col-md-6">
-					<div class="card" >
-						<div class="card-body" style="text-align:center">
-                            <h5>Meus dispositivos</h5>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Nome</th>
-                                        <th scope="col">Placa</th>
-                                        <th scope="col">Tipo</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                {% for device in devices %}
-                                        <tr>
-                                            <td>{{ device.id }}</td>
-                                            <td>{{ device.nome }}</td>
-                                            <td>{{ device.placa }}</td>
-                                            <td>{{ device.tipo }}</td>
-                                            <td><a href="{% url 'deviceupdate' device.id %}"><i class="bi bi-pencil-fill"></i></a></td>
-                                            <td><a href="{% url 'devicedelete' device.id %}"><i class="bi bi-trash-fill"></i></a></td>
-                                         </tr>
-                                {% endfor %}
-                                </tbody>
-                            </table>
-                            <h6 class="card-title"><b>Total de dispositivos: {{ counter }}</b></h6>
-						</div>
-					</div>
-				</div>
-
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body" style="text-align:center">
-                            <h4>Minha conta</h4>
-                            <img src="{% static 'images/img_user_default.png' %}" height="55" width="55">
-                            <br><br>
-                            <h5>{{ request.user.email }}</h5>
-                            <h5>Plano: gratuito</h5>
-<!--                            colocar mecanismo dinamico para os limites-->
-                            <h5>Limite de dispositivos: 5</h5>
-                            <h5>Limite de medições/iterações: 100/dia</h5>
-                            <br>
-                            <a href="" class="btn btn-outline-primary">Mudar plano</a>
-                            <a href="" class="btn btn-outline-primary">Configurações de perfil</a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br><br>
-
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body" style="text-align:center">
-                            <h4>Ultimas medições</h4>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dispositivo</th>
-                                        <th scope="col">Leitura</th>
-                                        <th scope="col">Unidade</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for leitura in ultimas_leituras %}
-                                        <tr>
-                                            <td>{{ leitura.dispositivo.nome }}</td>
-                                            <td>{{ leitura.dado }}</td>
-                                            <td>{{ leitura.unidade }}</td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card">
-                        <div class="card-body" style="text-align:center">
-                            <h5>Uso da cota do plano</h5>
-                            <canvas id="myChart" width="15" height="7"></canvas>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-          <br><br>
-
-          <!--          CRUD for devicesetup-->
           <div class="row">
               <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body" style="text-align:center">
-                            <h5><b>Controle de dispositivos</b></h5>
-                            <br><br>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">ID</th>
-                                        <th scope="col">Dispositivo</th>
-                                        <th scope="col">Limite mínimo</th>
-                                        <th scope="col">Limite maximo</th>
-                                        <th scope="col">Editar configurações</th>
-                                        <th scope="col">Acessar alertas</th>
-                                    </tr>
-                                </thead>
-                                    <tbody>
-                                        {% for conf in confs %}
-                                            <tr>
-                                                <td>{{ conf.id }}</td>
-                                                <td>{{ conf.dispositivo }}</td>
-                                                <td>{{ conf.limite_inferior }}</td>
-                                                <td>{{ conf.limite_superior }}</td>
-                                                <td><a href="{% url 'deviceconf' conf.id %}">Editar</a></td>
-                                                <td><a href="{% url 'devicemessages' conf.id %}">Acessar</a></td>
-                                            </tr>
-                                        {% endfor %}
-                                    </tbody>
-                            </table>
+                  <div class="card">
+                      <div class="card-body">
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <div class="card">
+                                      <div class="card-header">
+                                          <h5><b>Minha conta</b></h5>
+                                      </div>
+                                      <div class="card-body">
+                                          <div class="card" style="text-align:center">
+                                            <div class="card-body">
+                                                <img src="{% static 'images/img_user_default.png' %}" height="55" width="55">
+                                                <br><br>
+                                                <h5>{{ request.user.email }}</h5>
+                                            </div>
+                                          </div>
+                                          <br>
+                                            <h5>Plano: gratuito</h5>
+                                            <h5>Limite de dispositivos: 5</h5>
+                                            <h5>Limite de medições/iterações: 100/dia</h5>
+                                            <br>
+                                            {% if flag_has_profile %}
+                                                <a href="" class="btn btn-outline-primary">Mudar plano</a>
+                                                <a href="{% url 'profileupdate' request.user.id  %}"
+                                                   class="btn btn-outline-primary">Atualizar perfil</a>
+                                            {% else %}
+                                                <h5 style="color:red">Crie um perfil para poder mudar de plano</h5>
+                                                <a href="{% url 'profileregister' %}"
+                                                   class="btn btn-outline-primary">Criar perfil</a>
+                                            {% endif %}
+                                      </div>
+                                  </div>
+                              </div>
+                              <div class="col-md-6">
+                                  <div class="card">
+                                      <div class="card-header">
+                                          <h5><b>Uso da cota do plano</b></h5>
+                                      </div>
+                                      <div class="card-body">
+                                          <br><br>
+                                         <canvas id="myChart" width="15" height="9"></canvas>
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                          <br>
+
+                          <div class="row">
+                               <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><b>Meus dispositivos</b></h5>
+                                        </div>
+                                        <div class="card-body" style="text-align:center">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Nome</th>
+                                                        <th scope="col">Placa</th>
+                                                        <th scope="col">Tipo</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                {% for device in devices %}
+                                                        <tr>
+                                                            <td>{{ device.id }}</td>
+                                                            <td>{{ device.nome }}</td>
+                                                            <td>{{ device.placa }}</td>
+                                                            <td>{{ device.tipo }}</td>
+                                                            <td><a href="{% url 'deviceupdate' device.id %}"><i class="bi bi-pencil-fill"></i></a></td>
+                                                            <td><a href="{% url 'devicedelete' device.id %}"><i class="bi bi-trash-fill"></i></a></td>
+                                                         </tr>
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                            <h6 class="card-title"><b>Total de dispositivos: {{ counter }}</b></h6>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><b>Ultimas medições</b></h5>
+                                        </div>
+                                        <div class="card-body" style="text-align:center">
+                                            <br>
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">Dispositivo</th>
+                                                        <th scope="col">Leitura</th>
+                                                        <th scope="col">Unidade</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {% for leitura in ultimas_leituras %}
+                                                        <tr>
+                                                            <td>{{ leitura.dispositivo.nome }}</td>
+                                                            <td>{{ leitura.dado }}</td>
+                                                            <td>{{ leitura.unidade }}</td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                          <br>
+                          <div class="row">
+                              <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><b>Controle de dispositivos</b></h5>
+                                        </div>
+                                        <div class="card-body" style="text-align:center">
+                                            <table class="table table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Dispositivo</th>
+                                                        <th scope="col">Limite mínimo</th>
+                                                        <th scope="col">Limite maximo</th>
+                                                        <th scope="col">Editar configurações</th>
+                                                        <th scope="col">Acessar alertas</th>
+                                                    </tr>
+                                                </thead>
+                                                    <tbody>
+                                                        {% for conf in confs %}
+                                                            <tr>
+                                                                <td>{{ conf.id }}</td>
+                                                                <td>{{ conf.dispositivo }}</td>
+                                                                <td>{{ conf.limite_inferior }}</td>
+                                                                <td>{{ conf.limite_superior }}</td>
+                                                                <td><a href="{% url 'deviceconf' conf.id %}">Editar</a></td>
+                                                                <td><a href="{% url 'devicemessages' conf.id %}">Acessar</a></td>
+                                                            </tr>
+                                                        {% endfor %}
+                                                    </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                          <br>
+                          <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5><b>Estatísticas</b></h5>
+                                    </div>
+                                    <div class="card-body" style="text-align:center">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Dispositivo</th>
+                                                    <th scope="col">Quantidade de medições</th>
+                                                    <th scope="col">Tipo</th>
+                                                    <th scope="col">Ativo desde</th>
+                                                    <th scope="col">Grafico de medições</th>
+                                                    <th scope="col">Relatório</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {% for device in devices %}
+                                                    <tr>
+                                                        <td>{{ device.nome }}</td>
+                                                        <td>{{ device.dados.count }}</td>
+                                                        <td>{{ device.tipo }}</td>
+                                                        <td>{{ device.criacao }}</td>
+                                                        <td><a href="{% url 'devicegraphic' device.id %}">Ver grafico</a></td>
+                                                        <td><a href="{% url 'devicestatistics' device.id %}">Relatório</a></td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                      </div>
+                  </div>
+              </div>
           </div>
-          <br><br>
-          <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-body" style="text-align:center">
-                            <h5><b>Estatísticas</b></h5>
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Dispositivo</th>
-                                        <th scope="col">Quantidade de medições</th>
-                                        <th scope="col">Tipo</th>
-                                        <th scope="col">Ativo desde</th>
-                                        <th scope="col">Grafico de medições</th>
-                                        <th scope="col">Relatório</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for device in devices %}
-                                        <tr>
-                                            <td>{{ device.nome }}</td>
-                                            <td>{{ device.dados.count }}</td>
-                                            <td>{{ device.tipo }}</td>
-                                            <td>{{ device.criacao }}</td>
-                                            <td><a href="{% url 'devicegraphic' device.id %}">Ver grafico</a></td>
-                                            <td><a href="{% url 'devicestatistics' device.id %}">Relatório</a></td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-<!--            <a href="" class="btn btn-primary">Minhas medições</a>-->
-<!--            <a href="" class="btn btn-primary">Configurações da conta</a>-->
-            <!--  Tabela com os dados    -->
-            <!--    Grafico a partir dos dados  -->
-            <div class="resultados"></div>
+          <div class="resultados"></div>
       </section>
-
 
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>-->
     <script>

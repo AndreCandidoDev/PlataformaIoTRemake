@@ -69,18 +69,54 @@ class Account(AbstractBaseUser):
         return True
 
 
-# ativar na versão 1.0 --> remodelar
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(Account, on_delete=models.CASCADE)
-#     address_line_1 = models.CharField(blank=True, max_length=100)
-#     address_line_2 = models.CharField(blank=True, max_length=100)
-#     profile_picture = models.ImageField(blank=True, upload_to='userprofile')
-#     city = models.CharField(blank=True, max_length=20)
-#     state = models.CharField(blank=True, max_length=20)
-#     country = models.CharField(blank=True, max_length=20)
-#
-#     def __str__(self):
-#         return self.user.first_name
-#
-#     def full_address(self):
-#         return f'{self.address_line_1} {self.address_line_2}'
+class UserProfile(models.Model):
+    user = models.ForeignKey(Account, on_delete=models.CASCADE)
+    cpf = models.CharField(max_length=11)
+    endereco_completo = models.CharField(max_length=255)
+    cep = models.CharField(max_length=8)
+    cidade = models.CharField(max_length=255)
+    estado = models.CharField(max_length=255)
+    criacao = models.DateTimeField(auto_now_add=True)
+    atualizado = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'Perfil'
+        verbose_name_plural = 'Perfis'
+        ordering = ['id']
+
+    def __str__(self):
+        return str(self.user)
+
+
+class Plano(models.Model):
+    tipos_planos = (
+        ('Gratuito', 'Gratuito'),
+        ('Pago_pessoal', 'Pago_pessoal'),
+        ('Pago_empresarial', 'Pago_empresarial'),
+        # ('Pago_personalizado', 'Pago_personalizado')  # será implementado depois
+    )
+
+    unidades = (
+        ('mes(es)', 'mes(es)'),
+        ('ano(s)', 'ano(s)')
+    )
+
+    usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
+    perfil = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
+    plano = models.CharField(max_length=255, choices=tipos_planos, default='Gratuito')
+    limite_redes_iot = models.IntegerField(default=1)
+    limite_dispositivos_iot = models.IntegerField(default=5)
+    limite_requisicoes = models.IntegerField(default=100)
+    periodo = models.IntegerField(default=1)
+    unidade_tempo = models.CharField(max_length=255, choices=unidades, default='mes(es)')
+    ativo = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = 'Plano'
+        verbose_name_plural = 'Planos'
+        ordering = ['id']
+
+    def __str__(self):
+        return f'{self.usuario} plano {self.plano}'
+
+# Plano --> define o tipo de plano e seus limites (será passado pela view)
