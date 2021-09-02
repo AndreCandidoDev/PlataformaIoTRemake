@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block main %}
-  <h1>Estatisticas de {{ device.nome }}</h1>
+  <br><br>
+  <h3>Estatisticas de {{ device.nome }}</h3>
   <div class="row">
     <div class="col-md-6">
       <div class="card">
@@ -62,4 +63,5 @@
   </div>
   <br><br>
   <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar para o dashboard</a>
+  <br><br>
 {% endblock %}
