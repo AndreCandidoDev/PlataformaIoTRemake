@@ -10,7 +10,7 @@ from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from devicesapi.models import Dispositivo, Dados, Configuracoes, Mensagens
 from .forms import AccountForm, DispositivoForm, ConfiguracaoForm, UserProfileForm
-from .models import Account, UserProfile
+from .models import Account, UserProfile, Plano
 from rest_framework.authtoken.models import Token
 
 
@@ -49,7 +49,7 @@ def profile_update(request, pk):
     return render(request, 'accounts/profileupdate.html', context)
 
 
-# ===========================================Create, Update and Delete device=================================
+# ===========================================Create, Update and Delete device==================================
 @login_required(login_url='login')
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
@@ -246,11 +246,20 @@ def resetpassword(request):
 @login_required(login_url='login')
 def dashboard(request):
     user = request.user
+    limit = None
+    flag_limit = False  # flag limite de dispositivos
+    try:
+        plano = Plano.objects.get(usuario=user)
+        # implementar logica para usuario com plano
+    except:
+        limit = 5
     devices = Dispositivo.objects.filter(usuario=user)
+    contagem_dispositivos = devices.count()
+    if contagem_dispositivos == limit:
+        flag_limit = True
     flag_has_profile = True
     try:  # check if current user has profile
         profile = UserProfile.objects.get(user=user)
-        print(profile)
         flag_has_profile = True
     except:
         flag_has_profile = False
@@ -266,12 +275,15 @@ def dashboard(request):
         ultimo = dados.last()
         leituras.append(ultimo)
     contagem = devices.count()
-    print(flag_has_profile)
-    context = {'devices': devices,
+    context = {
+               'devices': devices,
                'counter': contagem,
                'ultimas_leituras': leituras,
                'confs': confs,
-               'flag_has_profile': flag_has_profile}
+               'flag_has_profile': flag_has_profile,
+               'flag_limit': flag_limit,
+               'contagem_dispositivos': contagem_dispositivos,
+    }
     return render(request, 'accounts/dashboard.html', context)
 
 

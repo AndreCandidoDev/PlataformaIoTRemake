@@ -24,8 +24,12 @@
                                           </div>
                                           <br>
                                             <h5>Plano: gratuito</h5>
-                                            <h5>Limite de dispositivos: 5</h5>
-                                            <h5>Limite de medições/iterações: 100/dia</h5>
+                                            {% if flag_limit %}
+                                                <h5 style="color:red">Limite de dispositivos atingido!</h5>
+                                            {% else %}
+                                                <h5>Limite de dispositivos: {{ contagem_dispositivos }}/5</h5>
+                                            {% endif %}
+                                            <h5>Limite de medições: 100/dispositivo</h5>
                                             <br>
                                             {% if flag_has_profile %}
                                                 <a href="" class="btn btn-outline-primary">Mudar plano</a>
@@ -59,6 +63,15 @@
                                             <h5><b>Meus dispositivos</b></h5>
                                         </div>
                                         <div class="card-body" style="text-align:center">
+                                            {% if flag_limit %}
+                                                <h5><span class="badge bg-danger">
+                                                    Limite de dispositivos atingido!</span></h5>
+                                            {% else %}
+                                                <div class="d-grid gap-2">
+                                                    <a class="btn btn-outline-primary" href="{% url 'deviceregister' request.user.id %}">Registrar dispositivo</a>
+                                                </div>
+                                            {% endif %}
+                                            <br>
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
