@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
+    <br><br>
     <h4>Alertas e mensagens do dispositivo <b>{{ device.nome }}</b></h4>
     <br><br>
     {% if flag_not_messages %}
@@ -87,4 +88,5 @@
             <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
         {% endif %}
     {% endif %}
+    <br><br>
 {% endblock %}

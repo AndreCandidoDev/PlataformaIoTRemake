@@ -1,21 +1,22 @@
 {% extends 'base.html' %}
 
 {% block main %}
-
+    <br><br>
     <div class="row">
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h3>Obrigado  <b>{{ usuario }}</b> por utilizar nosso sistema</h3>
+                    <h5>Obrigado  <b>{{ usuario }}</b> por utilizar nosso sistema</h5>
                     <br><br>
-                    <h4>Anote seu Token de autenticação para usar a API do sistema</h4>
+                    <h5>Anote seu Token de autenticação para usar a API do sistema</h5>
                 </div>
                 <div class="card-body">
-                    <h4><b>Token {{ token }}</b></h4>
+                    <h5><b>Token {{ token }}</b></h5>
                 </div>
             </div>
         </div>
     </div>
     <br>
     <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
+    <br><br>
 {% endblock %}

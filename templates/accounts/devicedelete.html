@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block main %}
+    <br><br>
     <h3><b>Deseja deletar {{ device.nome }} ?</b></h3>
     <form  method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -8,4 +9,5 @@
     </form>
     <br><br>
     <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
+    <br><br>
 {% endblock %}

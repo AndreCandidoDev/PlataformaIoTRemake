@@ -2,40 +2,48 @@
 
 {% block main %}
     <section class="section-content padding-y">
-	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
-      <article class="card-body">
-		<header class="mb-4"><h4 class="card-title">Criar perfil</h4></header>
-		<form method="POST">
-			{% csrf_token %}
-				<div class="form-row">
-					<div class="form-group col-md-12">
-						<label>CPF</label>
-						{{ form.cpf }}
-					</div>
-					<div class="form-group col-md-12">
-						<label>Endereço completo</label>
-						{{ form.endereco_completo }}
-					</div>
-                    <div class="form-group col-md-4">
-						<label>cep</label>
-						{{ form.cep }}
-					</div>
-					<div class="form-group col-md-4">
-						<label>Cidade</label>
-						{{ form.cidade }}
-					</div>
-					<div class="form-group col-md-4">
-						<label>Estado</label>
-						{{ form.estado }}
-					</div>
-				</div>
-				<div class="form-group">
-					<button type="submit" class="btn btn-primary btn-block">Criar</button>
-				</div>
-			</form>
-		  	<a href="{% url 'dashboard' %}">Voltar</a>
-		</article>
-    </div>
-    <br><br>
-</section>
+         <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+          <article class="card-body">
+            <header class="mb-4"><h4 class="card-title">Criar perfil</h4></header>
+            <form method="POST">
+                {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <label>CPF</label>
+                            {{ form.cpf }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-12">
+                            <label>Endereço completo</label>
+                            {{ form.endereco_completo }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="form-group col-4">
+                            <label>CEP</label>
+                            {{ form.cep }}
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Cidade</label>
+                            {{ form.cidade }}
+                        </div>
+                        <div class="form-group col-4">
+                            <label>Estado</label>
+                            {{ form.estado }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">Criar</button>
+                    </div>
+                </form>
+			  	<br>
+                <a href="{% url 'dashboard' %}">Voltar</a>
+            </article>
+        </div>
+        <br><br>
+    </section>
 {% endblock %}
