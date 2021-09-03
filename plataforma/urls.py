@@ -22,6 +22,7 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
+    path('pricing', views.pricing, name='pricing'),
     path('admin/', admin.site.urls),
     path('accounts/', include(accounts_urls)),
     path('api/v1/', include(router.urls)),

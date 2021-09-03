@@ -18,6 +18,7 @@ from .views import device_conf
 from .views import device_messages
 from .views import profile_register
 from .views import profile_update
+from .views import plano_change
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -38,5 +39,6 @@ urlpatterns = [
     path('deviceconf/<int:pk>/', device_conf, name='deviceconf'),
     path('devicemessages/<int:pk>/', device_messages, name='devicemessages'),
     path('profileregister/', profile_register, name='profileregister'),
-    path('profileupdate/<int:pk>/', profile_update, name='profileupdate')
+    path('profileupdate/<int:pk>/', profile_update, name='profileupdate'),
+    path('planochange/<int:pk>/', plano_change, name='planochange')
 ]

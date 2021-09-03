@@ -9,7 +9,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from devicesapi.models import Dispositivo, Dados, Configuracoes, Mensagens
-from .forms import AccountForm, DispositivoForm, ConfiguracaoForm, UserProfileForm
+from .forms import AccountForm, DispositivoForm, ConfiguracaoForm, UserProfileForm, PlanoForm
 from .models import Account, UserProfile, Plano
 from rest_framework.authtoken.models import Token
 
@@ -36,6 +36,7 @@ def profile_register(request):
     return render(request, 'accounts/profileregister.html', context)
 
 
+@login_required(login_url='login')
 def profile_update(request, pk):
     profile = get_object_or_404(UserProfile, pk=pk)
     if request.method == 'POST':
@@ -47,6 +48,38 @@ def profile_update(request, pk):
         form = UserProfileForm(instance=profile)
     context = {'form': form}
     return render(request, 'accounts/profileupdate.html', context)
+
+
+@login_required(login_url='login')
+def plano_change(request, pk):
+    user = Account.objects.get(id=pk)
+    usuario = UserProfile.objects.get(id=pk)
+    limite_redes_iot = None
+    limite_dispositivos_iot = None
+    if request.method == 'POST':
+        print(request.POST)
+        form = PlanoForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            plano = form.cleaned_data['plano']
+            periodo = form.cleaned_data['periodo']
+            if plano == 'Pessoal':
+                limite_redes_iot = 3
+                limite_dispositivos_iot = 30
+            elif plano == 'Empresarial':
+                limite_redes_iot = 15
+                limite_dispositivos_iot = 150
+            userPlan = Plano.objects.create(usuario=user, perfil=usuario, plano=plano,
+                                            limite_redes_iot=limite_redes_iot,
+                                            limite_dispositivos_iot=limite_dispositivos_iot,
+                                            periodo=periodo)
+            userPlan.save()
+            return redirect('dashboard')
+    else:
+        form = PlanoForm()
+        print(form)
+    context = {'form': form}
+    return render(request, 'accounts/planochange.html', context)
 
 
 # ===========================================Create, Update and Delete device==================================
@@ -248,11 +281,14 @@ def dashboard(request):
     user = request.user
     limit = None
     flag_limit = False  # flag limite de dispositivos
-    try:
+    plano_type = None
+    try:  # informações do painel minha conta/ criar variaveis para alterar dashboard
         plano = Plano.objects.get(usuario=user)
-        # implementar logica para usuario com plano
+        limit = plano.limite_dispositivos_iot
+        plano_type = plano.plano
     except:
         limit = 5
+        plano_type = 'Gratuito'
     devices = Dispositivo.objects.filter(usuario=user)
     contagem_dispositivos = devices.count()
     if contagem_dispositivos == limit:
@@ -283,8 +319,12 @@ def dashboard(request):
                'flag_has_profile': flag_has_profile,
                'flag_limit': flag_limit,
                'contagem_dispositivos': contagem_dispositivos,
+               'plano_type': plano_type,
+               'limite_dispositivos': limit
     }
     return render(request, 'accounts/dashboard.html', context)
+
+# criar views para gerenciamento e controle de redes IoT
 
 
 @login_required(login_url='login')
