@@ -65,7 +65,7 @@
                     <a class="nav-link active" href="{% url 'token' %}">Obter token de autenticação</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="{% url 'deviceregister' request.user.id %}">Registrar dispositivo</a>
+                    <a class="nav-link active" href="">Exemplos de aplicações</a>
                 </li>
             </ul>
             <ul class="navbar-nav justify-content-end">
@@ -76,19 +76,16 @@
           {% else %}
               <ul class="navbar-nav me-auto mb-2 mb-md-0">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Features</a>
+                        <a class="nav-link active" href="{% url 'pricing' %}">Planos de assinatura</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Pricing</a>
+                        <a class="nav-link active" aria-current="page" href="#">Sobre nós</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">About us</a>
+                        <a class="nav-link active" aria-current="page" href="#">Casos de uso</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Examples</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Contact</a>
+                        <a class="nav-link active" aria-current="page" href="#">Contato</a>
                     </li>
               </ul>
           {% endif %}
@@ -110,36 +107,12 @@
         <h5>Section</h5>
         <ul class="nav flex-column">
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
           <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Support</a></li>
         </ul>
       </div>
-
-      <div class="col-2">
-        <h5>Section</h5>
-        <ul class="nav flex-column">
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
-        </ul>
-      </div>
-
-      <div class="col-2">
-        <h5>Section</h5>
-        <ul class="nav flex-column">
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
-        </ul>
-      </div>
-
-      <div class="col-4 offset-1">
+      <div class="col-4 offset-5">
         <form>
           <h5>Subscribe to our newsletter</h5>
           <p>Monthly digest of whats new and exciting from us.</p>

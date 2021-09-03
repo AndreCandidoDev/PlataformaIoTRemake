@@ -1,5 +1,5 @@
 from django import forms
-from .models import Account, UserProfile
+from .models import Account, UserProfile, Plano
 from devicesapi.models import Dispositivo, Configuracoes
 
 
@@ -68,5 +68,16 @@ class UserProfileForm(forms.ModelForm):
         self.fields['cpf'].widget.attrs['max_length'] = 11
         self.fields['cep'].widget.attrs['placeholder'] = 'Apenas digítos'
         self.fields['cep'].widget.attrs['max_length'] = 8
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+class PlanoForm(forms.ModelForm):
+    class Meta:
+        model = Plano
+        fields = ['plano', 'periodo']
+
+    def __init__(self, *args, **kwargs):
+        super(PlanoForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'

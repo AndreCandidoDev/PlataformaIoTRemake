@@ -138,30 +138,19 @@ EMAIL_USE_TLS = config('EMAIL_USE_TLS', cast=bool)
 
 REST_FRAMEWORK = {
 
-    # configurções de autenticação
     'DEFAULT_AUTHENTICATION_CLASSES': (
         # 'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ),
 
-    # configuraçoões de permissão
     'DEFAULT_PERMISSION_CLASSES': (
-            # usuario deve estar logado para fazer requisições post
-            'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+            'rest_framework.permissions.IsAuthenticated',
     ),
 
-    # configuração de paginação
-    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    # 'PAGE_SIZE': 2,  # 2 dados por pagina
-
-    # configurações de limites de requisições
-    # usa cache para a contagem ---> em produção usar o redis
-    # 'DEFAULT_THROTTLE_CLASSES': (
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle'
-    # ),
-    # 'DEFAULT_THROTTLE_RATES': {  # second, day, month, year
-    #     'anon': '5/minutes',  # anonimo
-    #     'user': '10/minute'  # usuario autenticado
-    # }
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.UserRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {  # second, day, month, year
+        'user': '100/second',
+    }
 }

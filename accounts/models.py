@@ -90,25 +90,23 @@ class UserProfile(models.Model):
 
 class Plano(models.Model):
     tipos_planos = (
-        ('Gratuito', 'Gratuito'),
-        ('Pago_pessoal', 'Pago_pessoal'),
-        ('Pago_empresarial', 'Pago_empresarial'),
+        ('Pessoal', 'Pessoal'),
+        ('Empresarial', 'Empresarial'),
         # ('Pago_personalizado', 'Pago_personalizado')  # será implementado depois
     )
 
-    unidades = (
-        ('mes(es)', 'mes(es)'),
-        ('ano(s)', 'ano(s)')
+    periodos = (
+        ('Trimestral', '3 meses'),
+        ('Semestral', '6 meses'),
+        ('anual', '1 ano')
     )
 
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
     perfil = models.ForeignKey(UserProfile, on_delete=models.CASCADE)
-    plano = models.CharField(max_length=255, choices=tipos_planos, default='Gratuito')
-    limite_redes_iot = models.IntegerField(default=1)
-    limite_dispositivos_iot = models.IntegerField(default=5)
-    limite_requisicoes = models.IntegerField(default=100)
-    periodo = models.IntegerField(default=1)
-    unidade_tempo = models.CharField(max_length=255, choices=unidades, default='mes(es)')
+    plano = models.CharField(max_length=255, choices=tipos_planos, default='Pessoal')
+    periodo = models.CharField(max_length=255, default='Trimestral', choices=periodos)
+    limite_redes_iot = models.IntegerField(default=3)
+    limite_dispositivos_iot = models.IntegerField(default=30)
     ativo = models.BooleanField(default=False)
 
     class Meta:

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<section class="section-content padding-y">
+
+	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+		<header class="mb-4"><h4 class="card-title">Mudar plano de assinatura</h4></header>
+		<form  method="POST">
+			{% csrf_token %}
+				<div class="row">
+					<div class="form-group col-12">
+						<label>Plano</label>
+						{{ form.plano }}
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="form-group col-12">
+						<label>Tempo</label>
+						{{ form.periodo }}
+					</div>
+				</div>
+				<br>
+			    <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-primary">Assinar</button>
+				</div>
+			</form>
+		  	<br>
+		  	<a href="{% url 'dashboard' %}">Voltar</a>
+		</article>
+    </div>
+    <br><br>
+</section>
+{% endblock %}

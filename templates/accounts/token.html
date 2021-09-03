@@ -11,7 +11,13 @@
                     <h5>Anote seu Token de autenticação para usar a API do sistema</h5>
                 </div>
                 <div class="card-body">
-                    <h5><b>Token {{ token }}</b></h5>
+                    <button class="btn btn-outline-danger" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Mostrar token</button>
+                    <div class="collapse" id="collapseExample">
+                        <br>
+                        <h5><b>Token {{ token }}</b></h5>
+                    </div>
+
                 </div>
             </div>
         </div>
