@@ -12,6 +12,8 @@ from .views import apidoc
 from .views import profile_register
 from .views import profile_update
 from .views import plano_change
+from .views import plano_update
+from .views import plano_cancel
 
 urlpatterns = [
     path('register/', register, name='register'),
@@ -26,5 +28,7 @@ urlpatterns = [
     path('apidoc/', apidoc, name='apidoc'),
     path('profileregister/', profile_register, name='profileregister'),
     path('profileupdate/<int:pk>/', profile_update, name='profileupdate'),
-    path('planochange/<int:pk>/', plano_change, name='planochange')
+    path('planochange/<int:pk>/', plano_change, name='planochange'),
+    path('planoupdate/<int:pk>/', plano_update, name='planoupdate'),
+    path('planocancel/<int:pk>/', plano_cancel, name='planocancel')
 ]

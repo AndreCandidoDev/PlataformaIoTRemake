@@ -36,7 +36,7 @@ def profile_register(request):
 
 @login_required(login_url='login')
 def profile_update(request, pk):
-    profile = get_object_or_404(UserProfile, pk=pk)
+    profile = UserProfile.objects.get(user=pk)
     if request.method == 'POST':
         form = UserProfileForm(request.POST, instance=profile)
         if form.is_valid():
@@ -70,11 +70,33 @@ def plano_change(request, pk):
                                             limite_dispositivos_iot=limite_dispositivos_iot,
                                             periodo=periodo)
             userPlan.save()
-            return redirect('dashboard')
+            return redirect('dashboard')  # redirect to payment --> (need implementation)
     else:
         form = PlanoForm()
     context = {'form': form}
     return render(request, 'accounts/planochange.html', context)
+
+
+def plano_update(request, pk):
+    plano = Plano.objects.get(usuario=pk)
+    if request.method == 'POST':
+        form = PlanoForm(request.POST, instance=plano)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = PlanoForm(instance=plano)
+    context = {'form': form}
+    return render(request, 'accounts/planoupdate.html', context)
+
+
+def plano_cancel(request, pk):
+    plano = Plano.objects.get(usuario=pk)
+    if request.method == 'POST':
+        plano.delete()
+        return redirect('dashboard')
+    context = {'plano': plano}
+    return render(request, 'accounts/planodelete.html', context)
 
 
 @login_required(login_url='login')
@@ -209,19 +231,23 @@ def resetpassword(request):
         return render(request, 'accounts/resetpassword.html')
 
 
-# =============================================================================================================
 @login_required(login_url='login')
 def dashboard(request):
     user = request.user
     limit = None
     flag_limit = False  # flag limite de dispositivos
     plano_type = None
+    flag_has_plan = False
+    network_limit = None
     try:  # informações do painel minha conta/ criar variaveis para alterar dashboard
         plano = Plano.objects.get(usuario=user)
         limit = plano.limite_dispositivos_iot
+        network_limit = plano.limite_redes_iot
         plano_type = plano.plano
+        flag_has_plan = True
     except:
         limit = 5
+        network_limit = 'Unica'
         plano_type = 'Gratuito'
     devices = Dispositivo.objects.filter(usuario=user)
     contagem_dispositivos = devices.count()
@@ -254,6 +280,8 @@ def dashboard(request):
                'flag_limit': flag_limit,
                'contagem_dispositivos': contagem_dispositivos,
                'plano_type': plano_type,
-               'limite_dispositivos': limit
+               'limite_dispositivos': limit,
+               'flag_has_plan': flag_has_plan,
+               'network_limit': network_limit
     }
     return render(request, 'accounts/dashboard.html', context)
