@@ -15,7 +15,8 @@ class CasoUsoExemplo1:
     def getDevice(self):
         url = f'{self.urlbase}dispositivos/{self.device_id}'
         request = requests.get(url=url, headers=self.headers)
-        self.deviceData = request.json()
+        if request.status_code == 200:
+            self.deviceData = request.json()
 
     def getAllDatas(self):
         dados = self.deviceData['dados']
@@ -29,8 +30,36 @@ class CasoUsoExemplo1:
         msgs = self.deviceData['mensagens']
         return msgs
 
-    def sendData(self, data):
-        return
+    def sendData(self, data, unidade):
+        nome = self.deviceData['id']
+        body = {"dispositivo": nome, "unidade": unidade, "dado": data}
+        url = f'{self.urlbase}dados/'
+        request = requests.post(url=url, headers=self.headers, data=body)
+        if request.status_code == 201:
+            return request.json()
 
-    def sendMessage(self, alerttitle, msg):
-        return
+    def sendMessage(self, alerttitle, msg, critc):
+        print(critc)
+        nome = self.deviceData['id']
+        body = {"dispositivo": nome, "alerta": alerttitle, "mensagem": msg, "is_critic": str(critc)}
+        url = f'{self.urlbase}mensagens/'
+        request = requests.post(url=url, headers=self.headers, data=body)
+        if request.status_code == 201:
+            return request.json()
+
+
+# Descomente o código abaixo para testar a API
+# teste = CasoUsoExemplo1('seu token', id do dispositivo)
+# teste.getDevice()
+# print(teste.deviceData)
+# print(teste.getConfigurations())
+# print(teste.getAllDatas())
+# print(teste.getMessages())
+# teste.sendData(19, 'u.d')
+# teste.getDevice()
+# teste.sendMessage('dipositivo atualizado', 'dados atualizados no sitema', False)
+# print(teste.getAllDatas())
+# print(teste.getMessages())
+# teste.sendMessage('dispositivo desligado', 'sistema interrompeu dispositivo', True)
+# teste.getDevice()
+# print(teste.getMessages())
