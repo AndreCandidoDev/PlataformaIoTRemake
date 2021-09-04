@@ -32,13 +32,20 @@
                                                     {{ contagem_dispositivos }}/{{ limite_dispositivos }}
                                                 </h5>
                                             {% endif %}
-                                            <h5>Limite de redes: Unica</h5>
+                                            <h5>Limite de redes: {{ network_limit }}</h5>
                                             <br>
                                             {% if flag_has_profile %}
-                                                <a href="{% url 'planochange' request.user.id %}"
-                                                   class="btn btn-outline-primary">Mudar plano</a>
                                                 <a href="{% url 'profileupdate' request.user.id  %}"
                                                    class="btn btn-outline-primary">Atualizar perfil</a>
+                                                {% if flag_has_plan %}
+                                                    <a href="{% url 'planoupdate' request.user.id %}"
+                                                       class="btn btn-outline-primary">Atualizar plano</a>
+                                                    <a href="{% url 'planocancel' request.user.id %}"
+                                                       class="btn btn-outline-danger">Cancelar assinatura</a>
+                                                {% else %}
+                                                    <a href="{% url 'planochange' request.user.id %}"
+                                                    class="btn btn-outline-primary">Assinar</a>
+                                                {% endif %}
                                             {% else %}
                                                 <h5 style="color:red">Crie um perfil para poder mudar de plano</h5>
                                                 <a href="{% url 'profileregister' %}"
