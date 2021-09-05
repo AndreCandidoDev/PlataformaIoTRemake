@@ -18,6 +18,7 @@ class Dispositivo(Base):
     )
     usuario = models.ForeignKey(Account, on_delete=models.CASCADE)
     nome = models.CharField(max_length=255)
+    serial = models.SlugField(max_length=255, unique=True)
     placa = models.CharField(max_length=255)
     tipo = models.CharField(max_length=255, choices=tipo_dispositivo)
 

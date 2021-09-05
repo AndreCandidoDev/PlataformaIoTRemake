@@ -16,6 +16,13 @@
 				<br>
 				<div class="row">
 					<div class="form-group col-12">
+						<label>Serial</label>
+						{{ form.serial }}
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="form-group col-12">
 						<label>Placa</label>
 						{{ form.placa }}
 					</div>
@@ -29,11 +36,7 @@
 				</div>
 				<br>
 			    <div class="d-grid gap-2">
-					{% if atualizar %}
-						<button type="submit" class="btn btn-primary">Atualizar</button>
-			        {% else %}
-						<button type="submit" class="btn btn-primary">Registrar</button>
-			    	{% endif %}
+					<button type="submit" class="btn btn-primary">Registrar</button>
 				</div>
 			</form>
 		  	<br>

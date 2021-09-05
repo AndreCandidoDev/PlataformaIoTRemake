@@ -13,9 +13,10 @@ def device_register(request, pk):
         form = DispositivoForm(request.POST or None)
         if form.is_valid():
             nome = form.cleaned_data['nome']  # criar uma regra para o nome ser unico
+            serial = form.cleaned_data['serial']
             placa = form.cleaned_data['placa']
             tipo = form.cleaned_data['tipo']
-            dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, placa=placa, tipo=tipo)
+            dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial, placa=placa, tipo=tipo)
             configuracao = Configuracoes.objects.create(dispositivo=dispositivo)
             dispositivo.save()
             configuracao.save()
@@ -28,9 +29,10 @@ def device_register(request, pk):
     return render(request, 'devices/deviceregister.html', context)
 
 
+# slug:dispositivo_serial
 @login_required(login_url='login')
-def device_update(request, pk):
-    device = get_object_or_404(Dispositivo, pk=pk)
+def device_update(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
     if request.method == 'POST':
         form = DispositivoForm(request.POST, instance=device)
         if form.is_valid():
@@ -38,13 +40,13 @@ def device_update(request, pk):
             return redirect('dashboard')
     else:
         form = DispositivoForm(instance=device)
-    context = {'form': form, 'atualizar': True}
+    context = {'form': form}
     return render(request, 'devices/deviceupdate.html', context)
 
 
 @login_required(login_url='login')
-def device_delete(request, pk):
-    device = get_object_or_404(Dispositivo, pk=pk)
+def device_delete(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
     if request.method == 'POST':
         device.delete()
         return redirect('dashboard')
@@ -53,8 +55,9 @@ def device_delete(request, pk):
 
 
 @login_required(login_url='login')
-def device_conf(request, pk):
-    configuracao = get_object_or_404(Configuracoes, pk=pk)
+def device_conf(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
+    configuracao = Configuracoes.objects.get(dispositivo=device)
     if request.method == 'POST':
         form = ConfiguracaoForm(request.POST, instance=configuracao)
         if form.is_valid():
@@ -67,8 +70,8 @@ def device_conf(request, pk):
 
 
 @login_required(login_url='login')
-def device_graphic(request, pk):   # precisa de ajustes
-    device = Dispositivo.objects.get(id=pk)
+def device_graphic(request, dispositivo_serial):   # precisa de ajustes
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
     dados = Dados.objects.filter(dispositivo=device)
     # print(dados)
     horarios_medicoes = []
@@ -86,8 +89,8 @@ def device_graphic(request, pk):   # precisa de ajustes
 
 
 @login_required(login_url='login')
-def device_statistics(request, pk):
-    device = Dispositivo.objects.get(id=pk)
+def device_statistics(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
     dados = Dados.objects.filter(dispositivo=device)
     est = Estatisticas(dados)
     estatisticas = {
@@ -101,8 +104,8 @@ def device_statistics(request, pk):
 
 
 @login_required(login_url='login')
-def device_messages(request, pk):
-    device = Dispositivo.objects.get(id=pk)
+def device_messages(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
     flag_not_messages = False
     flag_not_critc = False
     critcs_msgs = []

@@ -86,7 +86,7 @@
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">ID</th>
+                                                        <th scope="col">Serial</th>
                                                         <th scope="col">Nome</th>
                                                         <th scope="col">Placa</th>
                                                         <th scope="col">Tipo</th>
@@ -95,12 +95,12 @@
                                                 <tbody>
                                                 {% for device in devices %}
                                                         <tr>
-                                                            <td>{{ device.id }}</td>
+                                                            <td>{{ device.serial }}</td>
                                                             <td>{{ device.nome }}</td>
                                                             <td>{{ device.placa }}</td>
                                                             <td>{{ device.tipo }}</td>
-                                                            <td><a href="{% url 'deviceupdate' device.id %}"><i class="bi bi-pencil-fill"></i></a></td>
-                                                            <td><a href="{% url 'devicedelete' device.id %}"><i class="bi bi-trash-fill"></i></a></td>
+                                                            <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
+                                                            <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
                                                          </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -149,7 +149,6 @@
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="col">ID</th>
                                                         <th scope="col">Dispositivo</th>
                                                         <th scope="col">Limite mínimo</th>
                                                         <th scope="col">Limite maximo</th>
@@ -158,14 +157,15 @@
                                                     </tr>
                                                 </thead>
                                                     <tbody>
-                                                        {% for conf in confs %}
+                                                        {% for device in devices %}
                                                             <tr>
-                                                                <td>{{ conf.id }}</td>
-                                                                <td>{{ conf.dispositivo }}</td>
-                                                                <td>{{ conf.limite_inferior }}</td>
-                                                                <td>{{ conf.limite_superior }}</td>
-                                                                <td><a href="{% url 'deviceconf' conf.id %}">Editar</a></td>
-                                                                <td><a href="{% url 'devicemessages' conf.id %}">Acessar</a></td>
+                                                                <td>{{ device.nome }}</td>
+                                                                {% for conf in confs %}
+                                                                    <td>{{ conf.limite_inferior }}</td>
+                                                                    <td>{{ conf.limite_superior }}</td>
+                                                                {% endfor %}
+                                                                <td><a href="{% url 'deviceconf' device.serial %}">Editar</a></td>
+                                                                <td><a href="{% url 'devicemessages' device.serial %}">Acessar</a></td>
                                                             </tr>
                                                         {% endfor %}
                                                     </tbody>
@@ -200,8 +200,8 @@
                                                         <td>{{ device.dados.count }}</td>
                                                         <td>{{ device.tipo }}</td>
                                                         <td>{{ device.criacao }}</td>
-                                                        <td><a href="{% url 'devicegraphic' device.id %}">Ver grafico</a></td>
-                                                        <td><a href="{% url 'devicestatistics' device.id %}">Relatório</a></td>
+                                                        <td><a href="{% url 'devicegraphic' device.serial %}">Ver grafico</a></td>
+                                                        <td><a href="{% url 'devicestatistics' device.serial %}">Relatório</a></td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

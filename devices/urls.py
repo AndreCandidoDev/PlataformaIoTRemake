@@ -10,10 +10,10 @@ from .views import device_messages
 
 urlpatterns = [
     path('deviceregister/<int:pk>/', device_register, name='deviceregister'),
-    path('devicegraphic/<int:pk>/', device_graphic, name='devicegraphic'),
-    path('devicestatistics/<int:pk>/', device_statistics, name='devicestatistics'),
-    path('deviceupdate/<int:pk>/', device_update, name='deviceupdate'),
-    path('devicedelete/<int:pk>/', device_delete, name='devicedelete'),
-    path('deviceconf/<int:pk>/', device_conf, name='deviceconf'),
-    path('devicemessages/<int:pk>/', device_messages, name='devicemessages'),
+    path('devicegraphic/<slug:dispositivo_serial>/', device_graphic, name='devicegraphic'),
+    path('devicestatistics/<dispositivo_serial>/', device_statistics, name='devicestatistics'),
+    path('deviceupdate/<slug:dispositivo_serial>/', device_update, name='deviceupdate'),
+    path('devicedelete/<slug:dispositivo_serial>/', device_delete, name='devicedelete'),
+    path('deviceconf/<slug:dispositivo_serial>/', device_conf, name='deviceconf'),
+    path('devicemessages/<slug:dispositivo_serial>/', device_messages, name='devicemessages'),
 ]

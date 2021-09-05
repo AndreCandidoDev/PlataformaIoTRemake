@@ -239,6 +239,7 @@ def dashboard(request):
     plano_type = None
     flag_has_plan = False
     network_limit = None
+
     try:  # informações do painel minha conta/ criar variaveis para alterar dashboard
         plano = Plano.objects.get(usuario=user)
         limit = plano.limite_dispositivos_iot
@@ -251,6 +252,7 @@ def dashboard(request):
         plano_type = 'Gratuito'
     devices = Dispositivo.objects.filter(usuario=user)
     contagem_dispositivos = devices.count()
+
     if contagem_dispositivos == limit:
         flag_limit = True
     flag_has_profile = True
@@ -259,6 +261,7 @@ def dashboard(request):
         flag_has_profile = True
     except:
         flag_has_profile = False
+
     leituras = []
     confs = []
     for i in devices:
@@ -271,6 +274,7 @@ def dashboard(request):
         ultimo = dados.last()
         leituras.append(ultimo)
     contagem = devices.count()
+
     context = {
                'devices': devices,
                'counter': contagem,

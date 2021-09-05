@@ -5,10 +5,11 @@ from devicesapi.models import Dispositivo, Configuracoes
 class DispositivoForm(forms.ModelForm):
     class Meta:
         model = Dispositivo
-        fields = ['nome', 'placa', 'tipo']
+        fields = ['nome', 'serial', 'placa', 'tipo']
 
     def __init__(self, *args, **kwargs):
         super(DispositivoForm, self).__init__(*args, **kwargs)
+        self.fields['serial'].widget.attrs['placeholder'] = 'Deve ser unico e misturar letras e numeros'
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 

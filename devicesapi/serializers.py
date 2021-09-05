@@ -37,6 +37,7 @@ class MensagensSerializer(serializers.ModelSerializer):
         )
 
 
+# Todo: criar regra para identificador serial (não devemos usar id pois o mesmo é sequencial)
 class DispositivoSerializer(serializers.ModelSerializer):
 
     dados = DadosSerializer(many=True, read_only=True)
@@ -45,15 +46,16 @@ class DispositivoSerializer(serializers.ModelSerializer):
 
     class Meta:
         extra_kwargs = {
-            'usuario': {'write_only': True}
+            'id': {'write_only': True},
+            'usuario': {'write_only': True},
         }
 
         model = Dispositivo
 
         fields = (
-            'id',
             'usuario',
             'nome',
+            'serial',
             'placa',
             'tipo',
             'dados',
@@ -62,3 +64,6 @@ class DispositivoSerializer(serializers.ModelSerializer):
             'criacao',
             'ativo'
         )
+
+# =========================================== API V2 para usuarios pagos =========================================
+
