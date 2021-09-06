@@ -173,15 +173,13 @@
                                                         </tr>
                                                     </thead>
                                                         <tbody>
-                                                            {% for device in devices %}
+                                                            {% for conf in confs %}
                                                                 <tr>
-                                                                    <td>{{ device.nome }}</td>
-                                                                    {% for conf in confs %}
-                                                                        <td>{{ conf.limite_inferior }}</td>
-                                                                        <td>{{ conf.limite_superior }}</td>
-                                                                    {% endfor %}
-                                                                    <td><a href="{% url 'deviceconf' device.serial %}">Editar</a></td>
-                                                                    <td><a href="{% url 'devicemessages' device.serial %}">Acessar</a></td>
+                                                                    <td>{{ conf.dispositivo.nome }}</td>
+                                                                    <td>{{ conf.limite_inferior }}</td>
+                                                                    <td>{{ conf.limite_superior }}</td>
+                                                                    <td><a href="{% url 'deviceconf' conf.dispositivo.serial %}">Editar</a></td>
+                                                                    <td><a href="{% url 'devicemessages' conf.dispositivo.serial %}">Acessar</a></td>
                                                                 </tr>
                                                             {% endfor %}
                                                         </tbody>

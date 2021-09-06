@@ -279,12 +279,12 @@ def dashboard(request):
         except:
             pass
 
-        # se não houver medições, aciona a flag
-        if len(dados) == 0:
-            flag_no_data = True
-
         ultimo = dados.last()
         leituras.append(ultimo)
+
+        if len(leituras) == 0:
+            flag_no_data = True
+
     contagem = devices.count()
 
     context = {
