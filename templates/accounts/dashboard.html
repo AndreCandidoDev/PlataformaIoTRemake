@@ -85,29 +85,34 @@
                                                 </div>
                                             {% endif %}
                                             <br>
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Serial</th>
-                                                        <th scope="col">Nome</th>
-                                                        <th scope="col">Placa</th>
-                                                        <th scope="col">Tipo</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                {% for device in devices %}
+                                            {% if flag_no_device %}
+                                                <br>
+                                                <h5 style="color:red">Não há dispositivos para exibir</h5>
+                                            {% else %}
+                                                <table class="table table-striped">
+                                                    <thead>
                                                         <tr>
-                                                            <td>{{ device.serial }}</td>
-                                                            <td>{{ device.nome }}</td>
-                                                            <td>{{ device.placa }}</td>
-                                                            <td>{{ device.tipo }}</td>
-                                                            <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
-                                                            <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
-                                                         </tr>
-                                                {% endfor %}
-                                                </tbody>
-                                            </table>
-                                            <h6 class="card-title"><b>Total de dispositivos: {{ counter }}</b></h6>
+                                                            <th scope="col">Serial</th>
+                                                            <th scope="col">Nome</th>
+                                                            <th scope="col">Placa</th>
+                                                            <th scope="col">Tipo</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for device in devices %}
+                                                            <tr>
+                                                                <td>{{ device.serial }}</td>
+                                                                <td>{{ device.nome }}</td>
+                                                                <td>{{ device.placa }}</td>
+                                                                <td>{{ device.tipo }}</td>
+                                                                <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
+                                                                <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
+                                                             </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                </table>
+                                                <h6 class="card-title"><b>Total de dispositivos: {{ counter }}</b></h6>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -118,20 +123,101 @@
                                         </div>
                                         <div class="card-body" style="text-align:center">
                                             <br>
+                                            {% if flag_no_device %}
+                                                <h5 style="color:red">Nada para exibir</h5>
+                                            {% else %}
+                                                {% if flag_no_data %}
+                                                    <h5 style="color:red">Nehuma medição para exibir</h5>
+                                                {% else %}
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Dispositivo</th>
+                                                                <th scope="col">Leitura</th>
+                                                                <th scope="col">Unidade</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            {% for leitura in ultimas_leituras %}
+                                                                <tr>
+                                                                    <td>{{ leitura.dispositivo.nome }}</td>
+                                                                    <td>{{ leitura.dado }}</td>
+                                                                    <td>{{ leitura.unidade }}</td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                    </table>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                          </div>
+                          <br>
+                          {% if not flag_no_device %}
+                              <div class="row">
+                                  <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5><b>Controle de dispositivos</b></h5>
+                                            </div>
+                                            <div class="card-body" style="text-align:center">
+                                                <table class="table table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Dispositivo</th>
+                                                            <th scope="col">Limite mínimo</th>
+                                                            <th scope="col">Limite maximo</th>
+                                                            <th scope="col">Editar configurações</th>
+                                                            <th scope="col">Acessar alertas</th>
+                                                        </tr>
+                                                    </thead>
+                                                        <tbody>
+                                                            {% for device in devices %}
+                                                                <tr>
+                                                                    <td>{{ device.nome }}</td>
+                                                                    {% for conf in confs %}
+                                                                        <td>{{ conf.limite_inferior }}</td>
+                                                                        <td>{{ conf.limite_superior }}</td>
+                                                                    {% endfor %}
+                                                                    <td><a href="{% url 'deviceconf' device.serial %}">Editar</a></td>
+                                                                    <td><a href="{% url 'devicemessages' device.serial %}">Acessar</a></td>
+                                                                </tr>
+                                                            {% endfor %}
+                                                        </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                <div class="col-md-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h5><b>Estatísticas</b></h5>
+                                        </div>
+                                        <div class="card-body" style="text-align:center">
                                             <table class="table table-striped">
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Dispositivo</th>
-                                                        <th scope="col">Leitura</th>
-                                                        <th scope="col">Unidade</th>
+                                                        <th scope="col">Quantidade de medições</th>
+                                                        <th scope="col">Tipo</th>
+                                                        <th scope="col">Ativo desde</th>
+                                                        <th scope="col">Grafico de medições</th>
+                                                        <th scope="col">Relatório</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {% for leitura in ultimas_leituras %}
+                                                    {% for device in devices %}
                                                         <tr>
-                                                            <td>{{ leitura.dispositivo.nome }}</td>
-                                                            <td>{{ leitura.dado }}</td>
-                                                            <td>{{ leitura.unidade }}</td>
+                                                            <td>{{ device.nome }}</td>
+                                                            <td>{{ device.dados.count }}</td>
+                                                            <td>{{ device.tipo }}</td>
+                                                            <td>{{ device.criacao }}</td>
+                                                            <td><a href="{% url 'devicegraphic' device.serial %}">Ver grafico</a></td>
+                                                            <td><a href="{% url 'devicestatistics' device.serial %}">Relatório</a></td>
                                                         </tr>
                                                     {% endfor %}
                                                 </tbody>
@@ -139,79 +225,23 @@
                                         </div>
                                     </div>
                                 </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                              <div class="col-md-12">
+                            </div>
+                          {% else %}
+                            <div class="row">
+                                <div class="col-md-12">
                                     <div class="card">
                                         <div class="card-header">
-                                            <h5><b>Controle de dispositivos</b></h5>
+                                            <h5><b>Controles e estatisticas</b></h5>
                                         </div>
-                                        <div class="card-body" style="text-align:center">
-                                            <table class="table table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="col">Dispositivo</th>
-                                                        <th scope="col">Limite mínimo</th>
-                                                        <th scope="col">Limite maximo</th>
-                                                        <th scope="col">Editar configurações</th>
-                                                        <th scope="col">Acessar alertas</th>
-                                                    </tr>
-                                                </thead>
-                                                    <tbody>
-                                                        {% for device in devices %}
-                                                            <tr>
-                                                                <td>{{ device.nome }}</td>
-                                                                {% for conf in confs %}
-                                                                    <td>{{ conf.limite_inferior }}</td>
-                                                                    <td>{{ conf.limite_superior }}</td>
-                                                                {% endfor %}
-                                                                <td><a href="{% url 'deviceconf' device.serial %}">Editar</a></td>
-                                                                <td><a href="{% url 'devicemessages' device.serial %}">Acessar</a></td>
-                                                            </tr>
-                                                        {% endfor %}
-                                                    </tbody>
-                                            </table>
+                                        <div class="card-body">
+                                            <br>
+                                            <h5 style="color:red; text-align:center">Registre um dispositivo para utilizar</h5>
                                         </div>
-                                    </div>
-                                </div>
-                          </div>
-                          <br>
-                          <div class="row">
-                            <div class="col-md-12">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h5><b>Estatísticas</b></h5>
-                                    </div>
-                                    <div class="card-body" style="text-align:center">
-                                        <table class="table table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <th scope="col">Dispositivo</th>
-                                                    <th scope="col">Quantidade de medições</th>
-                                                    <th scope="col">Tipo</th>
-                                                    <th scope="col">Ativo desde</th>
-                                                    <th scope="col">Grafico de medições</th>
-                                                    <th scope="col">Relatório</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {% for device in devices %}
-                                                    <tr>
-                                                        <td>{{ device.nome }}</td>
-                                                        <td>{{ device.dados.count }}</td>
-                                                        <td>{{ device.tipo }}</td>
-                                                        <td>{{ device.criacao }}</td>
-                                                        <td><a href="{% url 'devicegraphic' device.serial %}">Ver grafico</a></td>
-                                                        <td><a href="{% url 'devicestatistics' device.serial %}">Relatório</a></td>
-                                                    </tr>
-                                                {% endfor %}
-                                            </tbody>
-                                        </table>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                          {% endif %}
+
                       </div>
                   </div>
               </div>

@@ -239,6 +239,8 @@ def dashboard(request):
     plano_type = None
     flag_has_plan = False
     network_limit = None
+    flag_no_data = False
+    flag_no_device = False
 
     try:  # informações do painel minha conta/ criar variaveis para alterar dashboard
         plano = Plano.objects.get(usuario=user)
@@ -251,6 +253,11 @@ def dashboard(request):
         network_limit = 'Unica'
         plano_type = 'Gratuito'
     devices = Dispositivo.objects.filter(usuario=user)
+
+    # se usuario nao possuir dispositivos aciona a flag
+    if len(devices) == 0:
+        flag_no_device = True
+
     contagem_dispositivos = devices.count()
 
     if contagem_dispositivos == limit:
@@ -271,6 +278,11 @@ def dashboard(request):
             confs.append(configuracoes)
         except:
             pass
+
+        # se não houver medições, aciona a flag
+        if len(dados) == 0:
+            flag_no_data = True
+
         ultimo = dados.last()
         leituras.append(ultimo)
     contagem = devices.count()
@@ -286,6 +298,8 @@ def dashboard(request):
                'plano_type': plano_type,
                'limite_dispositivos': limit,
                'flag_has_plan': flag_has_plan,
-               'network_limit': network_limit
+               'network_limit': network_limit,
+               'flag_no_device': flag_no_device,
+               'flag_no_data': flag_no_data
     }
     return render(request, 'accounts/dashboard.html', context)
