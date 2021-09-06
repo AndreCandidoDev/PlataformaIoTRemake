@@ -280,8 +280,10 @@ def dashboard(request):
             pass
 
         ultimo = dados.last()
-        leituras.append(ultimo)
-
+        if ultimo is None:
+            pass
+        else:
+            leituras.append(ultimo)
         if len(leituras) == 0:
             flag_no_data = True
 
