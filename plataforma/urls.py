@@ -18,7 +18,8 @@ from django.urls import path, include
 
 from accounts import urls as accounts_urls
 from devices import urls as devices_urls
-from devicesapi.urls import router
+from devicesapi import urls as devicesapi_urls
+# from devicesapi.urls import router
 from . import views
 
 urlpatterns = [
@@ -27,6 +28,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('accounts/', include(accounts_urls)),
     path('devices/', include(devices_urls)),
-    path('api/v1/', include(router.urls)),
+    path('api/v1/', include(devicesapi_urls)),
+    # path('api/v1/', include(router.urls)),
     path('auth/', include('rest_framework.urls')),
 ]

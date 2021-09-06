@@ -10,6 +10,7 @@ class DispositivoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(DispositivoForm, self).__init__(*args, **kwargs)
         self.fields['serial'].widget.attrs['placeholder'] = 'Deve ser unico e misturar letras e numeros'
+        self.fields['serial'].widget.attrs['max_length'] = 10  # provisorio
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 

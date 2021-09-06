@@ -6,21 +6,19 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title">Obter o dipositivo pelo id</h5>
+                    <h5 class="card-title">Obter informações do dispositivo</h5>
                     <h6>Method: GET</h6>
-                    <h6>Endpoint: <b>api/v1/dispositivos/id_dipositivo/</b></h6>
+                    <h6>Endpoint: <b>api/v1/dispositivos/serial do dispositivo/</b></h6>
                     <h6>Headers: <b>Authorization: Token your_token</b></h6>
                 </div>
                 <div class="card-body">
                     <h6>Response: <b>status 200</b></h6><br>
                     <h6>{
-    "id": 5,
     "nome": "teste-temperatura",
     "placa": "esp8266",
     "tipo": "Sensor",
     "dados": [
         {
-            "dispositivo": 5
             "unidade": "celsius",
             "dado": "30",
             "criacao": "2021-08-31T15:11:36.666903-03:00"
@@ -54,19 +52,17 @@
                 <div class="card-header">
                     <h5 class="card-title">Criar uma nova leitura</h5>
                     <h6>Method: POST</h6>
-                    <h6>Endpoint: <b>api/v1/dados/</b></h6>
+                    <h6>Endpoint: <b>api/v1/dados/serial do dispositivo/</b></h6>
                     <h6>header: <b>Authorization: Token your_token</b></h6>
                     <br>
                      <h6>body:<br><b>Media type: application/json <br>
-                        {"dispositivo":"nome do dispositivo registrado", "unidade":"qualquer unidade", "dado":"qualquer valor"}
+                        {"unidade":"qualquer unidade", "dado":"qualquer valor"}
                      </b>
                      </h6>
                 </div>
                 <div class="card-body">
                     <h6>Response: <b>status 201</b><br><br>
                         {
-                        "id": 7,
-                        "dispositivo": 3,
                         "unidade": "algo",
                         "dado": "true",
                         "criacao": "2021-08-27T10:42:37.810685-03:00" }
@@ -83,12 +79,11 @@
                 <div class="card-header">
                     <h5 class="card-title">Criar um novo alerta</h5>
                     <h6>Method: POST</h6>
-                    <h6>Endpoint: <b>api/v1/mensagens/</b></h6>
+                    <h6>Endpoint: <b>api/v1/mensagens/serial do dispositivo/</b></h6>
                     <h6>header: <b>Authorization: Token your_token</b></h6>
                     <br>
                     <h6>body:<br><b>Media type: application/json<br>
                         {
-                        "dispositivo": "nome do dispositivo",
                         "alerta": "Seu alerta",
                         "mensagem": "Sua mensagem",
                         "is_critic": true se for critico ou false se não for
@@ -98,7 +93,6 @@
                 <div class="card-body">
                     <h6>Response: <b>status 201<br><br>
                         {
-                            "dispositivo": 5,
                             "alerta": "teste doc",
                             "mensagem": "teste para doc",
                             "is_critic": false

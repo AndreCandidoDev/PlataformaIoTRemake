@@ -19,20 +19,22 @@
                                             <div class="card-body">
                                                 <img src="{% static 'images/img_user_default.png' %}" height="55" width="55">
                                                 <br><br>
-                                                <h5>{{ request.user.email }}</h5>
+                                                <h6>{{ request.user.email }}</h6>
                                             </div>
                                           </div>
                                           <br>
-                                            <h5>Plano: {{ plano_type }}</h5>
+                                          <h6>Plano: <b>{{ plano_type }}</b></h6>
+                                          <h6>Limite de redes: <b>{{ network_limit }}</b></h6>
                                             {% if flag_limit %}
-                                                <h5 style="color:red">Limite de dispositivos atingido!</h5>
+                                                <h6 style="color:red">Limite de dispositivos atingido!</h6>
                                             {% else %}
-                                                <h5>
+                                                <h6>
                                                     Limite de dispositivos:
-                                                    {{ contagem_dispositivos }}/{{ limite_dispositivos }}
-                                                </h5>
+                                                    <b>{{ contagem_dispositivos }}/{{ limite_dispositivos }}</b>
+                                                </h6>
                                             {% endif %}
-                                            <h5>Limite de redes: {{ network_limit }}</h5>
+                                          <h6>Limite de medições: <b>20/dispositivo</b></h6>
+                                          <h6>Limite de mensagens: <b>10/dispositivo</b></h6>
                                             <br>
                                             {% if flag_has_profile %}
                                                 <a href="{% url 'profileupdate' request.user.id  %}"

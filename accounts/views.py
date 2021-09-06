@@ -234,7 +234,7 @@ def resetpassword(request):
 @login_required(login_url='login')
 def dashboard(request):
     user = request.user
-    limit = None
+    limit = None  # limite de dispositivos
     flag_limit = False  # flag limite de dispositivos
     plano_type = None
     flag_has_plan = False

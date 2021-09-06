@@ -3,6 +3,11 @@
 {% block main %}
   <br><br>
   <h3>Estatisticas de {{ device.nome }}</h3>
+  {% if flag_data_limit %}
+    <br>
+    <h5 style="color:red">Limite de medições atingido para esse dispositivo</h5>
+    <br>
+  {% endif %}
   <div class="row">
     <div class="col-md-6">
       <div class="card">

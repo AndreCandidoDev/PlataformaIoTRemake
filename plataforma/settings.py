@@ -152,6 +152,6 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {  # second, day, month, year
-        'user': '100/second',
+        'user': '100/minute',
     }
 }

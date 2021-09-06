@@ -3,6 +3,10 @@
 {% block main %}
     <br><br>
     <h4>Alertas e mensagens do dispositivo <b>{{ device.nome }}</b></h4>
+    {% if flag_limit_msgs %}
+        <br>
+        <h5 style="color:red">Limite de alertas atingidos para esse dispositivo</h5>
+    {% endif %}
     <br><br>
     {% if flag_not_messages %}
         <div class="row">

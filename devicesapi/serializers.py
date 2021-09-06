@@ -7,12 +7,15 @@ class DadosSerializer(serializers.ModelSerializer):
 
         model = Dados
 
+        extra_kwargs = {
+            'dispositivo': {'write_only': True}
+        }
+
         fields = (
             'dispositivo',
             'unidade',
             'dado',
             'criacao',
-            # 'ativo'
         )
 
 
@@ -28,7 +31,12 @@ class ConfiguracaoSerializer(serializers.ModelSerializer):
 
 class MensagensSerializer(serializers.ModelSerializer):
     class Meta:
+        extra_kwargs = {
+            'dispositivo': {'write_only': True}
+        }
+
         model = Mensagens
+
         fields = (
             'dispositivo',
             'alerta',
@@ -48,6 +56,7 @@ class DispositivoSerializer(serializers.ModelSerializer):
         extra_kwargs = {
             'id': {'write_only': True},
             'usuario': {'write_only': True},
+            'serial': {'write_only': True},
         }
 
         model = Dispositivo
@@ -55,7 +64,6 @@ class DispositivoSerializer(serializers.ModelSerializer):
         fields = (
             'usuario',
             'nome',
-            'serial',
             'placa',
             'tipo',
             'dados',
