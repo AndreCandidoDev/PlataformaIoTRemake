@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <br><br>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" style="text-align:center">
+                        <h1>Tem alguma duvida ?</h1>
+                        <br>
+                        <h2>Contate-nos! Retornaremos o mais rapido possível</h2>
+                        <br>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" class="form-control">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Nome</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Sobrenome</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <label>Email</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Motivo do contato</label>
+                                    <input type="text" class="form-control">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <label>Mensagem</label>
+                                    <textarea rows="4" cols="50" class="form-control"></textarea>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="d-grid gap-2">
+			                    <button type="submit" class="btn btn-primary">Enviar</button>
+			                </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -24,7 +24,14 @@ from . import views
 
 urlpatterns = [
     path('', views.home, name="home"),
-    path('pricing', views.pricing, name='pricing'),
+    path('aboutus/', views.aboutus, name='aboutus'),
+    path('usecases/', views.usecases, name='usecases'),
+    path('pricing/', views.pricing, name='pricing'),
+    path('contact/', views.contact, name='contact'),
+    path('faq/', views.faq, name='faq'),
+    path('support/', views.support, name='support'),
+    path('datapolitics/', views.datapolitics, name='datapolitics'),
+    path('examples/', views.examples, name='examples'),
     path('admin/', admin.site.urls),
     path('accounts/', include(accounts_urls)),
     path('devices/', include(devices_urls)),

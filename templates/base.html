@@ -65,7 +65,7 @@
                     <a class="nav-link active" href="{% url 'token' %}">Obter token de autenticação</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link active" href="">Exemplos de aplicações</a>
+                    <a class="nav-link active" href="{% url 'examples' %}">Exemplos de aplicações</a>
                 </li>
             </ul>
             <ul class="navbar-nav justify-content-end">
@@ -79,13 +79,13 @@
                         <a class="nav-link active" href="{% url 'pricing' %}">Planos de assinatura</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Sobre nós</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'aboutus' %}">Sobre nós</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Casos de uso</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'usecases' %}">Casos de uso</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="#">Contato</a>
+                        <a class="nav-link active" aria-current="page" href="{% url 'contact' %}">Contato</a>
                     </li>
               </ul>
           {% endif %}
@@ -99,27 +99,28 @@
         {% block main %}
         {% endblock %}
     </div>
-    <div class="b-example-divider"></div>
+<!--    <div class="b-example-divider"></div>-->
+    <hr class="featurette-divider">
+
     <footer class="footer mt-auto py-3 bg-light">
   <div class="container">
     <div class="row">
       <div class="col-2">
-        <h5>Section</h5>
         <ul class="nav flex-column">
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-          <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Support</a></li>
+          <li class="nav-item mb-2"><a href="{% url 'faq' %}" class="nav-link p-0 text-muted">FAQs</a></li>
+          <li class="nav-item mb-2"><a href="{% url 'support' %}" class="nav-link p-0 text-muted">Suporte</a></li>
+          <li class="nav-item mb-2"><a href="{% url 'datapolitics' %}"
+                                       class="nav-link p-0 text-muted">Uso de dados</a></li>
         </ul>
       </div>
       <div class="col-4 offset-5">
         <form>
-          <h5>Subscribe to our newsletter</h5>
-          <p>Monthly digest of whats new and exciting from us.</p>
+          <h5>Increva-se para nossa newsletter</h5>
+            <br>
           <div class="d-flex w-100 gap-2">
             <label for="newsletter1" class="visually-hidden">Email address</label>
             <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
-            <button class="btn btn-primary" type="button">Subscribe</button>
+            <button class="btn btn-primary" type="button">Increver</button>
           </div>
         </form>
       </div>
