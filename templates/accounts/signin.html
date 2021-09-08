@@ -7,14 +7,14 @@
           <form action="{% url 'login' %}" method="POST">
               {% csrf_token %}
               <div class="form-group">
-                 <input type="email" class="form-control" placeholder="Email Address" name="email">
+                 <input type="email" class="form-control" placeholder="Email" name="email">
               </div>
               <br>
               <div class="form-group">
-                <input type="password" class="form-control" placeholder="Password" name="password">
+                <input type="password" class="form-control" placeholder="Senha" name="password">
               </div>
               <div class="form-group">
-                <a href="{% url 'forgotpassword' %}" class="float-right">Forgot password?</a>
+                <a href="{% url 'forgotpassword' %}" class="float-right">Esqueceu sua senha?</a>
               </div>
               <br>
               <div class="d-grid gap-2">
@@ -24,5 +24,5 @@
       </div>
     </div>
     <br>
-     <p class="text-center mt-4">Don't have account? <a href="{% url 'register' %}">Sign up</a></p>
+     <p class="text-center mt-4">Não possui conta? <a href="{% url 'register' %}">Registre</a></p>
 {% endblock %}

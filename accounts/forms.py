@@ -14,15 +14,15 @@ class AccountForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'username','phone_number', 'email', 'password']
+        fields = ['first_name', 'last_name', 'username', 'phone_number', 'email', 'password']
 
     def __init__(self, *args, **kwargs):
         super(AccountForm, self).__init__(*args, **kwargs)
-        self.fields['first_name'].widget.attrs['placeholder'] = 'Enter first name'
-        self.fields['last_name'].widget.attrs['placeholder'] = 'Enter last name'
-        self.fields['username'].widget.attrs['placeholder'] = 'Enter username'
-        self.fields['phone_number'].widget.attrs['placeholder'] = 'Enter phone number'
-        self.fields['email'].widget.attrs['placeholder'] = 'Enter email address'
+        self.fields['first_name'].widget.attrs['placeholder'] = 'Nome'
+        self.fields['last_name'].widget.attrs['placeholder'] = 'Sobrenome'
+        self.fields['username'].widget.attrs['placeholder'] = 'Nome de usuário'
+        self.fields['phone_number'].widget.attrs['placeholder'] = 'Celular'
+        self.fields['email'].widget.attrs['placeholder'] = 'Email'
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
 
@@ -32,28 +32,6 @@ class AccountForm(forms.ModelForm):
         confirm_password = cleaned_data.get('confirm_password')
         if password != confirm_password:
             raise forms.ValidationError("Password does not match!")
-
-
-# class DispositivoForm(forms.ModelForm):
-#     class Meta:
-#         model = Dispositivo
-#         fields = ['nome', 'placa', 'tipo']
-#
-#     def __init__(self, *args, **kwargs):
-#         super(DispositivoForm, self).__init__(*args, **kwargs)
-#         for field in self.fields:
-#             self.fields[field].widget.attrs['class'] = 'form-control'
-#
-#
-# class ConfiguracaoForm(forms.ModelForm):
-#     class Meta:
-#         model = Configuracoes
-#         fields = ['limite_inferior', 'limite_superior']
-#
-#     def __init__(self, *args, **kwargs):
-#         super(ConfiguracaoForm, self).__init__(*args, **kwargs)
-#         for field in self.fields:
-#             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
 class UserProfileForm(forms.ModelForm):

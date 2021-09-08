@@ -1,5 +1,287 @@
 {% extends 'base.html' %}
 
 {% block main %}
-
+    <br><br>
+    <h2><b>Confira alguns exemplos de como utilizar nossa API em seus dispositivos/redes IoT</b></h2>
+    <br><br>
+    {% if gratuito %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h3><b>Usuário gratuito</b>
+                    <button class="btn btn-outline-dark offset-8" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Exibir
+                      </button>
+                    </h3>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div class="card-body">
+                        <br>
+                        <div class="card">
+                            <div class="card-header">
+                              <h6>Exemplo de uso da API básico
+                                <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                    Python
+                                </button>
+                                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample2" aria-expanded="false" aria-controls="collapseExample2">
+                                    JS
+                                </button>
+                                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample3" aria-expanded="false" aria-controls="collapseExample3">
+                                    Firmware
+                                </button>
+                              </h6>
+                            </div>
+                            <div class="collapse" id="collapseExample1">
+                                <div class="card-body">
+                                    <p>Exemplo em python</p>
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseExample2">
+                                <div class="card-body">
+                                    <p>Exemplo em JS</p>
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseExample3">
+                                <div class="card-body">
+                                    <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Exemplo utilização da API para varios dispositivos
+                                    <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample4" aria-expanded="false" aria-controls="collapseExample4">
+                                    Python
+                                    </button>
+                                    <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample5" aria-expanded="false" aria-controls="collapseExample5">
+                                        JS
+                                    </button>
+                                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample6" aria-expanded="false" aria-controls="collapseExample6">
+                                        Firmware
+                                    </button>
+                                </h6>
+                            </div>
+                            <div class="collapse" id="collapseExample4">
+                                <div class="card-body">
+                                    <p>Exemplo em python</p>
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseExample5">
+                                <div class="card-body">
+                                    <p>Exemplo em JS</p>
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseExample6">
+                                <div class="card-body">
+                                    <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br><br>
+                        <div class="card">
+                            <div class="card-header">
+                                <h6>Exemplo de uma rede básica (sem suporte nesse plano)
+                                    <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample7" aria-expanded="false" aria-controls="collapseExample7">
+                                    Python
+                                    </button>
+                                    <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample8" aria-expanded="false" aria-controls="collapseExample8">
+                                        JS
+                                    </button>
+                                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample9" aria-expanded="false" aria-controls="collapseExamplo9">
+                                        Firmware
+                                    </button>
+                                </h6>
+                            </div>
+                            <div class="collapse" id="collapseExample7">
+                                <div class="card-body">
+                                    <p>Exemplo em python</p>
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseExample8">
+                                <div class="card-body">
+                                    <p>Exemplo em JS</p>
+                                </div>
+                            </div>
+                            <div class="collapse" id="collapseExample9">
+                                <div class="card-body">
+                                    <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    {% else %}
+        {% if pessoal %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3><b>Usuario Pago pessoal</b>
+                                <button class="btn btn-outline-dark offset-7" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample10" aria-expanded="false" aria-controls="collapseExample10">
+                                    Exibir
+                                </button>
+                            </h3>
+                        </div>
+                        <div class="collapse" id="collapseExample10">
+                            <div class="card-body">
+                                <br>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6>Aplicação 1
+                                            <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample11" aria-expanded="false" aria-controls="collapseExample11">
+                                            Python
+                                            </button>
+                                            <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample12" aria-expanded="false" aria-controls="collapseExample13">
+                                                JS
+                                            </button>
+                                            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample13" aria-expanded="false" aria-controls="collapseExamplo13">
+                                                Firmware
+                                            </button>
+                                        </h6>
+                                    </div>
+                                    <div class="collapse" id="collapseExample11">
+                                    <div class="card-body">
+                                        <p>Exemplo em python</p>
+                                    </div>
+                                    </div>
+                                    <div class="collapse" id="collapseExample12">
+                                        <div class="card-body">
+                                            <p>Exemplo em JS</p>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="collapseExample13">
+                                        <div class="card-body">
+                                            <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br><br>
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h6>Aplicação 2
+                                            <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample14" aria-expanded="false" aria-controls="collapseExample14">
+                                            Python
+                                            </button>
+                                            <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample15" aria-expanded="false" aria-controls="collapseExample15">
+                                                JS
+                                            </button>
+                                            <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample16" aria-expanded="false" aria-controls="collapseExamplo16">
+                                                Firmware
+                                            </button>
+                                        </h6>
+                                    </div>
+                                    <div class="collapse" id="collapseExample14">
+                                    <div class="card-body">
+                                        <p>Exemplo em python</p>
+                                    </div>
+                                    </div>
+                                    <div class="collapse" id="collapseExample15">
+                                        <div class="card-body">
+                                            <p>Exemplo em JS</p>
+                                        </div>
+                                    </div>
+                                    <div class="collapse" id="collapseExample16">
+                                        <div class="card-body">
+                                            <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <br><br>
+        {% else %}
+            {% if empresarial %}
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3><b>Usuario Pago empresarial</b>
+                                    <button class="btn btn-outline-dark offset-7" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample17" aria-expanded="false" aria-controls="collapseExample17">
+                                        Exibir
+                                    </button>
+                                </h3>
+                            </div>
+                            <div class="collapse" id="collapseExample17">
+                                <div class="card-body">
+                                    <br>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6>Aplicação 1
+                                                <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample18" aria-expanded="false" aria-controls="collapseExample18">
+                                                Python
+                                                </button>
+                                                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample19" aria-expanded="false" aria-controls="collapseExample19">
+                                                    JS
+                                                </button>
+                                                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample20" aria-expanded="false" aria-controls="collapseExamplo20">
+                                                    Firmware
+                                                </button>
+                                            </h6>
+                                        </div>
+                                        <div class="collapse" id="collapseExample18">
+                                        <div class="card-body">
+                                            <p>Exemplo em python</p>
+                                        </div>
+                                        </div>
+                                        <div class="collapse" id="collapseExample19">
+                                            <div class="card-body">
+                                                <p>Exemplo em JS</p>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="collapseExample20">
+                                            <div class="card-body">
+                                                <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br><br>
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6>Aplicação 2
+                                                <button class="btn btn-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample21" aria-expanded="false" aria-controls="collapseExample21">
+                                                Python
+                                                </button>
+                                                <button class="btn btn-warning" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample22" aria-expanded="false" aria-controls="collapseExample22">
+                                                    JS
+                                                </button>
+                                                <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample23" aria-expanded="false" aria-controls="collapseExamplo23">
+                                                    Firmware
+                                                </button>
+                                            </h6>
+                                        </div>
+                                        <div class="collapse" id="collapseExample21">
+                                        <div class="card-body">
+                                            <p>Exemplo em python</p>
+                                        </div>
+                                        </div>
+                                        <div class="collapse" id="collapseExample22">
+                                            <div class="card-body">
+                                                <p>Exemplo em JS</p>
+                                            </div>
+                                        </div>
+                                        <div class="collapse" id="collapseExample23">
+                                            <div class="card-body">
+                                                <p>Exemplo firmware de uma ESP8266-nodeMCU</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
 {% endblock %}

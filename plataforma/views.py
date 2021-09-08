@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from accounts.models import Plano
 
 
 def home(request):
@@ -21,9 +22,23 @@ def contact(request):
     return render(request, 'contact.html')
 
 
-# improving when we have other user types
 def examples(request):
-    return render(request, 'examples.html')
+    user = request.user
+    gratuito = True
+    pessoal = False
+    empresarial = False
+    try:
+        plano = Plano.objects.get(usuario=user)
+        if plano.plano == 'Pessoal':
+            gratuito = False
+            pessoal = True
+        elif plano.plano == 'Empresarial':
+            gratuito = False
+            empresarial = True
+    except:
+        pass
+    context = {'gratuito': gratuito, 'pessoal': pessoal, 'empresarial': empresarial}
+    return render(request, 'examples.html', context)
 
 
 def faq(request):
