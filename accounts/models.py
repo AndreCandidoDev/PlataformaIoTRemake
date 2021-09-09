@@ -41,6 +41,10 @@ class Account(AbstractBaseUser):
     username = models.CharField(max_length=50, unique=True)
     email = models.EmailField(max_length=100, unique=True)
     phone_number = models.CharField(max_length=50)
+
+    # apenas para usuario gratuito, para outros planos são irrelevantes
+    device_limit_creation = models.IntegerField(null=True, blank=True, default=20)
+    devices_created = models.IntegerField(null=True, blank=True, default=0)
     # add another fields here if required
 
     # required

@@ -18,6 +18,13 @@ def device_register(request, pk):
             tipo = form.cleaned_data['tipo']
             dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial, placa=placa, tipo=tipo)
             configuracao = Configuracoes.objects.create(dispositivo=dispositivo)
+            try:
+                plano = Plano.objects.get(usuario=user)
+            except:
+                if user.devices_created == user.device_limit_creation:
+                    return redirect('dashboard')
+                user.devices_created += 1
+                user.save()
             dispositivo.save()
             configuracao.save()
             return redirect('dashboard')

@@ -25,11 +25,22 @@
                                           <br>
                                           <h6>Plano: <b>{{ plano_type }}</b></h6>
                                           <h6>Limite de redes: <b>{{ network_limit }}</b></h6>
+
+                                          {% if devices_creation_limited %}
+                                            {% if flag_stop_device_creation %}
+                                                <h6 style="color:red">
+                                                    Assine para poder criar novos dispositivos!</h6>
+                                            {% else %}
+                                                <h6>Limite de criação de dispositivos:
+                                                    <b>{{ devices_created }}/20</b></h6>
+                                            {% endif %}
+                                          {% endif %}
+
                                             {% if flag_limit %}
                                                 <h6 style="color:red">Limite de dispositivos atingido!</h6>
                                             {% else %}
                                                 <h6>
-                                                    Limite de dispositivos:
+                                                    Limite de dispositivos simultaneos:
                                                     <b>{{ contagem_dispositivos }}/{{ limite_dispositivos }}</b>
                                                 </h6>
                                             {% endif %}
@@ -76,13 +87,21 @@
                                             <h5><b>Meus dispositivos</b></h5>
                                         </div>
                                         <div class="card-body" style="text-align:center">
-                                            {% if flag_limit %}
+                                            {% if flag_stop_device_creation %}
                                                 <h5><span class="badge bg-danger">
-                                                    Limite de dispositivos atingido!</span></h5>
+                                                        Limite de criação de dispositivos atingido!</span></h5>
+                                                <br>
+                                                <h5><span class="badge bg-danger">
+                                                        Assine para poder criar novos dispositivos</span></h5>
                                             {% else %}
-                                                <div class="d-grid gap-2">
-                                                    <a class="btn btn-outline-primary" href="{% url 'deviceregister' request.user.id %}">Registrar dispositivo</a>
-                                                </div>
+                                                {% if flag_limit %}
+                                                    <h5><span class="badge bg-danger">
+                                                        Limite de dispositivos simultaneos atingido!</span></h5>
+                                                {% else %}
+                                                    <div class="d-grid gap-2">
+                                                        <a class="btn btn-outline-primary" href="{% url 'deviceregister' request.user.id %}">Registrar dispositivo</a>
+                                                    </div>
+                                                {% endif %}
                                             {% endif %}
                                             <br>
                                             {% if flag_no_device %}
@@ -105,9 +124,14 @@
                                                                 <td>{{ device.nome }}</td>
                                                                 <td>{{ device.placa }}</td>
                                                                 <td>{{ device.tipo }}</td>
-                                                                <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
-                                                                <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
-                                                             </tr>
+                                                                {% if flag_stop_device_creation %}
+                                                                    <td><i class="bi bi-x-circle-fill"></i></td>
+                                                                    <td><i class="bi bi-x-circle-fill"></i></td>
+                                                                {% else %}
+                                                                    <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
+                                                                    <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
+                                                                {% endif %}
+                                                            </tr>
                                                     {% endfor %}
                                                     </tbody>
                                                 </table>
@@ -251,29 +275,25 @@
     <script>
     //adaptar conforme dados de dispositivos e da quantidade de dispositivo
     var ctx = document.getElementById('myChart').getContext('2d');
+    //console.log(`{{ plano_type|safe }}`);
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+            //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //nome dispositivos
+
+            labels: {{ chart_device_names|safe }},
             datasets: [{
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.2)',
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
+                label: 'Qtd de medições',
+
+                //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
+
+                data: {{ chart_device_data_counts|safe }},
+
+                //criar regra para cor de cada dispositivo
+                backgroundColor: {{ chart_device_background_colors|safe }},
+
+                //similar ao anterior
+                borderColor: {{ chart_device_border_colors|safe }},
                 borderWidth: 1
             }]
         },

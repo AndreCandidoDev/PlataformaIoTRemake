@@ -231,9 +231,27 @@ def resetpassword(request):
         return render(request, 'accounts/resetpassword.html')
 
 
+def data_to_chart(devices):
+    devices_names = []
+    devices_data_count = []
+    padrao_background = 'rgba(54, 162, 235, 0.2)'
+    padrao_borders = 'rgba(54, 162, 235, 1)'
+    devices_background_colors = []
+    devices_border_colors = []
+    for i in devices:
+        devices_names.append(i.nome)
+        devices_data_count.append(i.dados.count())
+        devices_background_colors.append(padrao_background)
+        devices_border_colors.append(padrao_borders)
+    return devices_names, devices_data_count, devices_background_colors, devices_border_colors
+
+
 @login_required(login_url='login')
 def dashboard(request):
     user = request.user
+    devices_created = None
+    devices_creation_limited = False
+    flag_stop_device_creation = False
     limit = None  # limite de dispositivos
     flag_limit = False  # flag limite de dispositivos
     plano_type = None
@@ -252,7 +270,17 @@ def dashboard(request):
         limit = 5
         network_limit = 'Unica'
         plano_type = 'Gratuito'
+        devices_creation_limited = True
+        devices_created = user.devices_created
+        if devices_created == user.device_limit_creation:
+            flag_stop_device_creation = True
+
     devices = Dispositivo.objects.filter(usuario=user)
+    chart_data = data_to_chart(devices)
+    chart_device_names = chart_data[0]
+    chart_device_data_counts = chart_data[1]
+    chart_device_background_colors = chart_data[2]
+    chart_device_border_colors = chart_data[3]
 
     # se usuario nao possuir dispositivos aciona a flag
     if len(devices) == 0:
@@ -302,6 +330,15 @@ def dashboard(request):
                'flag_has_plan': flag_has_plan,
                'network_limit': network_limit,
                'flag_no_device': flag_no_device,
-               'flag_no_data': flag_no_data
+               'flag_no_data': flag_no_data,
+               'devices_creation_limited': devices_creation_limited,
+               'devices_created': devices_created,
+               'flag_stop_device_creation': flag_stop_device_creation,
+
+               # variaveis do grafico
+               'chart_device_names': chart_device_names,
+               'chart_device_data_counts': chart_device_data_counts,
+               'chart_device_background_colors': chart_device_background_colors,
+               'chart_device_border_colors': chart_device_border_colors
     }
     return render(request, 'accounts/dashboard.html', context)
