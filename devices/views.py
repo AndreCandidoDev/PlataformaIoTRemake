@@ -76,6 +76,16 @@ def device_conf(request, dispositivo_serial):
     return render(request, 'devices/deviceconf.html', context)
 
 
+def trata_horario_medicao(dado_medicao):
+    aux = dado_medicao.split(' ')
+    data = aux[0]
+    aux_data = data.split('-')
+    hora = aux[1].split('.')[0]
+    data_formatada = f'{aux_data[2]}/{aux_data[1]}/{aux_data[0]}'
+    medicao = f'{data_formatada}-{hora}'
+    return medicao
+
+
 @login_required(login_url='login')
 def device_graphic(request, dispositivo_serial):   # precisa de ajustes
     device = Dispositivo.objects.get(serial=dispositivo_serial)
@@ -84,9 +94,8 @@ def device_graphic(request, dispositivo_serial):   # precisa de ajustes
     horarios_medicoes = []
     leituras = []
     for i in dados:
-        # print(i.criacao)
-        # horarios_medicoes.append(i.criacao) # necessario tratamento de dados
-        horarios_medicoes.append(i.id)
+        data = trata_horario_medicao(str(i.criacao))
+        horarios_medicoes.append(data)
         try:
             leituras.append(float(i.dado))
         except:

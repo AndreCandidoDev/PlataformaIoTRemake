@@ -10,10 +10,10 @@
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: {{ medicoes }}, //deve ser o horario da mediçoes
+            labels: {{ medicoes|safe }}, //deve ser o horario da mediçoes
             datasets: [{
                 label: labels,
-                data: {{ leituras }},  //deve receber array com os dados de leitura
+                data: {{ leituras|safe }},  //deve receber array com os dados de leitura
                 fill: false,
                 borderColor: 'rgb(75, 192, 192)',
                 tension: 0.1
