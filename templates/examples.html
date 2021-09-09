@@ -34,10 +34,65 @@
                             </div>
                             <div class="collapse" id="collapseExample1">
                                 <div class="card-body">
-                                    <p>Exemplo em python</p>
+                                    <h6>Em todos exemplos</h6>
+                                    <br>
+                                    <h6>import requests</h6>
+                                    <h6>import json</h6>
+                                    <h6>baseurl = 'https://plataformaiotalfa.herokuapp.com/'</h6>
+                                    <h6>authtoken = 'your token'</h6>
+                                    <h6>headers = {'Content-Type': 'application/json',
+                                                        'Authorization': f'Token {authtoken}'}</h6>
+                                    <br>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h6><b>Obter o dados do dispositivo</b></h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h6>serial = 'serial do dispositivo'</h6>
+                                                    <h6>url = f'{baseurl}/api/v1/dispositivos/{serial}/'</h6>
+                                                    <h6>request = requests.get(headers=headers url=url)</h6>
+                                                    <h6>response = request.json() </h6>
+                                                    <h6>dados = response[0]['dados']</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h6>Obter limites do dispositivo</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h6>serial = 'serial do dispositivo'</h6>
+                                                    <h6>url = f'{baseurl}/api/v1/dispositivos/{serial}/'</h6>
+                                                    <h6>request = requests.get(headers=headers url=url)</h6>
+                                                    <h6>response = request.json() </h6>
+                                                    <h6>confs = response[0]['configuracoes'][0]</h6>
+                                                    <h6>inferior = confs['limite_inferior']</h6>
+                                                    <h6>superior = confs['limite_superior']</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h6>Obter mensagens do dispositivo</h6>
+                                                </div>
+                                                <div class="card-body">
+                                                    <h6>serial = 'serial do dispositivo'</h6>
+                                                    <h6>url = f'{baseurl}/api/v1/dispositivos/{serial}/'</h6>
+                                                    <h6>request = requests.get(headers=headers url=url)</h6>
+                                                    <h6>response = request.json() </h6>
+                                                    <h6>mensagens = response[0]['mensagens']</h6>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="collapse" id="collapseExample2">
+                                <hr class="featurette-divider">
                                 <div class="card-body">
                                     <p>Exemplo em JS</p>
                                 </div>
