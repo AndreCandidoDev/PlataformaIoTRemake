@@ -2,7 +2,10 @@
 
 {% block main %}
   <br><br>
-  <h3>Estatisticas de {{ device.nome }}</h3>
+  <h1>Dispositivo: {{ device.nome }}</h1>
+  <br><br>
+ <canvas id="myChart" height="40" width="100"></canvas>
+  <br><br>
   {% if flag_data_limit %}
     <br>
     <h5 style="color:red">Limite de medições atingido para esse dispositivo</h5>
@@ -69,4 +72,28 @@
   <br><br>
   <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar para o dashboard</a>
   <br><br>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    const labels = 'teste';
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: {{ medicoes|safe }}, //deve ser o horario da mediçoes
+            datasets: [{
+                label: labels,
+                data: {{ leituras|safe }},  //deve receber array com os dados de leitura
+                fill: false,
+                borderColor: 'rgb(75, 192, 192)',
+                tension: 0.1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+</script>
 {% endblock %}

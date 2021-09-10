@@ -87,10 +87,10 @@ def trata_horario_medicao(dado_medicao):
 
 
 @login_required(login_url='login')
-def device_graphic(request, dispositivo_serial):   # precisa de ajustes
+def device_statistics(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
     dados = Dados.objects.filter(dispositivo=device)
-    # print(dados)
+
     horarios_medicoes = []
     leituras = []
     for i in dados:
@@ -100,14 +100,6 @@ def device_graphic(request, dispositivo_serial):   # precisa de ajustes
             leituras.append(float(i.dado))
         except:
             leituras.append(str(i.dado))
-    context = {'device': device, 'medicoes': horarios_medicoes, 'leituras': leituras}
-    return render(request, 'devices/device_graphic.html', context)
-
-
-@login_required(login_url='login')
-def device_statistics(request, dispositivo_serial):
-    device = Dispositivo.objects.get(serial=dispositivo_serial)
-    dados = Dados.objects.filter(dispositivo=device)
 
     # limite para dados a partir do plano do usuario
     cont_data = dados.count()
@@ -128,7 +120,7 @@ def device_statistics(request, dispositivo_serial):
         'error': est.flag_error,
     }
     context = {'device': device, 'dados': dados, 'estatisticas': estatisticas,
-               'flag_data_limit': flag_data_limit}
+               'flag_data_limit': flag_data_limit, 'medicoes': horarios_medicoes, 'leituras': leituras}
     return render(request, 'devices/device_statistics.html', context)
 
 

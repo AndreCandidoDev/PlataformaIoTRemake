@@ -44,8 +44,7 @@
                                                     <b>{{ contagem_dispositivos }}/{{ limite_dispositivos }}</b>
                                                 </h6>
                                             {% endif %}
-                                          <h6>Limite de medições: <b>20/dispositivo</b></h6>
-                                          <h6>Limite de mensagens: <b>10/dispositivo</b></h6>
+
                                             <br>
                                             {% if flag_has_profile %}
                                                 <a href="{% url 'profileupdate' request.user.id  %}"
@@ -70,10 +69,28 @@
                               <div class="col-md-6">
                                   <div class="card">
                                       <div class="card-header">
-                                          <h5><b>Uso da cota do plano</b></h5>
+                                          <h5><b>Uso da cota do plano</b>
+                                            <button class="btn btn-outline-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                Medições
+                                              </button>
+                                              <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                                    Mensagens
+                                              </button>
+                                          </h5>
                                       </div>
                                       <div class="card-body">
-                                         <canvas id="myChart" width="15" height="9"></canvas>
+                                          <h6>Limite de medições: <b>20/dispositivo</b></h6>
+                                          <h6>Limite de mensagens: <b>10/dispositivo</b></h6>
+                                      </div>
+                                      <div class="collapse" id="collapseExample">
+                                        <div class="card-body">
+                                             <canvas id="myChart" width="8" height="3"></canvas>
+                                        </div>
+                                      </div>
+                                      <div class="collapse" id="collapseExample1">
+                                        <div class="card-body">
+                                             <canvas id="myChart1" width="8" height="3"></canvas>
+                                        </div>
                                       </div>
                                   </div>
                               </div>
@@ -190,8 +207,6 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Dispositivo</th>
-                                                            <th scope="col">Limite mínimo</th>
-                                                            <th scope="col">Limite maximo</th>
                                                             <th scope="col">Editar configurações</th>
                                                             <th scope="col">Acessar alertas</th>
                                                         </tr>
@@ -200,8 +215,6 @@
                                                             {% for conf in confs %}
                                                                 <tr>
                                                                     <td>{{ conf.dispositivo.nome }}</td>
-                                                                    <td>{{ conf.limite_inferior }}</td>
-                                                                    <td>{{ conf.limite_superior }}</td>
                                                                     <td><a href="{% url 'deviceconf' conf.dispositivo.serial %}">Editar</a></td>
                                                                     <td><a href="{% url 'devicemessages' conf.dispositivo.serial %}">Acessar</a></td>
                                                                 </tr>
@@ -224,21 +237,15 @@
                                                 <thead>
                                                     <tr>
                                                         <th scope="col">Dispositivo</th>
-                                                        <th scope="col">Quantidade de medições</th>
-                                                        <th scope="col">Tipo</th>
                                                         <th scope="col">Ativo desde</th>
-                                                        <th scope="col">Grafico de medições</th>
-                                                        <th scope="col">Relatório</th>
+                                                        <th scope="col">Estatísticas</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
                                                     {% for device in devices %}
                                                         <tr>
                                                             <td>{{ device.nome }}</td>
-                                                            <td>{{ device.dados.count }}</td>
-                                                            <td>{{ device.tipo }}</td>
                                                             <td>{{ device.criacao }}</td>
-                                                            <td><a href="{% url 'devicegraphic' device.serial %}">Ver grafico</a></td>
                                                             <td><a href="{% url 'devicestatistics' device.serial %}">Relatório</a></td>
                                                         </tr>
                                                     {% endfor %}
@@ -288,12 +295,41 @@
                 //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
 
                 data: {{ chart_device_data_counts|safe }},
-
-                //criar regra para cor de cada dispositivo
-                backgroundColor: {{ chart_device_background_colors|safe }},
+                backgroundColor: {{ chart_data_background_color|safe }},
 
                 //similar ao anterior
-                borderColor: {{ chart_device_border_colors|safe }},
+                borderColor: {{ chart_data_border_color|safe }},
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    });
+
+    var ctx = document.getElementById('myChart1').getContext('2d');
+    //console.log(`{{ plano_type|safe }}`);
+    var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //nome dispositivos
+
+            labels: {{ chart_device_names|safe }},
+            datasets: [{
+                label: 'Qtd de mensagens',
+
+                //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
+
+                data: {{ chart_device_message_count|safe }},
+                //criar regra para cor de cada dispositivo
+                backgroundColor: {{ chart_messages_background_color|safe }},
+
+                //similar ao anterior
+                borderColor: {{ chart_messages_border_color|safe }},
                 borderWidth: 1
             }]
         },

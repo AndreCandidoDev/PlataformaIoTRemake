@@ -77,6 +77,7 @@ def plano_change(request, pk):
     return render(request, 'accounts/planochange.html', context)
 
 
+@login_required(login_url='login')
 def plano_update(request, pk):
     plano = Plano.objects.get(usuario=pk)
     if request.method == 'POST':
@@ -90,6 +91,7 @@ def plano_update(request, pk):
     return render(request, 'accounts/planoupdate.html', context)
 
 
+@login_required(login_url='login')
 def plano_cancel(request, pk):
     plano = Plano.objects.get(usuario=pk)
     if request.method == 'POST':
@@ -231,19 +233,44 @@ def resetpassword(request):
         return render(request, 'accounts/resetpassword.html')
 
 
-def data_to_chart(devices):
+def data_to_chart(devices, usuario, tipo):
     devices_names = []
-    devices_data_count = []
+    counter = []
     padrao_background = 'rgba(54, 162, 235, 0.2)'
     padrao_borders = 'rgba(54, 162, 235, 1)'
+    warning_background = 'rgba(255, 99, 132, 0.2)'
+    warning_border = 'rgba(255, 99, 132, 1)'
     devices_background_colors = []
     devices_border_colors = []
+    limit_datas = None
+    limit_messages = None
+    try:
+        plano = Plano.objects.get(usuario=usuario)
+    #     logica para usuario com plano
+    except:
+        limit_datas = 20
+        limit_messages = 10
     for i in devices:
         devices_names.append(i.nome)
-        devices_data_count.append(i.dados.count())
-        devices_background_colors.append(padrao_background)
-        devices_border_colors.append(padrao_borders)
-    return devices_names, devices_data_count, devices_background_colors, devices_border_colors
+        if tipo == 'messages':
+            cont = i.mensagens.count()
+            counter.append(cont)
+            if cont == limit_messages and limit_messages is not None:
+                devices_background_colors.append(warning_background)
+                devices_border_colors.append(warning_border)
+            else:
+                devices_background_colors.append(padrao_background)
+                devices_border_colors.append(padrao_borders)
+        elif tipo == 'dados':
+            cont = i.dados.count()
+            counter.append(cont)
+            if cont == limit_datas and limit_datas is not None:
+                devices_background_colors.append(warning_background)
+                devices_border_colors.append(warning_border)
+            else:
+                devices_background_colors.append(padrao_background)
+                devices_border_colors.append(padrao_borders)
+    return devices_names, counter, devices_background_colors, devices_border_colors
 
 
 @login_required(login_url='login')
@@ -276,11 +303,16 @@ def dashboard(request):
             flag_stop_device_creation = True
 
     devices = Dispositivo.objects.filter(usuario=user)
-    chart_data = data_to_chart(devices)
+    chart_data = data_to_chart(devices, user, 'dados')
     chart_device_names = chart_data[0]
     chart_device_data_counts = chart_data[1]
-    chart_device_background_colors = chart_data[2]
-    chart_device_border_colors = chart_data[3]
+    chart_data_background_color = chart_data[2]
+    chart_data_border_color = chart_data[3]
+
+    chart_messages = data_to_chart(devices, user, 'messages')
+    chart_device_message_count = chart_messages[1]
+    chart_messages_background_color = chart_messages[2]
+    chart_messages_border_color = chart_messages[3]
 
     # se usuario nao possuir dispositivos aciona a flag
     if len(devices) == 0:
@@ -338,7 +370,10 @@ def dashboard(request):
                # variaveis do grafico
                'chart_device_names': chart_device_names,
                'chart_device_data_counts': chart_device_data_counts,
-               'chart_device_background_colors': chart_device_background_colors,
-               'chart_device_border_colors': chart_device_border_colors
+               'chart_data_background_color': chart_data_background_color,
+               'chart_data_border_color': chart_data_border_color,
+               'chart_device_message_count': chart_device_message_count,
+               'chart_messages_background_color': chart_messages_background_color,
+               'chart_messages_border_color': chart_messages_border_color,
     }
     return render(request, 'accounts/dashboard.html', context)
