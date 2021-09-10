@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <br><br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Dados do dispositivo</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-stripped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Placa</th>
+                                <th scope="col">Tipo</th>
+                                <th scope="col">Editar</th>
+                                <th scope="col">Excluir</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ device.nome }}</td>
+                                <td>{{ device.placa }}</td>
+                                <td>{{ device.tipo }}</td>
+                                <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
+                                <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5>
+                    <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                        Mostrar serial
+                    </button>
+                    </h5>
+                </div>
+                <div class="collapse" id="collapseExample">
+                    <div class="card-body">
+                        <br>
+                        <p><b>{{ device.serial }}</b></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
+    <br><br>
+{% endblock %}

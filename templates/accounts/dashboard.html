@@ -70,28 +70,36 @@
                                   <div class="card">
                                       <div class="card-header">
                                           <h5><b>Uso da cota do plano</b>
-                                            <button class="btn btn-outline-primary offset-1" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-                                                Medições
-                                              </button>
-                                              <button class="btn btn-outline-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
-                                                    Mensagens
-                                              </button>
+                                            <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                                                <i class="bi bi-file-bar-graph-fill"></i>
+                                            </button>
+                                            <button class="btn btn-outline-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample1" aria-expanded="false" aria-controls="collapseExample1">
+                                                <i class="bi bi-envelope-fill"></i>
+                                            </button>
                                           </h5>
                                       </div>
                                       <div class="card-body">
                                           <h6>Limite de medições: <b>20/dispositivo</b></h6>
                                           <h6>Limite de mensagens: <b>10/dispositivo</b></h6>
                                       </div>
-                                      <div class="collapse" id="collapseExample">
+
+                                      {% if flag_no_device %}
                                         <div class="card-body">
-                                             <canvas id="myChart" width="8" height="3"></canvas>
+                                            <h5 style="color:red">Não há dispositivos cadastrados</h5>
                                         </div>
-                                      </div>
-                                      <div class="collapse" id="collapseExample1">
-                                        <div class="card-body">
-                                             <canvas id="myChart1" width="8" height="3"></canvas>
-                                        </div>
-                                      </div>
+                                      {% else %}
+                                          <div class="collapse" id="collapseExample">
+                                            <div class="card-body">
+                                                 <canvas id="myChart" width="8" height="3"></canvas>
+                                            </div>
+                                          </div>
+                                          <div class="collapse" id="collapseExample1">
+                                            <div class="card-body">
+                                                 <canvas id="myChart1" width="8" height="3"></canvas>
+                                            </div>
+                                          </div>
+                                      {% endif %}
+
                                   </div>
                               </div>
                           </div>
@@ -128,7 +136,6 @@
                                                 <table class="table table-striped">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">Serial</th>
                                                             <th scope="col">Nome</th>
                                                             <th scope="col">Placa</th>
                                                             <th scope="col">Tipo</th>
@@ -137,16 +144,15 @@
                                                     <tbody>
                                                     {% for device in devices %}
                                                             <tr>
-                                                                <td>{{ device.serial }}</td>
                                                                 <td>{{ device.nome }}</td>
                                                                 <td>{{ device.placa }}</td>
                                                                 <td>{{ device.tipo }}</td>
                                                                 {% if flag_stop_device_creation %}
                                                                     <td><i class="bi bi-x-circle-fill"></i></td>
-                                                                    <td><i class="bi bi-x-circle-fill"></i></td>
                                                                 {% else %}
-                                                                    <td><a href="{% url 'deviceupdate' device.serial %}"><i class="bi bi-pencil-fill"></i></a></td>
-                                                                    <td><a href="{% url 'devicedelete' device.serial %}"><i class="bi bi-trash-fill"></i></a></td>
+                                                                    <td><a href="{% url 'deviceserial' device.serial %}">
+                                                                        <i class="bi bi-eye-fill"></i>
+                                                                    </a></td>
                                                                 {% endif %}
                                                             </tr>
                                                     {% endfor %}
@@ -215,8 +221,12 @@
                                                             {% for conf in confs %}
                                                                 <tr>
                                                                     <td>{{ conf.dispositivo.nome }}</td>
-                                                                    <td><a href="{% url 'deviceconf' conf.dispositivo.serial %}">Editar</a></td>
-                                                                    <td><a href="{% url 'devicemessages' conf.dispositivo.serial %}">Acessar</a></td>
+                                                                    <td><a href="{% url 'deviceconf' conf.dispositivo.serial %}">
+                                                                        <i class="bi bi-pencil-fill"></i>
+                                                                    </a></td>
+                                                                    <td><a href="{% url 'devicemessages' conf.dispositivo.serial %}">
+                                                                        <i class="bi bi-exclamation-diamond-fill"></i>
+                                                                    </a></td>
                                                                 </tr>
                                                             {% endfor %}
                                                         </tbody>
@@ -246,7 +256,9 @@
                                                         <tr>
                                                             <td>{{ device.nome }}</td>
                                                             <td>{{ device.criacao }}</td>
-                                                            <td><a href="{% url 'devicestatistics' device.serial %}">Relatório</a></td>
+                                                            <td><a href="{% url 'devicestatistics' device.serial %}">
+                                                                <i class="bi bi-clipboard-data"></i>
+                                                            </a></td>
                                                         </tr>
                                                     {% endfor %}
                                                 </tbody>

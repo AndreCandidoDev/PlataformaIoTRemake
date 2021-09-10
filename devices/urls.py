@@ -5,6 +5,7 @@ from .views import device_update
 from .views import device_delete
 from .views import device_conf
 from .views import device_messages
+from .views import device_serial
 
 
 urlpatterns = [
@@ -14,4 +15,5 @@ urlpatterns = [
     path('devicedelete/<slug:dispositivo_serial>/', device_delete, name='devicedelete'),
     path('deviceconf/<slug:dispositivo_serial>/', device_conf, name='deviceconf'),
     path('devicemessages/<slug:dispositivo_serial>/', device_messages, name='devicemessages'),
+    path('deviceserial/<slug:dispositivo_serial>/', device_serial, name='deviceserial')
 ]

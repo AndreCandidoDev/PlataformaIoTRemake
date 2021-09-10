@@ -1,9 +1,18 @@
+import hashlib
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from devicesapi.models import Dispositivo, Configuracoes, Dados, Mensagens
 from accounts.models import Account, Plano
 from .forms import DispositivoForm, ConfiguracaoForm
 from .estatisticas import Estatisticas
+
+
+def cria_serial(nome, placa, tipo, email):
+    enc_str = nome.encode('utf-8')+placa.encode('utf-8')+tipo.encode('utf-8')+email.encode('utf-8')
+    hashserial = hashlib.sha512()
+    hashserial.update(enc_str)
+    serial = hashserial.hexdigest()
+    return serial
 
 
 @login_required(login_url='login')
@@ -13,9 +22,9 @@ def device_register(request, pk):
         form = DispositivoForm(request.POST or None)
         if form.is_valid():
             nome = form.cleaned_data['nome']  # criar uma regra para o nome ser unico
-            serial = form.cleaned_data['serial']
             placa = form.cleaned_data['placa']
             tipo = form.cleaned_data['tipo']
+            serial = cria_serial(nome, placa, tipo, user.email)
             dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial, placa=placa, tipo=tipo)
             configuracao = Configuracoes.objects.create(dispositivo=dispositivo)
             try:
@@ -34,6 +43,12 @@ def device_register(request, pk):
         'form': form
     }
     return render(request, 'devices/deviceregister.html', context)
+
+
+def device_serial(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
+    context = {'device': device}
+    return render(request, 'devices/deviceserial.html', context)
 
 
 # slug:dispositivo_serial
