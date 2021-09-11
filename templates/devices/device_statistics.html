@@ -58,11 +58,12 @@
           <br>
           <table>
             <tr>
-              <th scope="col"><a href="">Exportar como csv</a></th>
-              <th scope="col"><a href="">Exportar como JSON</a></th>
-              <th scope="col"><a href="">Exportar como PDF</a></th>
-              <th scope="col"><a href="">Exportar como xlsx</a></th>
-              <th scope="col"><a href="">Exportar como XML</a></th>
+              <th scope="col"><a href="{% url 'devicecsv' device.serial %}"
+              class="btn btn-outline-primary">Exportar como csv</a></th>
+              <th scope="col"><a href="{% url 'devicepdf' device.serial %}"
+              class="btn btn-outline-primary">Exportar como PDF</a></th>
+              <th scope="col"><a href=""
+              class="btn btn-outline-primary">Exportar como xlsx</a></th>
             </tr>
           </table>
         </div>

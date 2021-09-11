@@ -1,10 +1,16 @@
-import hashlib
+from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from devicesapi.models import Dispositivo, Configuracoes, Dados, Mensagens
 from accounts.models import Account, Plano
 from .forms import DispositivoForm, ConfiguracaoForm
 from .estatisticas import Estatisticas
+import hashlib
+import csv
+
+import io
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
 
 
 def cria_serial(nome, placa, tipo, email):
@@ -137,6 +143,36 @@ def device_statistics(request, dispositivo_serial):
     context = {'device': device, 'dados': dados, 'estatisticas': estatisticas,
                'flag_data_limit': flag_data_limit, 'medicoes': horarios_medicoes, 'leituras': leituras}
     return render(request, 'devices/device_statistics.html', context)
+
+
+@login_required(login_url='login')
+def device_csv_generator(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
+    dados = Dados.objects.filter(dispositivo=device)
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="newcsvfile.csv"'
+    writer = csv.writer(response)
+    writer.writerow(['Horario', 'Leitura', 'Unidade'])
+    for i in dados:
+        writer.writerow([trata_horario_medicao(str(i.criacao)), i.dado, i.unidade])
+    return response
+
+
+@login_required(login_url='login')
+def device_pdf_generator(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
+    dados = Dados.objects.filter(dispositivo=device)
+
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer)
+
+    # todo: study and implement this feature
+    p.drawString(100, 100, "Hello world.")
+
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
 
 
 @login_required(login_url='login')
