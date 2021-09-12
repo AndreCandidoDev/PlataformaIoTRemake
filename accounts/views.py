@@ -249,7 +249,7 @@ def data_to_chart(devices, usuario, tipo):
     #     logica para usuario com plano
     except:
         limit_datas = 20
-        limit_messages = 10
+        limit_messages = 20
     for i in devices:
         devices_names.append(i.nome)
         if tipo == 'messages':

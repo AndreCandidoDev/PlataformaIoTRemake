@@ -18,21 +18,23 @@ d5 = PlataformLib(authtoken, 'Serial do 5° dispositivo')
 
 devices = [d1, d2, d3, d4, d5]
 cont = 0
-while cont <= 9:
+while cont <= 10:
     print("=============== Simulando recepcao de dados ============================")
     for i in devices:
         dispositivo = i.getDevice()
-        dado = gerador(10, 40)
+        dado = gerador(10, 101)
         print('Valor obtido', dado)
-        limites = dispositivo[0]['configuracoes'][0]
-        inf = int(limites['limite_inferior'])
-        sup = int(limites['limite_superior'])
-        i.sendData(dado, 'unidade generica')
-        if dado < inf or dado > sup:
-            print('Valor fora da faixa de limite')
-            i.sendMessage('Valor fora da faixa', f'Valor lido: {dado}', critc=True)
-        else:
-            i.sendMessage('Tudo Ok', 'Leitura sem problemas', critc=False)
+        try:
+            i.sendData(dado, 'unidade generica')
+            try:
+                i.sendMessage('Tudo Ok', 'Leitura sem problemas', critc=False)
+            except:
+                print('Cota de mensagens estourada para: ', dispositivo)
+        except:
+            try:
+                i.sendMessage('Valor fora da faixa', f'Valor lido: {dado}', critc=True)
+            except:
+                print('Cota de mensagens estourada para: ', dispositivo)
         print("=======================================================================\n")
         print("Acessando o dipositivo...")
         dispositivo = i.getDevice()

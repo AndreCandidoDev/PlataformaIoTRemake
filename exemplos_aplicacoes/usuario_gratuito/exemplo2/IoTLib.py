@@ -40,7 +40,7 @@ class PlataformLib:
         if request.status_code == 201:
             return request.json()
         else:
-            return f'Error {request.status_code}'
+            return f'Error {request.status_code}, {request.text}'
 
     def sendMessage(self, alerttitle, msg, critc):
         body = {"Media type": "application/json", "alerta": alerttitle, "mensagem": msg, "is_critic": str(critc)}
@@ -50,4 +50,4 @@ class PlataformLib:
         if request.status_code == 201:
             return request.json()
         else:
-            return f'Error {request.status_code}'
+            return f'Error {request.status_code}, {request.text}'
