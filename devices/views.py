@@ -194,7 +194,7 @@ def device_messages(request, dispositivo_serial):
             plano = Plano.objects.get(usuario=mensagens.dispositivo.usuario)
             print(plano)
         except:
-            if cont_msgs == 10:
+            if cont_msgs == 20:
                 flag_limit_msgs = True
 
         # se o dispositivo possuir alertas:

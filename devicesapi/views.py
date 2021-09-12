@@ -20,11 +20,14 @@ class DispositivoApiView(APIView):
 class DadosApiView(APIView):
     def post(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.get(serial=dispositivo_serial)
-        # implementar lógica para usuarios pagos
+        confs = Configuracoes.objects.get(dispositivo=dispositivo)
         if dispositivo.dados.count() == 20:
             return Response("Limite de dados atingido para esse dispositivo",
                             status=status.HTTP_403_FORBIDDEN)
         request.data['dispositivo'] = str(dispositivo.id)
+        if float(request.data['dado']) < float(confs.limite_inferior) \
+                or float(request.data['dado']) > float(confs.limite_superior):
+            return Response("Valor está fora da faixa de configuração", status=status.HTTP_400_BAD_REQUEST)
         serializer = DadosSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -34,8 +37,7 @@ class DadosApiView(APIView):
 class MensagensApiView(APIView):
     def post(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.get(serial=dispositivo_serial)
-        # implementar lógica para usuarios pagos
-        if dispositivo.mensagens.count() == 10:
+        if dispositivo.mensagens.count() == 20:
             return Response("Limite de mensagens atingido para esse dispositivo",
                             status=status.HTTP_403_FORBIDDEN)
         request.data['dispositivo'] = str(dispositivo.id)
