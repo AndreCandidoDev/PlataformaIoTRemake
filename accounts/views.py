@@ -51,7 +51,7 @@ def profile_update(request, pk):
 @login_required(login_url='login')
 def plano_change(request, pk):
     user = Account.objects.get(id=pk)
-    usuario = UserProfile.objects.get(id=pk)
+    usuario = UserProfile.objects.get(user=user)
     limite_redes_iot = None
     limite_dispositivos_iot = None
     if request.method == 'POST':
