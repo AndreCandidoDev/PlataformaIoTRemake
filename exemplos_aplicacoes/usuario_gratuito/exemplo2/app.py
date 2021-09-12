@@ -18,11 +18,12 @@ d5 = PlataformLib(authtoken, 'Serial do 5° dispositivo')
 
 devices = [d1, d2, d3, d4, d5]
 cont = 0
-while cont <= 10:
+while cont < 20:
+    print('Iteracao: ', cont)
     print("=============== Simulando recepcao de dados ============================")
     for i in devices:
         dispositivo = i.getDevice()
-        dado = gerador(10, 101)
+        dado = gerador(-1, 101)
         print('Valor obtido', dado)
         try:
             i.sendData(dado, 'unidade generica')
