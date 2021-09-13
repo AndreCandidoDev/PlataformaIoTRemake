@@ -14,13 +14,12 @@ class AccountForm(forms.ModelForm):
 
     class Meta:
         model = Account
-        fields = ['first_name', 'last_name', 'username', 'phone_number', 'email', 'password']
+        fields = ['first_name', 'last_name', 'phone_number', 'email', 'password']
 
     def __init__(self, *args, **kwargs):
         super(AccountForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['placeholder'] = 'Nome'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Sobrenome'
-        self.fields['username'].widget.attrs['placeholder'] = 'Nome de usuário'
         self.fields['phone_number'].widget.attrs['placeholder'] = 'Celular'
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
         for field in self.fields:

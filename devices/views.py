@@ -24,12 +24,15 @@ def cria_serial(nome, placa, tipo, email):
 @login_required(login_url='login')
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
+    devices_count_aux = Dispositivo.objects.filter(usuario=user).count()
+    print(devices_count_aux)
     if request.method == 'POST':
         form = DispositivoForm(request.POST or None)
         if form.is_valid():
-            nome = form.cleaned_data['nome']  # criar uma regra para o nome ser unico
+            nome = form.cleaned_data['nome']
             placa = form.cleaned_data['placa']
             tipo = form.cleaned_data['tipo']
+            nome = nome + str(request.user.email).split('@')[0]+str(devices_count_aux)
             serial = cria_serial(nome, placa, tipo, user.email)
             dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial, placa=placa, tipo=tipo)
             configuracao = Configuracoes.objects.create(dispositivo=dispositivo)

@@ -137,16 +137,13 @@
                                                     <thead>
                                                         <tr>
                                                             <th scope="col">Nome</th>
-                                                            <th scope="col">Placa</th>
-                                                            <th scope="col">Tipo</th>
+                                                            <th scope="col">Visualizar</th>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
                                                     {% for device in devices %}
                                                             <tr>
                                                                 <td>{{ device.nome }}</td>
-                                                                <td>{{ device.placa }}</td>
-                                                                <td>{{ device.tipo }}</td>
                                                                 {% if flag_stop_device_creation %}
                                                                     <td><i class="bi bi-x-circle-fill"></i></td>
                                                                 {% else %}

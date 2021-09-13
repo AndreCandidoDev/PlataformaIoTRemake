@@ -72,6 +72,8 @@ WSGI_APPLICATION = 'plataforma.wsgi.application'
 
 AUTH_USER_MODEL = 'accounts.Account'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
