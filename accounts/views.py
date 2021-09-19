@@ -1,4 +1,4 @@
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.sites.shortcuts import get_current_site
@@ -156,8 +156,12 @@ def login(request):
         email = request.POST['email']
         password = request.POST['password']
         user = auth.authenticate(email=email, password=password)
-        auth.login(request, user)
-        return redirect('dashboard')
+        try:
+            auth.login(request, user)
+            return redirect('dashboard')
+        except:
+            messages.error(request, 'Login inválido')
+            return render(request, 'accounts/signin.html')
     else:
         return render(request, 'accounts/signin.html')
 

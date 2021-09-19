@@ -25,7 +25,6 @@ def cria_serial(nome, placa, tipo, email):
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
     devices_count_aux = Dispositivo.objects.filter(usuario=user).count()
-    print(devices_count_aux)
     if request.method == 'POST':
         form = DispositivoForm(request.POST or None)
         if form.is_valid():

@@ -90,12 +90,12 @@
                                       {% else %}
                                           <div class="collapse" id="collapseExample">
                                             <div class="card-body">
-                                                 <canvas id="myChart" width="8" height="3"></canvas>
+                                                <canvas id="myChart" width="8" height="3"></canvas>
                                             </div>
                                           </div>
                                           <div class="collapse" id="collapseExample1">
                                             <div class="card-body">
-                                                 <canvas id="myChart1" width="8" height="3"></canvas>
+                                                <canvas id="myChart1" width="8" height="3"></canvas>
                                             </div>
                                           </div>
                                       {% endif %}
@@ -290,66 +290,70 @@
 <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.5.1/chart.min.js"></script>-->
     <script>
     //adaptar conforme dados de dispositivos e da quantidade de dispositivo
-    var ctx = document.getElementById('myChart').getContext('2d');
-    //console.log(`{{ plano_type|safe }}`);
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //nome dispositivos
+    try{
+        var ctx = document.getElementById('myChart').getContext('2d');
+        //console.log(`{{ plano_type|safe }}`);
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //nome dispositivos
 
-            labels: {{ chart_device_names|safe }},
-            datasets: [{
-                label: 'Qtd de medições',
+                labels: {{ chart_device_names|safe }},
+                datasets: [{
+                    label: 'Qtd de medições',
 
-                //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
+                    //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
 
-                data: {{ chart_device_data_counts|safe }},
-                backgroundColor: {{ chart_data_background_color|safe }},
+                    data: {{ chart_device_data_counts|safe }},
+                    backgroundColor: {{ chart_data_background_color|safe }},
 
-                //similar ao anterior
-                borderColor: {{ chart_data_border_color|safe }},
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+                    //similar ao anterior
+                    borderColor: {{ chart_data_border_color|safe }},
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+    }catch(e){}
 
-    var ctx = document.getElementById('myChart1').getContext('2d');
-    //console.log(`{{ plano_type|safe }}`);
-    var myChart = new Chart(ctx, {
-        type: 'bar',
-        data: {
-            //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //nome dispositivos
+    try{
+        var ctx = document.getElementById('myChart1').getContext('2d');
+        //console.log(`{{ plano_type|safe }}`);
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                //labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'], //nome dispositivos
 
-            labels: {{ chart_device_names|safe }},
-            datasets: [{
-                label: 'Qtd de mensagens',
+                labels: {{ chart_device_names|safe }},
+                datasets: [{
+                    label: 'Qtd de mensagens',
 
-                //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
+                    //data: [12, 19, 3, 5, 2, 3], //contagem dinamica de medições
 
-                data: {{ chart_device_message_count|safe }},
-                //criar regra para cor de cada dispositivo
-                backgroundColor: {{ chart_messages_background_color|safe }},
+                    data: {{ chart_device_message_count|safe }},
+                    //criar regra para cor de cada dispositivo
+                    backgroundColor: {{ chart_messages_background_color|safe }},
 
-                //similar ao anterior
-                borderColor: {{ chart_messages_border_color|safe }},
-                borderWidth: 1
-            }]
-        },
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
+                    //similar ao anterior
+                    borderColor: {{ chart_messages_border_color|safe }},
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 }
             }
-        }
-    });
+        });
+    }catch(e){}
       </script>
       <script src="{% static 'js/main_dashboard.js' %}"></script>
 {% endblock %}
