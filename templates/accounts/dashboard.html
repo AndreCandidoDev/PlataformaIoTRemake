@@ -51,7 +51,7 @@
                                                    class="btn btn-outline-primary">Atualizar perfil</a>
                                                 {% if flag_has_plan %}
                                                     <a href="{% url 'planoupdate' request.user.id %}"
-                                                       class="btn btn-outline-primary">Atualizar plano</a>
+                                                       class="btn btn-outline-primary">Renovar assinatura</a>
                                                     <a href="{% url 'planocancel' request.user.id %}"
                                                        class="btn btn-outline-danger">Cancelar assinatura</a>
                                                 {% else %}
@@ -79,8 +79,8 @@
                                           </h5>
                                       </div>
                                       <div class="card-body">
-                                          <h6>Limite de medições: <b>20/dispositivo</b></h6>
-                                          <h6>Limite de mensagens: <b>20/dispositivo</b></h6>
+                                          <h6>Limite de medições: <b>{{ limit_datas }}/dispositivo</b></h6>
+                                          <h6>Limite de mensagens: <b>{{ limit_messages }}/dispositivo</b></h6>
                                       </div>
 
                                       {% if flag_no_device %}

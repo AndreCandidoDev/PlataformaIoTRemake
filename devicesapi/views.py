@@ -5,6 +5,7 @@ from rest_framework import mixins
 from rest_framework.views import APIView
 
 from .models import Dados, Dispositivo, Configuracoes, Mensagens
+from accounts.models import Plano
 from .serializers import DadosSerializer, DispositivoSerializer, ConfiguracaoSerializer, MensagensSerializer
 
 
@@ -21,9 +22,20 @@ class DadosApiView(APIView):
     def post(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.get(serial=dispositivo_serial)
         confs = Configuracoes.objects.get(dispositivo=dispositivo)
-        if dispositivo.dados.count() == 20:
-            return Response("Limite de dados atingido para esse dispositivo",
-                            status=status.HTTP_403_FORBIDDEN)
+        try:
+            plano = Plano.objects.get(usuario=request.user)
+            if plano.plano == 'Pessoal':
+                if dispositivo.dados.count() == 100:
+                    return Response("Limite de dados atingido para esse dispositivo",
+                                    status=status.HTTP_403_FORBIDDEN)
+            elif plano.plano == 'Empresarial':
+                if dispositivo.dados.count() == 1000:
+                    return Response("Limite de dados atingido para esse dispositivo",
+                                    status=status.HTTP_403_FORBIDDEN)
+        except:
+            if dispositivo.dados.count() == 20:
+                return Response("Limite de dados atingido para esse dispositivo",
+                                status=status.HTTP_403_FORBIDDEN)
         request.data['dispositivo'] = str(dispositivo.id)
         if float(request.data['dado']) < float(confs.limite_inferior) \
                 or float(request.data['dado']) > float(confs.limite_superior):
@@ -37,9 +49,20 @@ class DadosApiView(APIView):
 class MensagensApiView(APIView):
     def post(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.get(serial=dispositivo_serial)
-        if dispositivo.mensagens.count() == 20:
-            return Response("Limite de mensagens atingido para esse dispositivo",
-                            status=status.HTTP_403_FORBIDDEN)
+        try:
+            plano = Plano.objects.get(usuario=request.user)
+            if plano.plano == 'Pessoal':
+                if dispositivo.mensagens.count() == 100:
+                    return Response("Limite de dados atingido para esse dispositivo",
+                                    status=status.HTTP_403_FORBIDDEN)
+            elif plano.plano == 'Empresarial':
+                if dispositivo.mensagens.count() == 1000:
+                    return Response("Limite de dados atingido para esse dispositivo",
+                                    status=status.HTTP_403_FORBIDDEN)
+        except:
+            if dispositivo.mensagens.count() == 20:
+                return Response("Limite de mensagens atingido para esse dispositivo",
+                                status=status.HTTP_403_FORBIDDEN)
         request.data['dispositivo'] = str(dispositivo.id)
         serializer = MensagensSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)

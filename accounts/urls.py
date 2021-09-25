@@ -13,6 +13,7 @@ from .views import profile_register
 from .views import profile_update
 from .views import plano_change
 from .views import plano_update
+from .views import plano_upgrade
 from .views import plano_cancel
 
 urlpatterns = [
@@ -30,5 +31,6 @@ urlpatterns = [
     path('profileupdate/<int:pk>/', profile_update, name='profileupdate'),
     path('planochange/<int:pk>/', plano_change, name='planochange'),
     path('planoupdate/<int:pk>/', plano_update, name='planoupdate'),
+    path('planoupgrade/<int:pk>/', plano_upgrade, name='planoupgrade'),
     path('planocancel/<int:pk>/', plano_cancel, name='planocancel')
 ]

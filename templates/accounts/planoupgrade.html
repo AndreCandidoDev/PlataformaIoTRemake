@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block main %}
+  <br><br>
+  <div class="row" style="text-align:center">
+      <section class="section-content padding-y">
+       <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+        <article class="card-body">
+            <h5>Beneficios do plano Empresarial</h5>
+            <p>Tabela com beneficios</p>
+        </article>
+       </div>
+      </section>
+  </div>
+  <section class="section-content padding-y">
+       <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+        <article class="card-body">
+          <header class="mb-4"><h4 class="card-title">Upgrade para Empresarial</h4></header>
+          <form  method="POST">
+              {% csrf_token %}
+                  <div class="row">
+                      <div class="form-group col-12">
+                          <label>Periodo</label>
+                          {{ form.periodo }}
+                      </div>
+                  </div>
+                  <br>
+                  <div class="d-grid gap-2">
+                      <button type="submit" class="btn btn-primary">Upgrade</button>
+                  </div>
+              </form>
+              <br>
+              <a href="{% url 'dashboard' %}">Voltar</a>
+          </article>
+      </div>
+      <br><br>
+  </section>
+{% endblock %}

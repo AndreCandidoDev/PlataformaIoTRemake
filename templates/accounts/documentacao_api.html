@@ -9,7 +9,9 @@
                     <h5 class="card-title">Obter informações do dispositivo</h5>
                     <h6>Method: GET</h6>
                     <h6>Endpoint: <b>api/v1/dispositivos/serial do dispositivo/</b></h6>
-                    <h6>Headers: <b>Authorization: Token your_token</b></h6>
+                    <h6>Headers:<br>
+                        <b>Content-Type: 'application/json'</b><br>
+                        <b>Authorization: Token your_token</b></h6>
                 </div>
                 <div class="card-body">
                     <h6>Response: <b>status 200</b></h6><br>
@@ -53,7 +55,9 @@
                     <h5 class="card-title">Criar uma nova leitura</h5>
                     <h6>Method: POST</h6>
                     <h6>Endpoint: <b>api/v1/dados/serial do dispositivo/</b></h6>
-                    <h6>header: <b>Authorization: Token your_token</b></h6>
+                    <h6>header:<br>
+                        <b>Content-Type: 'application/json'</b><br>
+                        <b>Authorization: Token your_token</b></h6>
                     <br>
                      <h6>body:<br><b>Media type: application/json <br>
                         {"unidade":"qualquer unidade", "dado":"qualquer valor"}
@@ -80,7 +84,9 @@
                     <h5 class="card-title">Criar um novo alerta</h5>
                     <h6>Method: POST</h6>
                     <h6>Endpoint: <b>api/v1/mensagens/serial do dispositivo/</b></h6>
-                    <h6>header: <b>Authorization: Token your_token</b></h6>
+                    <h6>header:<br>
+                        <b>Content-Type: 'application/json'</b><br>
+                        <b>Authorization: Token your_token</b></h6>
                     <br>
                     <h6>body:<br><b>Media type: application/json<br>
                         {

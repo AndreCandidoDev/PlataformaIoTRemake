@@ -8,7 +8,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from devicesapi.models import Dispositivo, Dados, Configuracoes
-from .forms import AccountForm, UserProfileForm, PlanoForm
+from .forms import AccountForm, UserProfileForm, PlanoForm, PlanoUpdateForm
 from .models import Account, UserProfile, Plano
 from rest_framework.authtoken.models import Token
 
@@ -48,6 +48,30 @@ def profile_update(request, pk):
     return render(request, 'accounts/profileupdate.html', context)
 
 
+def plano_upgrade(request, pk):
+    user = Account.objects.get(id=pk)
+    usuario = UserProfile.objects.get(user=user)
+    plano_anterior = Plano.objects.get(usuario=user)
+    if request.method == 'POST':
+        plano_anterior.delete()
+        form = PlanoUpdateForm(request.POST)
+        if form.is_valid():
+            plano = 'Empresarial'
+            periodo = form.cleaned_data['periodo']
+            limite_redes_iot = 15
+            limite_dispositivos_iot = 150
+            userPlan = Plano.objects.create(usuario=user, perfil=usuario, plano=plano,
+                                            limite_redes_iot=limite_redes_iot,
+                                            limite_dispositivos_iot=limite_dispositivos_iot,
+                                            periodo=periodo)
+            userPlan.save()
+            return redirect('dashboard')  # redirect to payment --> (need implementation)
+    else:
+        form = PlanoUpdateForm()
+    context = {'form': form, 'user': user}
+    return render(request, 'accounts/planoupgrade.html', context)
+
+
 @login_required(login_url='login')
 def plano_change(request, pk):
     user = Account.objects.get(id=pk)
@@ -73,28 +97,42 @@ def plano_change(request, pk):
             return redirect('dashboard')  # redirect to payment --> (need implementation)
     else:
         form = PlanoForm()
-    context = {'form': form}
+    context = {'form': form, 'user': user}
     return render(request, 'accounts/planochange.html', context)
 
 
 @login_required(login_url='login')
 def plano_update(request, pk):
     plano = Plano.objects.get(usuario=pk)
+    tipo_plano = plano.plano
+    flag_is_empresarial = False
+    if tipo_plano == 'Empresarial':
+        flag_is_empresarial = True
     if request.method == 'POST':
-        form = PlanoForm(request.POST, instance=plano)
+        form = PlanoUpdateForm(request.POST, instance=plano)
         if form.is_valid():
             form.save()
             return redirect('dashboard')
     else:
-        form = PlanoForm(instance=plano)
-    context = {'form': form}
+        form = PlanoUpdateForm(instance=plano)
+    context = {'form': form, 'flag_is_empresarial': flag_is_empresarial}
     return render(request, 'accounts/planoupdate.html', context)
 
 
 @login_required(login_url='login')
 def plano_cancel(request, pk):
     plano = Plano.objects.get(usuario=pk)
+    the_five_devices = []
+    counter = 0
     if request.method == 'POST':
+        devices = Dispositivo.objects.filter(usuario=request.user)
+        # futuramente deverá verificar a data de criação do dispositivo e plano
+        for i in devices:
+            if counter == 5:
+                i.delete()
+            else:
+                the_five_devices.append(i)
+                counter += 1
         plano.delete()
         return redirect('dashboard')
     context = {'plano': plano}
@@ -142,7 +180,7 @@ def register(request):
             to_email = email
             send_email = EmailMessage(mail_subject, message, to=[to_email])
             send_email.send()
-            return redirect('login')
+            return redirect('/accounts/login/?command=verification&email='+email)
     else:
         form = AccountForm()
     context = {
@@ -250,7 +288,14 @@ def data_to_chart(devices, usuario, tipo):
     limit_messages = None
     try:
         plano = Plano.objects.get(usuario=usuario)
-    #     logica para usuario com plano
+        if plano.plano == 'Pessoal':
+            limit_datas = 100
+            limit_messages = 100
+
+        #   por enquanto haverá limite, no futuro será retirado conforme infraestrutura
+        elif plano.plano == 'Empresarial':
+            limit_datas = 1000
+            limit_messages = 1000
     except:
         limit_datas = 20
         limit_messages = 20
@@ -274,7 +319,7 @@ def data_to_chart(devices, usuario, tipo):
             else:
                 devices_background_colors.append(padrao_background)
                 devices_border_colors.append(padrao_borders)
-    return devices_names, counter, devices_background_colors, devices_border_colors
+    return devices_names, counter, devices_background_colors, devices_border_colors, limit_datas, limit_messages
 
 
 @login_required(login_url='login')
@@ -306,12 +351,15 @@ def dashboard(request):
         if devices_created == user.device_limit_creation:
             flag_stop_device_creation = True
 
+    # need improvement
     devices = Dispositivo.objects.filter(usuario=user)
     chart_data = data_to_chart(devices, user, 'dados')
     chart_device_names = chart_data[0]
     chart_device_data_counts = chart_data[1]
     chart_data_background_color = chart_data[2]
     chart_data_border_color = chart_data[3]
+    limit_datas = chart_data[4]
+    limit_messages = chart_data[5]
 
     chart_messages = data_to_chart(devices, user, 'messages')
     chart_device_message_count = chart_messages[1]
@@ -379,5 +427,7 @@ def dashboard(request):
                'chart_device_message_count': chart_device_message_count,
                'chart_messages_background_color': chart_messages_background_color,
                'chart_messages_border_color': chart_messages_border_color,
+               'limit_datas': limit_datas,
+               'limit_messages': limit_messages
     }
     return render(request, 'accounts/dashboard.html', context)

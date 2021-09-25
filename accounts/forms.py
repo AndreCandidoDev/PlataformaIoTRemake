@@ -20,7 +20,8 @@ class AccountForm(forms.ModelForm):
         super(AccountForm, self).__init__(*args, **kwargs)
         self.fields['first_name'].widget.attrs['placeholder'] = 'Nome'
         self.fields['last_name'].widget.attrs['placeholder'] = 'Sobrenome'
-        self.fields['phone_number'].widget.attrs['placeholder'] = 'Celular'
+        self.fields['phone_number'].widget.attrs['placeholder'] = 'Celular com DDD'
+        self.fields['phone_number'].widget.attrs['max_length'] = 11
         self.fields['email'].widget.attrs['placeholder'] = 'Email'
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'
@@ -48,6 +49,7 @@ class UserProfileForm(forms.ModelForm):
             self.fields[field].widget.attrs['class'] = 'form-control'
 
 
+# form de criação de plano
 class PlanoForm(forms.ModelForm):
     class Meta:
         model = Plano
@@ -55,5 +57,17 @@ class PlanoForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(PlanoForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs['class'] = 'form-control'
+
+
+# form de renovação de plano
+class PlanoUpdateForm(forms.ModelForm):
+    class Meta:
+        model = Plano
+        fields = ['periodo']
+
+    def __init__(self, *args, **kwargs):
+        super(PlanoUpdateForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs['class'] = 'form-control'

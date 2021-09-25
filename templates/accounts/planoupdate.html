@@ -2,28 +2,20 @@
 
 {% block main %}
 <section class="section-content padding-y">
-
 	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
       <article class="card-body">
-		<header class="mb-4"><h4 class="card-title">Atualizar plano de assinatura</h4></header>
+		<header class="mb-4"><h4 class="card-title">Renovar assinatura</h4></header>
 		<form  method="POST">
 			{% csrf_token %}
 				<div class="row">
 					<div class="form-group col-12">
-						<label>Plano</label>
-						{{ form.plano }}
-					</div>
-				</div>
-				<br>
-				<div class="row">
-					<div class="form-group col-12">
-						<label>Tempo</label>
+						<label>Renovar por mais:</label>
 						{{ form.periodo }}
 					</div>
 				</div>
 				<br>
 			    <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary">Assinar</button>
+                    <button type="submit" class="btn btn-primary">Renovar</button>
 				</div>
 			</form>
 		  	<br>
@@ -32,4 +24,18 @@
     </div>
     <br><br>
 </section>
+	{% if flag_is_empresarial %}
+		<div class="row">
+			<div class="col-md-12" style="text-align:center">
+				<h5>Obrigado por escolher o plano empresarial!</h5>
+			</div>
+		</div>
+	{% else %}
+		<div class="row">
+			<div class="col-md-12" style="text-align:center">
+				<h5>Precisa de mais dispositivos/redes ?</h5>
+				<a href="{% url 'planoupgrade' user.id %}" class="btn btn-dark">Upgrade para empresarial</a>
+			</div>
+		</div>
+	{% endif %}
 {% endblock %}

@@ -1,7 +1,14 @@
 {% extends 'base.html' %}
 {% block main %}
 
-<div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
+{% if request.GET.command == 'verification' %}
+    <div class="container mx-auto alert-info text-center" role="alert" style="max-width: 1024px; margin-top:100px;">
+        Email de validação enviado para: {{request.GET.email}}.
+        <br><br>
+        Já o validou ? <a href="{% url 'login' %}">Login</a>
+    </div>
+{% else %}
+    <div class="card mx-auto" style="max-width: 380px; margin-top:100px;">
       <div class="card-body">
           {% include 'includes/alerts.html' %}
           <h4 class="card-title mb-4">Login</h4>
@@ -26,4 +33,5 @@
     </div>
     <br>
      <p class="text-center mt-4">Não possui conta? <a href="{% url 'register' %}">Registre</a></p>
+{% endif %}
 {% endblock %}
