@@ -390,17 +390,10 @@ def dashboard(request):
         dados = Dados.objects.filter(dispositivo=i)
         try:
             configuracoes = Configuracoes.objects.get(dispositivo=i)
-            print(configuracoes)
             confs.append(configuracoes)
         except:
             acao = Acoes.objects.get(dispositivo=i)
-            print(acao)
             acoes.append(acao)
-
-        if len(confs) == 0:
-            flag_no_conf = True
-        if len(acoes) == 0:
-            flag_no_action = True
 
         ultimo = dados.last()
         if ultimo is None:
@@ -409,6 +402,11 @@ def dashboard(request):
             leituras.append(ultimo)
         if len(leituras) == 0:
             flag_no_data = True
+
+    if len(confs) == 0:
+        flag_no_conf = True
+    if len(acoes) == 0:
+        flag_no_action = True
 
     contagem = devices.count()
 
