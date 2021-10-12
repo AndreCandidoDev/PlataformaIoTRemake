@@ -32,6 +32,7 @@
             "limite_superior": "100"
         }
     ],
+    "acoes": [],
     "mensagens": [
         {
             "alerta": "Teste",
@@ -42,6 +43,31 @@
     "criacao": "2021-08-31T10:31:00.110277-03:00",
     "ativo": true
 }</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="card-title">Obter ação do atuador</h5>
+                    <h6>Method: GET</h6>
+                    <h6>Endpoint: <b>api/v1/acoes/serial do dispositivo/</b></h6>
+                    <h6>Headers:<br>
+                        <b>Content-Type: 'application/json'</b><br>
+                        <b>Authorization: Token your_token</b></h6>
+                </div>
+                <div class="card-body">
+                    <h6>Response: <b>status 200</b></h6><br>
+                    <h6>[
+                          {
+                            "pino": 4,
+                            "sinal": "Desligado"
+                          }
+                        ]</h6>
                 </div>
             </div>
         </div>

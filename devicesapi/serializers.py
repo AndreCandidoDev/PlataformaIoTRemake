@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Dispositivo, Dados, Configuracoes, Mensagens
+from .models import Dispositivo, Dados, Configuracoes, Mensagens, Acoes
 
 
 class DadosSerializer(serializers.ModelSerializer):
@@ -29,6 +29,15 @@ class ConfiguracaoSerializer(serializers.ModelSerializer):
         )
 
 
+class AcoesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Acoes
+        fields = (
+            'pino',
+            'sinal'
+        )
+
+
 class MensagensSerializer(serializers.ModelSerializer):
     class Meta:
         extra_kwargs = {
@@ -50,6 +59,7 @@ class DispositivoSerializer(serializers.ModelSerializer):
 
     dados = DadosSerializer(many=True, read_only=True)
     configuracoes = ConfiguracaoSerializer(many=True, read_only=True)
+    acoes = AcoesSerializer(many=True, read_only=True)
     mensagens = MensagensSerializer(many=True, read_only=True)
 
     class Meta:
@@ -68,6 +78,7 @@ class DispositivoSerializer(serializers.ModelSerializer):
             'tipo',
             'dados',
             'configuracoes',
+            'acoes',
             'mensagens',
             'criacao',
             'ativo'

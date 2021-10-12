@@ -7,7 +7,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from devicesapi.models import Dispositivo, Dados, Configuracoes
+from devicesapi.models import Dispositivo, Dados, Configuracoes, Acoes
 from .forms import AccountForm, UserProfileForm, PlanoForm, PlanoUpdateForm
 from .models import Account, UserProfile, Plano
 from rest_framework.authtoken.models import Token
@@ -335,6 +335,8 @@ def dashboard(request):
     network_limit = None
     flag_no_data = False
     flag_no_device = False
+    flag_no_conf = False
+    flag_no_action = False
 
     try:  # informações do painel minha conta/ criar variaveis para alterar dashboard
         plano = Plano.objects.get(usuario=user)
@@ -383,13 +385,22 @@ def dashboard(request):
 
     leituras = []
     confs = []
+    acoes = []
     for i in devices:
         dados = Dados.objects.filter(dispositivo=i)
         try:
             configuracoes = Configuracoes.objects.get(dispositivo=i)
+            print(configuracoes)
             confs.append(configuracoes)
         except:
-            pass
+            acao = Acoes.objects.get(dispositivo=i)
+            print(acao)
+            acoes.append(acao)
+
+        if len(confs) == 0:
+            flag_no_conf = True
+        if len(acoes) == 0:
+            flag_no_action = True
 
         ultimo = dados.last()
         if ultimo is None:
@@ -406,6 +417,7 @@ def dashboard(request):
                'counter': contagem,
                'ultimas_leituras': leituras,
                'confs': confs,
+               'acoes': acoes,
                'flag_has_profile': flag_has_profile,
                'flag_limit': flag_limit,
                'contagem_dispositivos': contagem_dispositivos,
@@ -418,6 +430,8 @@ def dashboard(request):
                'devices_creation_limited': devices_creation_limited,
                'devices_created': devices_created,
                'flag_stop_device_creation': flag_stop_device_creation,
+               'flag_no_conf': flag_no_conf,
+               'flag_no_action': flag_no_action,
 
                # variaveis do grafico
                'chart_device_names': chart_device_names,

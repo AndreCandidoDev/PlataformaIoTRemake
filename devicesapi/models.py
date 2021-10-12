@@ -31,10 +31,35 @@ class Dispositivo(Base):
         return self.nome
 
 
+# somente atuadores
+class Acoes(Base):
+    sinais = (
+        ('Ligado', 'True'),
+        ('Desligado', 'False')
+    )
+    dispositivo = models.ForeignKey(Dispositivo, related_name='acoes', on_delete=models.CASCADE)
+    pino = models.IntegerField(default=4)
+    sinal = models.CharField(max_length=255, choices=sinais, default='True')
+
+    class Meta:
+        verbose_name = 'Acao'
+        verbose_name_plural = 'Acoes'
+        ordering = ['id']
+
+    def __str__(self):
+        return str(self.dispositivo)
+
+
+# somente sensores
 class Configuracoes(Base):
     dispositivo = models.ForeignKey(Dispositivo, related_name='configuracoes', on_delete=models.CASCADE)
     limite_inferior = models.CharField(max_length=255, default='0')
     limite_superior = models.CharField(max_length=255, default='100')
+
+    class Meta:
+        verbose_name = 'Configuracao'
+        verbose_name_plural = 'Configuracoes'
+        ordering = ['id']
 
     def __str__(self):
         return str(self.dispositivo)

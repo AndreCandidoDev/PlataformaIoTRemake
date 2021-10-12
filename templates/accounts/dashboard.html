@@ -160,6 +160,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-md-6">
                                     <div class="card">
                                         <div class="card-header">
@@ -198,36 +199,80 @@
                                 </div>
                           </div>
                           <br>
+
                           {% if not flag_no_device %}
                               <div class="row">
                                   <div class="col-md-12">
                                         <div class="card">
                                             <div class="card-header">
-                                                <h5><b>Controle de dispositivos</b></h5>
+                                                <h5><b>Controle de Sensores</b></h5>
                                             </div>
                                             <div class="card-body" style="text-align:center">
-                                                <table class="table table-striped">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col">Dispositivo</th>
-                                                            <th scope="col">Editar configurações</th>
-                                                            <th scope="col">Acessar alertas</th>
-                                                        </tr>
-                                                    </thead>
-                                                        <tbody>
-                                                            {% for conf in confs %}
-                                                                <tr>
-                                                                    <td>{{ conf.dispositivo.nome }}</td>
-                                                                    <td><a href="{% url 'deviceconf' conf.dispositivo.serial %}">
-                                                                        <i class="bi bi-pencil-fill"></i>
-                                                                    </a></td>
-                                                                    <td><a href="{% url 'devicemessages' conf.dispositivo.serial %}">
-                                                                        <i class="bi bi-exclamation-diamond-fill"></i>
-                                                                    </a></td>
-                                                                </tr>
-                                                            {% endfor %}
-                                                        </tbody>
-                                                </table>
+                                                {% if not flag_no_conf %}
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Dispositivo</th>
+                                                                <th scope="col">Editar configurações</th>
+                                                                <th scope="col">Acessar alertas</th>
+                                                            </tr>
+                                                        </thead>
+                                                            <tbody>
+                                                                {% for conf in confs %}
+                                                                    <tr>
+                                                                        <td>{{ conf.dispositivo.nome }}</td>
+                                                                        <td><a href="{% url 'deviceconf' conf.dispositivo.serial %}">
+                                                                            <i class="bi bi-pencil-fill"></i>
+                                                                        </a></td>
+                                                                        <td><a href="{% url 'devicemessages' conf.dispositivo.serial %}">
+                                                                            <i class="bi bi-exclamation-diamond-fill"></i>
+                                                                        </a></td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    <h5 style="color:red">Não há sensores registrados</h5>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                              </div>
+                              <br>
+                              <div class="row">
+                                  <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header">
+                                                <h5><b>Controle de Atuadores</b></h5>
+                                            </div>
+                                            <div class="card-body" style="text-align:center">
+                                                {% if not flag_no_action %}
+                                                    <table class="table table-striped">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col">Dispositivo</th>
+                                                                <th scope="col">Editar ações</th>
+                                                                <th scope="col">Acessar alertas</th>
+                                                            </tr>
+                                                        </thead>
+                                                            <tbody>
+
+                                                                {% for acao in acoes %}
+                                                                    <tr>
+                                                                        <td>{{ acao.dispositivo.nome }}</td>
+                                                                        <td><a href="{% url 'deviceacao' acao.dispositivo.serial %}">
+                                                                            <i class="bi bi-pencil-fill"></i>
+                                                                        </a></td>
+                                                                        <td><a href="{% url 'devicemessages' acao.dispositivo.serial %}">
+                                                                            <i class="bi bi-exclamation-diamond-fill"></i>
+                                                                        </a></td>
+                                                                    </tr>
+                                                                {% endfor %}
+                                                            </tbody>
+                                                    </table>
+                                                {% else %}
+                                                    <h5 style="color:red">Não há dispositivos atuadores</h5>
+                                                {% endif %}
                                             </div>
                                         </div>
                                     </div>

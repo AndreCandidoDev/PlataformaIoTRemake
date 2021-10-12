@@ -4,9 +4,10 @@ from rest_framework.response import Response
 from rest_framework import mixins
 from rest_framework.views import APIView
 
-from .models import Dados, Dispositivo, Configuracoes, Mensagens
+from .models import Dados, Dispositivo, Configuracoes, Mensagens, Acoes
 from accounts.models import Plano
-from .serializers import DadosSerializer, DispositivoSerializer, ConfiguracaoSerializer, MensagensSerializer
+from .serializers import DadosSerializer, DispositivoSerializer, \
+    ConfiguracaoSerializer, MensagensSerializer, AcoesSerializer
 
 
 # =========================  API Usuarios gratuitos ============================================================
@@ -15,6 +16,14 @@ class DispositivoApiView(APIView):
     def get(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.filter(serial=dispositivo_serial)
         serializer = DispositivoSerializer(dispositivo, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+
+class AcoesApiView(APIView):
+    def get(self, request, dispositivo_serial):
+        dispositivo = Dispositivo.objects.get(serial=dispositivo_serial)
+        acao = Acoes.objects.filter(dispositivo=dispositivo)
+        serializer = AcoesSerializer(acao, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 

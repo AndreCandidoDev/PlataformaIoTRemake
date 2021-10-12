@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
-from devicesapi.models import Dispositivo, Configuracoes, Dados, Mensagens
+from devicesapi.models import Dispositivo, Configuracoes, Dados, Mensagens, Acoes
 from accounts.models import Account, Plano
-from .forms import DispositivoForm, ConfiguracaoForm
+from .forms import DispositivoForm, ConfiguracaoForm, AcaoForm
 from .estatisticas import Estatisticas
 import hashlib
 import csv
@@ -21,6 +21,16 @@ def cria_serial(nome, placa, tipo, email):
     return serial
 
 
+def create_conf(dispositivo):
+    configuracao = Configuracoes.objects.create(dispositivo=dispositivo)
+    configuracao.save()
+
+
+def create_acao(dispositivo):
+    acao = Acoes.objects.create(dispositivo=dispositivo)
+    acao.save()
+
+
 @login_required(login_url='login')
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
@@ -31,10 +41,16 @@ def device_register(request, pk):
             nome = form.cleaned_data['nome']
             placa = form.cleaned_data['placa']
             tipo = form.cleaned_data['tipo']
+            print(tipo, type(tipo))
             nome = nome + str(request.user.email).split('@')[0]+str(devices_count_aux)
             serial = cria_serial(nome, placa, tipo, user.email)
             dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial, placa=placa, tipo=tipo)
-            configuracao = Configuracoes.objects.create(dispositivo=dispositivo)
+
+            if tipo == 'Sensor':
+                create_conf(dispositivo)
+            elif tipo == 'Atuador':
+                create_acao(dispositivo)
+
             try:
                 plano = Plano.objects.get(usuario=user)
             except:
@@ -43,7 +59,6 @@ def device_register(request, pk):
                 user.devices_created += 1
                 user.save()
             dispositivo.save()
-            configuracao.save()
             return redirect('dashboard')
     else:
         form = DispositivoForm()
@@ -97,6 +112,20 @@ def device_conf(request, dispositivo_serial):
         form = ConfiguracaoForm(instance=configuracao)
     context = {'form': form}
     return render(request, 'devices/deviceconf.html', context)
+
+
+def device_acao(request, dispositivo_serial):
+    device = Dispositivo.objects.get(serial=dispositivo_serial)
+    acao = Acoes.objects.get(dispositivo=device)
+    if request.method == 'POST':
+        form = AcaoForm(request.POST, instance=acao)
+        if form.is_valid():
+            form.save()
+            return redirect('dashboard')
+    else:
+        form = AcaoForm(instance=acao)
+    context = {'form': form}
+    return render(request, 'devices/deviceacao.html', context)
 
 
 def trata_horario_medicao(dado_medicao):

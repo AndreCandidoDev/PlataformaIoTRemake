@@ -4,6 +4,7 @@ from .views import device_statistics
 from .views import device_update
 from .views import device_delete
 from .views import device_conf
+from .views import device_acao
 from .views import device_messages
 from .views import device_serial
 from .views import device_csv_generator
@@ -16,6 +17,7 @@ urlpatterns = [
     path('deviceupdate/<slug:dispositivo_serial>/', device_update, name='deviceupdate'),
     path('devicedelete/<slug:dispositivo_serial>/', device_delete, name='devicedelete'),
     path('deviceconf/<slug:dispositivo_serial>/', device_conf, name='deviceconf'),
+    path('deviceacao/<slug:dispositivo_serial>/', device_acao, name='deviceacao'),
     path('devicemessages/<slug:dispositivo_serial>/', device_messages, name='devicemessages'),
     path('deviceserial/<slug:dispositivo_serial>/', device_serial, name='deviceserial'),
     path('devicecsv/<slug:dispositivo_serial>/', device_csv_generator, name='devicecsv'),
