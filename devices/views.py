@@ -68,6 +68,7 @@ def device_register(request, pk):
     return render(request, 'devices/deviceregister.html', context)
 
 
+@login_required(login_url='login')
 def device_serial(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
     context = {'device': device}
@@ -78,9 +79,33 @@ def device_serial(request, dispositivo_serial):
 @login_required(login_url='login')
 def device_update(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
+    tipo_inicial = device.tipo
     if request.method == 'POST':
         form = DispositivoForm(request.POST, instance=device)
         if form.is_valid():
+            try:
+                if tipo_inicial == form.cleaned_data['tipo']:
+                    raise Exception('Tipo device igual ao anterior')
+
+                # se o device foi atualizado para atuador
+                if form.cleaned_data['tipo'] == 'Atuador':
+                    create_acao(device)
+                    try:
+                        conf = Configuracoes.objects.get(dispositivo=device)
+                        conf.delete()
+                    except:
+                        pass
+
+                # se o device foi atualizado para sensor
+                elif form.cleaned_data['tipo'] == 'Sensor':
+                    create_conf(device)
+                    try:
+                        acao = Acoes.objects.get(dispositivo=device)
+                        acao.delete()
+                    except:
+                        pass
+            except:
+                pass
             form.save()
             return redirect('dashboard')
     else:
@@ -114,6 +139,7 @@ def device_conf(request, dispositivo_serial):
     return render(request, 'devices/deviceconf.html', context)
 
 
+@login_required(login_url='login')
 def device_acao(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
     acao = Acoes.objects.get(dispositivo=device)
@@ -155,11 +181,13 @@ def device_statistics(request, dispositivo_serial):
 
     # limite para dados a partir do plano do usuario
     cont_data = dados.count()
-    flag_data_limit = False
+    flag_data_limit = False   # mensagem de limite de dados nas estatisticas
     try:
         plano = Plano.objects.get(usuario=device.usuario)
-        print(plano)
-        #  lógica para usuarios pagos
+        if plano.plano == 'Pessoal' and cont_data == 100:
+            flag_data_limit = True
+        elif plano.plano == 'Empresarial' and cont_data == 1000:
+            flag_data_limit = True
     except:
         if cont_data == 20:
             flag_data_limit = True
@@ -209,6 +237,7 @@ def device_pdf_generator(request, dispositivo_serial):
 @login_required(login_url='login')
 def device_messages(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
+    user = device.usuario
     flag_not_messages = False
     flag_not_critc = False
     flag_limit_msgs = False
@@ -222,8 +251,11 @@ def device_messages(request, dispositivo_serial):
         # verifica o limite de alertas
         cont_msgs = mensagens.count()
         try:
-            plano = Plano.objects.get(usuario=mensagens.dispositivo.usuario)
-            print(plano)
+            plano = Plano.objects.get(usuario=user)
+            if plano.plano == 'Pessoal' and cont_msgs == 100:
+                flag_limit_msgs = True
+            elif plano.plano == 'Empresarial' and cont_msgs == 1000:
+                flag_limit_msgs = True
         except:
             if cont_msgs == 20:
                 flag_limit_msgs = True

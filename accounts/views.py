@@ -48,6 +48,7 @@ def profile_update(request, pk):
     return render(request, 'accounts/profileupdate.html', context)
 
 
+@login_required(login_url='login')
 def plano_upgrade(request, pk):
     user = Account.objects.get(id=pk)
     usuario = UserProfile.objects.get(user=user)
@@ -387,6 +388,7 @@ def dashboard(request):
     confs = []
     acoes = []
     for i in devices:
+        print(i.tipo)
         dados = Dados.objects.filter(dispositivo=i)
         try:
             configuracoes = Configuracoes.objects.get(dispositivo=i)
