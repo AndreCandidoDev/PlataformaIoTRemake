@@ -47,18 +47,8 @@ int gpio15_pin = 15;
 int gpio16_pin = 16;
 
 //usar sua rede wifi ----- sera passado na plataforma, o gerador de código irá mudar automaticamente
-const char* ssid = "ANDRE 2G";
-const char* password = "123456789";
-
-//const char* ssid = "2.4G_SOL_Ext";
-//const char* password = "2978543030";
-
-//const char* ssid = "My ASUS";
-//const char* password = "ed659797";
-
-//inet 192.168.43.92 
-//const char* ssid = "666";
-//const char* password = "12345678";
+const char* ssid = "WiFi name";
+const char* password = "WiFi password";
 
 ESP8266WebServer server(8080); 
 
@@ -98,15 +88,7 @@ void setup() {
     delay(500);
     Serial.print(".");
   }
-//192.168.56.1  ip e gateway
-//255.255.255.0 subnet
-// incluir instruções para o usuario em caso de timeout de rede
-// a solução é mudar o ip fixo para o mesmo ip da placa
-// antes de prosseguir com o cadastrameto deve haver um passo de verificação de conexão
-// e caso tudo de certo o ip no python será setado
-// Devemos incluir uma opção para resetar o dispositivo com regeração do código e reset do ip no python
 
-//falta incluir mecanismo para mudar esses parametros
   IPAddress ip = WiFi.localIP();
   IPAddress gateway = WiFi.gatewayIP();
   IPAddress subnet = WiFi.subnetMask();
