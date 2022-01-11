@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, redirect
 from devicesapi.models import Dispositivo, Configuracoes, Dados, Mensagens, Acoes
-from accounts.models import Account, Plano
+from accounts.models import Account
 from .forms import DispositivoForm, ConfiguracaoForm, AcaoForm
 from .estatisticas import Estatisticas
 import hashlib
@@ -31,6 +31,7 @@ def create_acao(dispositivo):
     acao.save()
 
 
+# registro de dispositivo de usuario gratuito
 @login_required(login_url='login')
 def device_register(request, pk):
     user = Account.objects.get(id=pk)
@@ -41,23 +42,23 @@ def device_register(request, pk):
             nome = form.cleaned_data['nome']
             placa = form.cleaned_data['placa']
             tipo = form.cleaned_data['tipo']
-            print(tipo, type(tipo))
             nome = nome + str(request.user.email).split('@')[0]+str(devices_count_aux)
             serial = cria_serial(nome, placa, tipo, user.email)
-            dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial, placa=placa, tipo=tipo)
 
+            #     cria a instancia do dispositivo
+            dispositivo = Dispositivo.objects.create(usuario=user, nome=nome, serial=serial,
+                                                     placa=placa, tipo=tipo)
+
+            # cria a configurção ou ação do dispositivo
             if tipo == 'Sensor':
                 create_conf(dispositivo)
             elif tipo == 'Atuador':
                 create_acao(dispositivo)
 
-            try:
-                plano = Plano.objects.get(usuario=user)
-            except:
-                if user.devices_created == user.device_limit_creation:
-                    return redirect('dashboard')
-                user.devices_created += 1
-                user.save()
+            if user.devices_created == user.device_limit_creation:
+                return redirect('dashboard')
+            user.devices_created += 1
+            user.save()
             dispositivo.save()
             return redirect('dashboard')
     else:
@@ -124,6 +125,8 @@ def device_delete(request, dispositivo_serial):
     return render(request, 'devices/devicedelete.html', context)
 
 
+# as funções a seguir serão reaproveitadas para planos de usuarios diferentes
+# ===================================================================================================================
 @login_required(login_url='login')
 def device_conf(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
@@ -182,15 +185,9 @@ def device_statistics(request, dispositivo_serial):
     # limite para dados a partir do plano do usuario
     cont_data = dados.count()
     flag_data_limit = False   # mensagem de limite de dados nas estatisticas
-    try:
-        plano = Plano.objects.get(usuario=device.usuario)
-        if plano.plano == 'Pessoal' and cont_data == 100:
-            flag_data_limit = True
-        elif plano.plano == 'Empresarial' and cont_data == 1000:
-            flag_data_limit = True
-    except:
-        if cont_data == 20:
-            flag_data_limit = True
+
+    if cont_data == 20:
+        flag_data_limit = True
 
     est = Estatisticas(dados)
     estatisticas = {
@@ -250,15 +247,9 @@ def device_messages(request, dispositivo_serial):
 
         # verifica o limite de alertas
         cont_msgs = mensagens.count()
-        try:
-            plano = Plano.objects.get(usuario=user)
-            if plano.plano == 'Pessoal' and cont_msgs == 100:
-                flag_limit_msgs = True
-            elif plano.plano == 'Empresarial' and cont_msgs == 1000:
-                flag_limit_msgs = True
-        except:
-            if cont_msgs == 20:
-                flag_limit_msgs = True
+
+        if cont_msgs == 20:
+            flag_limit_msgs = True
 
         # se o dispositivo possuir alertas:
         if len(mensagens) > 0:
@@ -284,3 +275,4 @@ def device_messages(request, dispositivo_serial):
                 'flag_limit_msgs': flag_limit_msgs
     }
     return render(request, 'devices/device_messages.html', context)
+# ===================================================================================================================

@@ -1,0 +1,165 @@
+<!-- dashboard de usuários pagos -->
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+    <br>
+    <section>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-dark">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5><b>Gerenciar conta</b>
+                                                        <button class="btn btn-outline-dark offset-7" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#show1"
+                                                                aria-expanded="true" aria-controls="collapseExample10">
+                                                                        Exibir/Ocultar
+                                                        </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="collapse show" id="show1">
+                                                        <div class="container">
+                                                            <br>
+                                                            <div class="row">
+
+                                                                <div class="col-md-6">
+                                                                    <div class="card" style="text-align:center;">
+                                                                        <div class="card-body">
+                                                                            <img src="{% static 'images/img_user_default.png' %}" height="55" width="55">
+                                                                            <h6>{{ request.user.email }}</h6>
+                                                                            <br>
+                                                                            <div class="d-grid gap-2">
+                                                                                <a href="{% url 'profileupdate' request.user.id  %}"
+                                                                                   class="btn btn-outline-dark">Editar perfil</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-6">
+                                                                    <div class="card" style="text-align:center;">
+                                                                        <div class="card-body">
+                                                                            <h6><b>Plano do usuário</b></h6>
+                                                                            <h6>Tempo restante: x dias</h6>
+                                                                            {% if flag_redes_indisponiveis %}
+                                                                                <h6 style="color:red;">Redes disponíveis: Limite atingido!</h6>
+                                                                            {% else %}
+                                                                                <h6>Redes disponíveis: {{ redes_disponiveis }} redes</h6>
+                                                                            {% endif %}
+                                                                            <br>
+                                                                            <div class="d-grid gap-2">
+                                                                                <a href="{% url 'planoupdate' request.user.id %}"
+                                                                                   class="btn btn-outline-dark">Renovar plano</a>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+                                                            </div>
+                                                            <br>
+                                                        </div>
+<!--                                                        <div class="card-body">-->
+<!--                                                            -->
+<!--                                                        </div>-->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <br>
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="card">
+                                                    <div class="card-header">
+                                                        <h5><b>Gerenciar redes</b>
+                                                        <button class="btn btn-outline-dark offset-7" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#show2"
+                                                                aria-expanded="true" aria-controls="collapseExample11">
+                                                                        Exibir/Ocultar
+                                                        </button>
+                                                        </h5>
+                                                    </div>
+                                                    <div class="collapse show" id="show2">
+                                                        <div class="container">
+                                                            <br>
+                                                            <div class="row">
+                                                                <div class="col-md-6">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h5>Minhas redes</h5>
+                                                                            <table class="table table-striped">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Nome rede</th>
+                                                                                    <th scope="col">Gerenciar</th>
+                                                                                    <th scope="col">Excluir</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {% for network in networks %}
+                                                                                <tr>
+                                                                                    <td>{{ network }}</td>
+
+                                                                                    <td>
+                                                                                        <a href="{% url 'network_dashboard' network.identificador %}"
+                                                                                        class="text-dark">
+                                                                                        <i class="bi bi-gear-fill"></i></a></td>
+
+                                                                                    <td><a href="{% url 'network_delete' network.identificador %}"
+                                                                                        class="text-dark">
+                                                                                        <i class="bi bi-trash-fill"></i>
+                                                                                    </a></td>
+                                                                                </tr>
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                            </table>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+
+
+                                                                <div class="col-md-6">
+                                                                    <div class="card">
+                                                                        <div class="card-body">
+                                                                            <h5>Adicionar rede</h5>
+                                                                            <br>
+                                                                            {% if flag_redes_indisponiveis %}
+                                                                            <h4><span class="badge bg-danger">
+                                                                                Limite de redes atingido, mude de plano para poder criar
+                                                                                mais
+                                                                            </span></h4>
+                                                                            {% else %}
+                                                                                <div class="d-grid gap-2">
+                                                                                    <a href="{% url 'network_register' request.user.id %}"
+                                                                                       class="btn btn-outline-dark">+ Rede</a>
+                                                                                </div>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <br>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

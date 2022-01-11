@@ -62,11 +62,11 @@ class MensagensApiView(APIView):
             plano = Plano.objects.get(usuario=request.user)
             if plano.plano == 'Pessoal':
                 if dispositivo.mensagens.count() == 100:
-                    return Response("Limite de dados atingido para esse dispositivo",
+                    return Response("Limite de mensagens atingido para esse dispositivo",
                                     status=status.HTTP_403_FORBIDDEN)
             elif plano.plano == 'Empresarial':
                 if dispositivo.mensagens.count() == 1000:
-                    return Response("Limite de dados atingido para esse dispositivo",
+                    return Response("Limite de mensagens atingido para esse dispositivo",
                                     status=status.HTTP_403_FORBIDDEN)
         except:
             if dispositivo.mensagens.count() == 20:

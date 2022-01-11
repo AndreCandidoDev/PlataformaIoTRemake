@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<br><br>
+    <h3><b>Deseja excluir a rede ?</b></h3>
+    <h5 style="color:red">Atenção: todos os dispositivos desta rede serão excluidos e não poderão ser recuperados!</h5>
+    <form  method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-danger">Excluir</button>
+    </form>
+    <br><br>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
+    <br><br>
+{% endblock %}

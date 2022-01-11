@@ -1,6 +1,6 @@
 from django.contrib import auth, messages
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.contrib.auth.tokens import default_token_generator
@@ -8,6 +8,7 @@ from django.template.loader import render_to_string
 from django.utils.encoding import force_bytes
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from devicesapi.models import Dispositivo, Dados, Configuracoes, Acoes
+from networks.models import Rede
 from .forms import AccountForm, UserProfileForm, PlanoForm, PlanoUpdateForm
 from .models import Account, UserProfile, Plano
 from rest_framework.authtoken.models import Token
@@ -87,9 +88,13 @@ def plano_change(request, pk):
             if plano == 'Pessoal':
                 limite_redes_iot = 3
                 limite_dispositivos_iot = 30
+                user.network_limit_creation = limite_redes_iot
+                user.save()
             elif plano == 'Empresarial':
                 limite_redes_iot = 15
                 limite_dispositivos_iot = 150
+                user.network_limit_creation = limite_redes_iot
+                user.save()
             userPlan = Plano.objects.create(usuario=user, perfil=usuario, plano=plano,
                                             limite_redes_iot=limite_redes_iot,
                                             limite_dispositivos_iot=limite_dispositivos_iot,
@@ -120,6 +125,7 @@ def plano_update(request, pk):
     return render(request, 'accounts/planoupdate.html', context)
 
 
+# descontinuado
 @login_required(login_url='login')
 def plano_cancel(request, pk):
     plano = Plano.objects.get(usuario=pk)
@@ -323,9 +329,20 @@ def data_to_chart(devices, usuario, tipo):
     return devices_names, counter, devices_background_colors, devices_border_colors, limit_datas, limit_messages
 
 
+def getplano(user):
+    try:
+        plano = Plano.objects.get(usuario=user)
+        plano = plano.plano
+    except:
+        plano = 'Gratuito'
+    return plano
+
+
+# passara por refatoramento
 @login_required(login_url='login')
 def dashboard(request):
-    user = request.user
+    user = Account.objects.get(email=request.user)
+    redes = None
     devices_created = None
     devices_creation_limited = False
     flag_stop_device_creation = False
@@ -338,11 +355,14 @@ def dashboard(request):
     flag_no_device = False
     flag_no_conf = False
     flag_no_action = False
+    flag_redes_indisponiveis = False
 
+    # descontinuado
     try:  # informações do painel minha conta/ criar variaveis para alterar dashboard
         plano = Plano.objects.get(usuario=user)
         limit = plano.limite_dispositivos_iot
         network_limit = plano.limite_redes_iot
+        redes = Rede.objects.filter(usuario=user)
         plano_type = plano.plano
         flag_has_plan = True
     except:
@@ -388,7 +408,6 @@ def dashboard(request):
     confs = []
     acoes = []
     for i in devices:
-        print(i.tipo)
         dados = Dados.objects.filter(dispositivo=i)
         try:
             configuracoes = Configuracoes.objects.get(dispositivo=i)
@@ -411,6 +430,15 @@ def dashboard(request):
         flag_no_action = True
 
     contagem = devices.count()
+
+    # dashboard plus
+    try:
+        redes_criadas = user.networks_created
+        redes_disponiveis = int(network_limit) - int(redes_criadas)
+        if redes_disponiveis == 0:
+            flag_redes_indisponiveis = True
+    except:
+        redes_disponiveis = None
 
     context = {
                'devices': devices,
@@ -442,6 +470,14 @@ def dashboard(request):
                'chart_messages_background_color': chart_messages_background_color,
                'chart_messages_border_color': chart_messages_border_color,
                'limit_datas': limit_datas,
-               'limit_messages': limit_messages
+               'limit_messages': limit_messages,
+
+               # variaveis exclusivas do dashboard plus
+               'networks': redes,
+               'redes_disponiveis': redes_disponiveis,
+               'flag_redes_indisponiveis': flag_redes_indisponiveis
     }
-    return render(request, 'accounts/dashboard.html', context)
+    if getplano(user=user) == 'Gratuito':
+        return render(request, 'accounts/dashboard.html', context)
+    elif getplano(user=user) == 'Pessoal' or getplano(user=user) == 'Empresarial':
+        return render(request, 'accounts/dashboardplus.html', context)

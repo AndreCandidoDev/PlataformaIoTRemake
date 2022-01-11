@@ -1,0 +1,187 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<br>
+<section>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header bg-dark">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card">
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>
+                                                        <b>Informações da rede</b>
+                                                        <button class="btn btn-outline-dark offset-7" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#show1"
+                                                                aria-expanded="true" aria-controls="collapseExample10">
+                                                                        Exibir/Ocultar
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div class="collapse show" id="show1">
+                                                    <div class="container">
+                                                        <br>
+                                                        <div class="row">
+
+                                                            <div class="col-md-6">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h6><b>Tráfego da rede</b></h6>
+                                                                        <ul>
+                                                                            <li>Taxa de dados:</li>
+                                                                            <li>Taxa de mensagens:</li>
+                                                                            <li>Dados consumidos:</li>
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <h6><b>Disponibilidade da rede</b></h6>
+                                                                        <ul>
+                                                                            <li>Quantidade de dispositivos:</li>
+                                                                            <li>Total de leituras:</li>
+                                                                            <li>Total de mensagens:</li>
+
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <br>
+
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <h5>
+                                                        <b>Dispositivos da rede</b>
+                                                        <button class="btn btn-outline-dark offset-7" type="button"
+                                                            data-bs-toggle="collapse" data-bs-target="#show2"
+                                                                aria-expanded="true" aria-controls="collapseExample10">
+                                                                        Exibir/Ocultar
+                                                        </button>
+                                                    </h5>
+                                                </div>
+                                                <div class="collapse show" id="show2">
+                                                    <div class="container">
+                                                        <br>
+                                                        <div class="row">
+
+                                                            <div class="col-md-6">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <div class="d-grid gap-2">
+                                                                            {% for rede in rede_array %}
+                                                                                <a href="{% url 'device_network_register' rede.identificador %}"
+                                                                                    class="btn btn-outline-dark">Adicionar dispositivo</a>
+                                                                            {% endfor %}
+                                                                        </div>
+                                                                        <br>
+                                                                        <table class="table table-striped">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Nome</th>
+                                                                                    <th scope="col">Configs</th>
+                                                                                    <th scope="col">Editar</th>
+                                                                                    <th scope="col">Excluir</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+
+                                                                                {% for dispositivos in dispositivos_rede %}
+                                                                                    <tr>
+                                                                                        <td>{{ dispositivos.nome }}</td>
+
+                                                                                        <td><a href=""
+                                                                                               class="text-dark">
+                                                                                            <i class="bi bi-gear-fill"></i></a></td>
+
+                                                                                        <td><a href="{% url 'device_network_update' dispositivos.serial %}"
+                                                                                               class="text-dark">
+                                                                                            <i class="bi bi-pencil-fill"></i>
+                                                                                        </a></td>
+
+                                                                                        <td><a href="{% url 'device_network_delete' dispositivos.serial %}"
+                                                                                               class="text-dark">
+                                                                                            <i class="bi bi-trash-fill"></i>
+                                                                                        </a></td>
+                                                                                    </tr>
+                                                                                {% endfor %}
+
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <div class="card">
+                                                                    <div class="card-body">
+                                                                        <table class="table table-striped">
+                                                                            <thead>
+                                                                                <tr>
+                                                                                    <th scope="col">Dispositivo</th>
+                                                                                    <th scope="col">Mensagens</th>
+                                                                                    <th scope="col">Estatisticas</th>
+                                                                                </tr>
+                                                                            </thead>
+                                                                            <tbody>
+                                                                                {% for dispositivos in dispositivos_rede %}
+                                                                                    <tr>
+                                                                                        <td>{{ dispositivos.nome }}</td>
+
+                                                                                        <td><a href=""
+                                                                                               class="text-dark">
+                                                                                            <i class="bi bi-envelope-fill"></i>
+                                                                                        </a></td>
+
+                                                                                        <td>
+                                                                                            <a href=""
+                                                                                               class="text-dark">
+                                                                                               <i class="bi bi-file-bar-graph-fill"></i>
+                                                                                            </a>
+                                                                                        </td>
+                                                                                    </tr>
+                                                                                {% endfor %}
+                                                                            </tbody>
+                                                                        </table>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                        <br>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

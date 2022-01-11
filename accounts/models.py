@@ -47,6 +47,11 @@ class Account(AbstractBaseUser):
     devices_created = models.IntegerField(null=True, blank=True, default=0)
     # add another fields here if required
 
+    # Haverá limite para criação de redes em usuarios pago
+    # todo: planejar cobranças para isso
+    network_limit_creation = models.IntegerField(null=True, blank=True, default=0)
+    networks_created = models.IntegerField(null=True, blank=True, default=0)
+
     # required
     date_joined = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)

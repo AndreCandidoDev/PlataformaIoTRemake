@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Account
+from networks.models import DispositivoRede
 
 
 class Base(models.Model):
@@ -11,6 +12,7 @@ class Base(models.Model):
         abstract = True
 
 
+# dispositivo de usuário gratuito
 class Dispositivo(Base):
     tipo_dispositivo = (
         ('Atuador', 'atuador'),
@@ -37,7 +39,10 @@ class Acoes(Base):
         ('Ligado', 'True'),
         ('Desligado', 'False')
     )
-    dispositivo = models.ForeignKey(Dispositivo, related_name='acoes', on_delete=models.CASCADE)
+    dispositivo = models.ForeignKey(Dispositivo, related_name='acoes', on_delete=models.CASCADE,
+                                    null=True, blank=True)
+    dispositivo_rede = models.ForeignKey(DispositivoRede, related_name='acoes_dispositivo_rede', on_delete=models.CASCADE,
+                                         null=True, blank=True)
     pino = models.IntegerField(default=4)
     sinal = models.CharField(max_length=255, choices=sinais, default='True')
 
@@ -47,12 +52,15 @@ class Acoes(Base):
         ordering = ['id']
 
     def __str__(self):
-        return str(self.dispositivo)
+        return str(self.id)
 
 
 # somente sensores
 class Configuracoes(Base):
-    dispositivo = models.ForeignKey(Dispositivo, related_name='configuracoes', on_delete=models.CASCADE)
+    dispositivo = models.ForeignKey(Dispositivo, related_name='configuracoes', on_delete=models.CASCADE,
+                                    null=True, blank=True)
+    dispositivo_rede = models.ForeignKey(DispositivoRede, related_name='configuracoes_dispositivo_rede', on_delete=models.CASCADE,
+                                         null=True, blank=True)
     limite_inferior = models.CharField(max_length=255, default='0')
     limite_superior = models.CharField(max_length=255, default='100')
 
@@ -62,11 +70,14 @@ class Configuracoes(Base):
         ordering = ['id']
 
     def __str__(self):
-        return str(self.dispositivo)
+        return str(self.id)
 
 
 class Dados(Base):
-    dispositivo = models.ForeignKey(Dispositivo, related_name='dados', on_delete=models.CASCADE)
+    dispositivo = models.ForeignKey(Dispositivo, related_name='dados', on_delete=models.CASCADE,
+                                    null=True, blank=True)
+    dispositivo_rede = models.ForeignKey(DispositivoRede, related_name='dados_dispositivo_rede', on_delete=models.CASCADE,
+                                         null=True, blank=True)
     unidade = models.CharField(max_length=255)
     dado = models.CharField(max_length=255)
 
@@ -80,7 +91,10 @@ class Dados(Base):
 
 
 class Mensagens(Base):
-    dispositivo = models.ForeignKey(Dispositivo, related_name='mensagens', on_delete=models.CASCADE)
+    dispositivo = models.ForeignKey(Dispositivo, related_name='mensagens', on_delete=models.CASCADE,
+                                    null=True, blank=True)
+    dispositivo_rede = models.ForeignKey(DispositivoRede, related_name='mensagens_dispositivo_rede', on_delete=models.CASCADE,
+                                         null=True, blank=True)
     alerta = models.CharField(max_length=255)
     mensagem = models.CharField(max_length=255)
     is_critic = models.BooleanField(default=False)

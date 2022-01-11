@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<section class="section-content padding-y">
+	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+		<header class="mb-4"><h4 class="card-title">Atualizar dispositivo</h4></header>
+		<form  method="POST">
+			{% csrf_token %}
+				<div class="row">
+					<div class="form-group col-12">
+						<label>Nome do dispositivo</label>
+						{{ form.nome }}
+					</div>
+				</div>
+				<br>
+                <div class="row">
+					<div class="form-group col-12">
+						<label>Endereço de IP do dispositivo</label>
+						{{ form.ip }}
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="form-group col-12">
+						<label>Placa de desenvolvimento</label>
+						{{ form.placa }}
+					</div>
+				</div>
+				<br>
+				<div class="row">
+                    <div class="form-group col-md-12">
+						<label>Tipo do dispositivo</label>
+						{{ form.tipo }}
+					</div>
+				</div>
+				<br>
+			    <div class="d-grid gap-2">
+					<button type="submit" class="btn btn-dark">Atualizar</button>
+				</div>
+			</form>
+		</article>
+    </div>
+    <br>
+</section>
+{% endblock %}

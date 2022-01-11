@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+<div class="container">
+    <div class="row">
+            <div class="col-md-12">
+                <br>
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Atenção, voce está prestes a criar uma rede de dispositivos, leia com atenção antes de prosseguir</h5>
+                        <br><br>
+                        <ul>
+                            <li>Como usuario pago agora seus dispositivos serão agrupados em redes, ao cria-la os antigos dispositivos
+                            que voce tinha no plano gratuito serão automaticamente deletados</li>
+                            <li>Ao programar dispositivos voce deverá utilizar a API versão 2 que possui suporte a rede, a API versão 1
+                            não será mais possível a utilização</li>
+                            <li>Consulte a seção exemplo de aplicações para aprender mais sobre a utilização de redes</li>
+                        </ul>
+                        <br>
+                        <form method="POST">
+                            {% csrf_token %}
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-outline-dark">Criar rede</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+</div>
+{% endblock %}
