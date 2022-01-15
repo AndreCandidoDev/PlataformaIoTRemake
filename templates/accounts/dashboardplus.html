@@ -95,32 +95,39 @@
                                                                     <div class="card">
                                                                         <div class="card-body">
                                                                             <h5>Minhas redes</h5>
-                                                                            <table class="table table-striped">
-                                                                            <thead>
-                                                                                <tr>
-                                                                                    <th scope="col">Nome rede</th>
-                                                                                    <th scope="col">Gerenciar</th>
-                                                                                    <th scope="col">Excluir</th>
-                                                                                </tr>
-                                                                            </thead>
-                                                                            <tbody>
-                                                                                {% for network in networks %}
-                                                                                <tr>
-                                                                                    <td>{{ network }}</td>
+                                                                            {% if flag_not_redes %}
+                                                                                <br>
+                                                                                <h5 style="color:red;">
+                                                                                    Nenhuma rede criada
+                                                                                </h5>
+                                                                            {% else %}
+                                                                                <table class="table table-striped">
+                                                                                <thead>
+                                                                                    <tr>
+                                                                                        <th scope="col">Nome rede</th>
+                                                                                        <th scope="col">Gerenciar</th>
+                                                                                        <th scope="col">Excluir</th>
+                                                                                    </tr>
+                                                                                </thead>
+                                                                                <tbody>
+                                                                                    {% for network in networks %}
+                                                                                    <tr>
+                                                                                        <td>{{ network }}</td>
 
-                                                                                    <td>
-                                                                                        <a href="{% url 'network_dashboard' network.identificador %}"
-                                                                                        class="text-dark">
-                                                                                        <i class="bi bi-gear-fill"></i></a></td>
+                                                                                        <td>
+                                                                                            <a href="{% url 'network_dashboard' network.identificador %}"
+                                                                                            class="text-dark">
+                                                                                            <i class="bi bi-gear-fill"></i></a></td>
 
-                                                                                    <td><a href="{% url 'network_delete' network.identificador %}"
-                                                                                        class="text-dark">
-                                                                                        <i class="bi bi-trash-fill"></i>
-                                                                                    </a></td>
-                                                                                </tr>
-                                                                                {% endfor %}
-                                                                            </tbody>
-                                                                            </table>
+                                                                                        <td><a href="{% url 'network_delete' network.identificador %}"
+                                                                                            class="text-dark">
+                                                                                            <i class="bi bi-trash-fill"></i>
+                                                                                        </a></td>
+                                                                                    </tr>
+                                                                                    {% endfor %}
+                                                                                </tbody>
+                                                                                </table>
+                                                                            {% endif %}
                                                                         </div>
                                                                     </div>
                                                                 </div>

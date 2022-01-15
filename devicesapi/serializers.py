@@ -84,5 +84,3 @@ class DispositivoSerializer(serializers.ModelSerializer):
             'ativo'
         )
 
-# =========================================== API V2 para usuarios pagos =========================================
-

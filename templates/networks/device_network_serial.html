@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<br>
+<section class="section-content padding-y">
+	 <div class="card mx-auto">
+      <article class="card-body">
+            <ul>
+                <li><h5 class="text-danger">Atenção: não divulgue esse serial com ninguem</h5></li>
+                <li>Com essa chave voce conseguira controlar seus dispositivos, não importando o lugar onde estejam</li>
+                <li>Para mais informações consulte a documentação da API</li>
+            </ul>
+            <br><br><br>
+            <button class="btn btn-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Exibir serial
+            </button>
+            <div class="collapse" id="collapseExample">
+              <div class="card card-body">
+                  <p>{{ serial }}</p>
+              </div>
+            </div>
+            <br><br>
+      </article>
+     </div>
+</section>
+{% endblock %}

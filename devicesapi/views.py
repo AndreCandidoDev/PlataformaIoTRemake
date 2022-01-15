@@ -10,8 +10,7 @@ from .serializers import DadosSerializer, DispositivoSerializer, \
     ConfiguracaoSerializer, MensagensSerializer, AcoesSerializer
 
 
-# =========================  API Usuarios gratuitos ============================================================
-
+# apenas usuarios gratuitos
 class DispositivoApiView(APIView):
     def get(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.filter(serial=dispositivo_serial)
@@ -19,6 +18,7 @@ class DispositivoApiView(APIView):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+# metodos para todos usuarios
 class AcoesApiView(APIView):
     def get(self, request, dispositivo_serial):
         dispositivo = Dispositivo.objects.get(serial=dispositivo_serial)

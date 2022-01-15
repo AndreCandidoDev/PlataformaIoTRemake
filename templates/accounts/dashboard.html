@@ -49,15 +49,8 @@
                                             {% if flag_has_profile %}
                                                 <a href="{% url 'profileupdate' request.user.id  %}"
                                                    class="btn btn-outline-primary">Atualizar perfil</a>
-                                                {% if flag_has_plan %}
-                                                    <a href="{% url 'planoupdate' request.user.id %}"
-                                                       class="btn btn-outline-primary">Renovar assinatura</a>
-                                                    <a href="{% url 'planocancel' request.user.id %}"
-                                                       class="btn btn-outline-danger">Cancelar assinatura</a>
-                                                {% else %}
-                                                    <a href="{% url 'planochange' request.user.id %}"
-                                                    class="btn btn-outline-primary">Assinar</a>
-                                                {% endif %}
+                                                <a href="{% url 'planochange' request.user.id %}"
+                                                class="btn btn-outline-primary">Assinar</a>
                                             {% else %}
                                                 <h5 style="color:red">Crie um perfil para poder mudar de plano</h5>
                                                 <a href="{% url 'profileregister' %}"

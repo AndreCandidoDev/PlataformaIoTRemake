@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from accounts.models import Account, Plano
-from devicesapi.models import Dispositivo, Acoes, Configuracoes
+from devicesapi.models import Dispositivo, Acoes, Configuracoes, Dados, Mensagens
+from devices.forms import AcaoForm, ConfiguracaoForm
 from .models import Rede, DispositivoRede
 from .forms import DispositivoRedeForm
 import hashlib
@@ -80,6 +81,7 @@ def network_delete(request, identificador):
     return render(request, 'networks/network_delete.html')
 
 
+# ==================================== Devices network ==============================================================
 @login_required(login_url='login')
 def device_network_register(request, identificador):
     rede = Rede.objects.get(identificador=identificador)
@@ -158,15 +160,73 @@ def device_network_delete(request, dispositivo_serial):
     return render(request, 'networks/device_network_delete.html', context)
 
 
+def device_network_configuration(request, dispositivo_serial):
+    is_sensor = False
+    is_atuador = False
+    form = None
+    dispositivo_rede = DispositivoRede.objects.get(serial=dispositivo_serial)
+    if dispositivo_rede.tipo == 'Sensor':
+        is_sensor = True
+        configuracao = Configuracoes.objects.get(dispositivo_rede=dispositivo_rede)
+        if request.method == 'POST':
+            form = ConfiguracaoForm(request.POST, instance=configuracao)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
+        else:
+            form = ConfiguracaoForm(instance=configuracao)
+    elif dispositivo_rede.tipo == 'Atuador':
+        is_atuador = True
+        acao = Acoes.objects.get(dispositivo_rede=dispositivo_rede)
+        if request.method == 'POST':
+            form = AcaoForm(request.POST, instance=acao)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
+        else:
+            form = AcaoForm(instance=acao)
+    context = {'form': form, 'is_atuador': is_atuador, 'is_sensor': is_sensor}
+    return render(request, 'networks/device_network_configuration.html', context)
+
+
+def device_network_serial(request, dispositivo_serial):
+    dispositivo_rede = DispositivoRede.objects.get(serial=dispositivo_serial)
+    context = {'serial': dispositivo_rede.serial}
+    return render(request, 'networks/device_network_serial.html', context)
+
+
+# ========================= in progress ==============================================================================
+def device_network_messages(request, dispositivo_serial):
+    return
+
+
+def device_network_statistics(request, dispositivo_serial):
+    return
+
+
+# ================================ Network Dashboard ==================================================================
 @login_required(login_url='login')
 def network_dashboard(request, identificador):
+    counter_messages = 0
+    counter_datas = 0
     rede_array = []
     rede = Rede.objects.get(identificador=identificador)
     rede_array.append(rede)
     dispositivos_rede = DispositivoRede.objects.filter(rede=rede)
+    for dispositivo in dispositivos_rede:
+        total_mensagens = Mensagens.objects.filter(dispositivo_rede=dispositivo).count()
+        total_dados = Dados.objects.filter(dispositivo_rede=dispositivo).count()
+        counter_messages += total_mensagens
+        counter_datas += total_dados
+    total_mensagens_dispositivos_rede = counter_messages
+    total_dados_dispositivos_rede = counter_datas
+    total_dispositivos_rede = dispositivos_rede.count()
     context = {
         'rede_array': rede_array,
-        'dispositivos_rede': dispositivos_rede
+        'dispositivos_rede': dispositivos_rede,
+        'total_dispositivos_rede': total_dispositivos_rede,
+        'total_mensagens_dispositivos_rede': total_mensagens_dispositivos_rede,
+        'total_dados_dispositivos_rede': total_dados_dispositivos_rede
     }
     return render(request, 'networks/network_dashboard.html', context)
 

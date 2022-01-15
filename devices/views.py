@@ -125,8 +125,6 @@ def device_delete(request, dispositivo_serial):
     return render(request, 'devices/devicedelete.html', context)
 
 
-# as funções a seguir serão reaproveitadas para planos de usuarios diferentes
-# ===================================================================================================================
 @login_required(login_url='login')
 def device_conf(request, dispositivo_serial):
     device = Dispositivo.objects.get(serial=dispositivo_serial)
@@ -275,4 +273,3 @@ def device_messages(request, dispositivo_serial):
                 'flag_limit_msgs': flag_limit_msgs
     }
     return render(request, 'devices/device_messages.html', context)
-# ===================================================================================================================

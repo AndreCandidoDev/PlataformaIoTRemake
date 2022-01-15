@@ -125,27 +125,6 @@ def plano_update(request, pk):
     return render(request, 'accounts/planoupdate.html', context)
 
 
-# descontinuado
-@login_required(login_url='login')
-def plano_cancel(request, pk):
-    plano = Plano.objects.get(usuario=pk)
-    the_five_devices = []
-    counter = 0
-    if request.method == 'POST':
-        devices = Dispositivo.objects.filter(usuario=request.user)
-        # futuramente deverá verificar a data de criação do dispositivo e plano
-        for i in devices:
-            if counter == 5:
-                i.delete()
-            else:
-                the_five_devices.append(i)
-                counter += 1
-        plano.delete()
-        return redirect('dashboard')
-    context = {'plano': plano}
-    return render(request, 'accounts/planodelete.html', context)
-
-
 @login_required(login_url='login')
 def apidoc(request):
     return render(request, 'accounts/documentacao_api.html')
@@ -431,14 +410,23 @@ def dashboard(request):
 
     contagem = devices.count()
 
+    # =======================================================================================================
     # dashboard plus
     try:
+        flag_not_redes = False
+        check = Rede.objects.filter(usuario=user).count()
+        if check == 0:
+            flag_not_redes = True
+            user.networks_created = 0
+            user.save()
+
         redes_criadas = user.networks_created
         redes_disponiveis = int(network_limit) - int(redes_criadas)
         if redes_disponiveis == 0:
             flag_redes_indisponiveis = True
     except:
         redes_disponiveis = None
+    # ========================================================================================================
 
     context = {
                'devices': devices,
@@ -475,7 +463,8 @@ def dashboard(request):
                # variaveis exclusivas do dashboard plus
                'networks': redes,
                'redes_disponiveis': redes_disponiveis,
-               'flag_redes_indisponiveis': flag_redes_indisponiveis
+               'flag_redes_indisponiveis': flag_redes_indisponiveis,
+               'flag_not_redes': flag_not_redes
     }
     if getplano(user=user) == 'Gratuito':
         return render(request, 'accounts/dashboard.html', context)

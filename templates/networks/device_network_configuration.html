@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block main %}
+<section class="section-content padding-y">
+	 <div class="card mx-auto" style="max-width:520px; margin-top:40px;">
+      <article class="card-body">
+          {% if is_sensor %}
+            <header class="mb-4"><h4 class="card-title">Configurações do sensor</h4></header>
+		    <form method="POST">
+                {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Limite inferior</label>
+                            {{ form.limite_inferior }}
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Limite superior</label>
+                            {{ form.limite_superior }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-dark">Configurar</button>
+                    </div>
+			</form>
+          {% elif is_atuador %}
+            <header class="mb-4"><h4 class="card-title">Definir Ação do atuador</h4></header>
+            <form method="POST">
+                {% csrf_token %}
+                    <div class="row">
+                        <div class="form-group col-6">
+                            <label>Pino da placa</label>
+                            {{ form.pino }}
+                        </div>
+                        <div class="form-group col-6">
+                            <label>Sinal</label>
+                            {{ form.sinal }}
+                        </div>
+                    </div>
+                    <br>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-dark">Configurar</button>
+                    </div>
+                </form>
+          {% endif %}
+		  	<br>
+		  	<a href="{% url 'dashboard' %}">Voltar</a>
+		</article>
+    </div>
+    <br><br>
+</section>
+{% endblock %}
