@@ -12,6 +12,31 @@ from networks.models import Rede
 from .forms import AccountForm, UserProfileForm, PlanoForm, PlanoUpdateForm
 from .models import Account, UserProfile, Plano
 from rest_framework.authtoken.models import Token
+import requests
+
+
+# ================================= Validadores ======================================================================
+# API: https://www.gov.br/conecta/catalogo/apis/cadastro-base-do-cidadao-cbc-cpf/cpf-light-2-0-0-json/swagger_view
+# regra de validação (calculo) ---- vide github
+def validador_cpf(cpf):
+    return
+
+
+# API: https://docs.awesomeapi.com.br/api-cep
+def validador_endereco():
+    return
+
+
+# todo: definir critérios especificos para senha
+def validador_senha():
+    return
+
+
+# todo: criar confirmação de número de telefone usando cógigo enviado por sms
+def validador_telefone():
+    return
+
+# ====================================================================================================================
 
 
 @login_required(login_url='login')
@@ -20,12 +45,19 @@ def profile_register(request):
     if request.method == 'POST':
         form = UserProfileForm(request.POST or None)
         if form.is_valid():
-            cpf = form.cleaned_data['cpf']
-            endereco_completo = form.cleaned_data['endereco_completo']
+            tipo_documento = form.cleaned_data['tipo_documento']
+            documento = form.cleaned_data['documento']
+            logradouro = form.cleaned_data['logradouro']
+            endereco = form.cleaned_data['endereco']
+            numero = form.cleaned_data['numero']
+            complemento = form.cleaned_data['complemento']
+            bairro = form.cleaned_data['bairro']
             cep = form.cleaned_data['cep']
             cidade = form.cleaned_data['cidade']
             estado = form.cleaned_data['estado']
-            perfil = UserProfile.objects.create(user=user, cpf=cpf, endereco_completo=endereco_completo,
+            perfil = UserProfile.objects.create(user=user, tipo_documento=tipo_documento, documento=documento,
+                                                logradouro=logradouro, endereco=endereco,
+                                                numero=numero, complemento=complemento, bairro=bairro,
                                                 cep=cep, cidade=cidade, estado=estado)
             perfil.save()
             return redirect('dashboard')
@@ -261,6 +293,7 @@ def resetpassword(request):
         return render(request, 'accounts/resetpassword.html')
 
 
+# need refactor
 def data_to_chart(devices, usuario, tipo):
     devices_names = []
     counter = []
