@@ -78,13 +78,67 @@ class Account(AbstractBaseUser):
         return True
 
 
+# todo: acressentar campos de forma que fique o mais completo possível
+# campos adicionais: logradouro, endereço, numero, complemento(opcional), bairro, foto de perfil(opcional)
 class UserProfile(models.Model):
+    logradouros = (
+        ('Rua', 'Rua'),
+        ('Avenida', 'Avenida'),
+        ('Praça', 'Praça'),
+        ('Travessa', 'Travessa'),
+        ('Alameda', 'Alameda'),
+        ('Condominio', 'Condominio'),
+        ('Conjunto', 'Conjunto'),
+        ('Estrada', 'Estrada'),
+        ('Rodovia', 'Rodovia'),
+        ('Trevo', 'Trevo')
+    )
+    estados = (
+        ('SP', 'SP'),
+        ('RJ', 'RJ'),
+        ('MG', 'MG'),
+        ('ES', 'ES'),
+        ('PR', 'PR'),
+        ('SC', 'SC'),
+        ('RS', 'RS'),
+        ('MS', 'MS'),
+        ('GO', 'GO'),
+        ('MT', 'MT'),
+        ('DF', 'DF'),
+        ('BA', 'BA'),
+        ('PB', 'PB'),
+        ('AL', 'AL'),
+        ('PE', 'PE'),
+        ('PI', 'PI'),
+        ('SE', 'SE'),
+        ('RN', 'RN'),
+        ('CE', 'CE'),
+        ('MA', 'MA'),
+        ('PA', 'PA'),
+        ('AM', 'AM'),
+        ('AP', 'AP'),
+        ('RO', 'RO'),
+        ('RR', 'RR'),
+        ('AC', 'AC'),
+        ('TO', 'TO')
+    )
+    documentos = (
+        ('CPF', 'CPF'),
+        ('RG', 'RG')
+    )
     user = models.ForeignKey(Account, on_delete=models.CASCADE)
-    cpf = models.CharField(max_length=11)
-    endereco_completo = models.CharField(max_length=255)
+    tipo_documento = models.CharField(max_length=3, default='CPF', choices=documentos)
+    documento = models.CharField(max_length=11)
+    foto_documento = models.ImageField(upload_to='fotosDocumentos')
+    foto_perfil = models.ImageField(upload_to='fotosPerfil')
+    logradouro = models.CharField(max_length=255, choices=logradouros)
+    endereco = models.CharField(max_length=255)
+    numero = models.IntegerField()
+    complemento = models.CharField(max_length=255, null=True, blank=True)
+    bairro = models.CharField(max_length=255)
     cep = models.CharField(max_length=8)
     cidade = models.CharField(max_length=255)
-    estado = models.CharField(max_length=255)
+    estado = models.CharField(max_length=255, choices=estados)
     criacao = models.DateTimeField(auto_now_add=True)
     atualizado = models.DateTimeField(auto_now_add=True)
 

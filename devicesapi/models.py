@@ -12,6 +12,7 @@ class Base(models.Model):
         abstract = True
 
 
+# todo: criar o tipo de dispositivo misto que possuirá ação e configuração
 # dispositivo de usuário gratuito
 class Dispositivo(Base):
     tipo_dispositivo = (
@@ -32,6 +33,11 @@ class Dispositivo(Base):
     def __str__(self):
         return self.nome
 
+
+# =====================================================================================================================
+# plano gratuito: apenas uma ação/configuração por instancia de dispositivo
+# planos pagos: multiplas ações/configurações a depender da placa do dispositivo
+# todo: instanciar multiplas ações/configurações a depender da tecnologia do dispositivo
 
 # somente atuadores
 class Acoes(Base):
@@ -71,6 +77,7 @@ class Configuracoes(Base):
 
     def __str__(self):
         return str(self.id)
+# =====================================================================================================================
 
 
 class Dados(Base):

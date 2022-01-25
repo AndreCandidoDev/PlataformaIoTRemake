@@ -35,14 +35,21 @@ class AccountForm(forms.ModelForm):
 
 
 class UserProfileForm(forms.ModelForm):
+    foto_documento = forms.ImageField(required=False, error_messages={'invalid:': ('images files only',)},
+                                      widget=forms.FileInput)
+    foto_perfil = forms.ImageField(required=False, error_messages={'invalid:': ('images files only',)},
+                                   widget=forms.FileInput)
+
     class Meta:
         model = UserProfile
-        fields = ['cpf', 'endereco_completo', 'cep', 'cidade', 'estado']
+        fields = ['tipo_documento', 'documento', 'foto_documento', 'foto_perfil', 'logradouro', 'endereco',
+                  'numero', 'complemento',
+                  'bairro', 'cep', 'cidade', 'estado']
 
     def __init__(self, *args, **kwargs):
         super(UserProfileForm, self).__init__(*args, **kwargs)
-        self.fields['cpf'].widget.attrs['placeholder'] = 'Apenas digítos'
-        self.fields['cpf'].widget.attrs['max_length'] = 11
+        self.fields['documento'].widget.attrs['placeholder'] = 'Apenas digítos'
+        self.fields['documento'].widget.attrs['max_length'] = 11
         self.fields['cep'].widget.attrs['placeholder'] = 'Apenas digítos'
         self.fields['cep'].widget.attrs['max_length'] = 8
         for field in self.fields:

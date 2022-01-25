@@ -33,11 +33,11 @@
                                                             <div class="col-md-6">
                                                                 <div class="card">
                                                                     <div class="card-body">
-                                                                        <h6><b>Tráfego da rede</b></h6>
+                                                                        <h6><b>Tráfego médio da rede</b></h6>
                                                                         <ul>
-                                                                            <li>Taxa de dados:</li>
-                                                                            <li>Taxa de mensagens:</li>
-                                                                            <li>Dados consumidos:</li>
+                                                                            <li>Taxa média de dados:</li>
+                                                                            <li>Taxa média de mensagens:</li>
+                                                                            <li>Média de dados consumidos:</li>
                                                                         </ul>
                                                                     </div>
                                                                 </div>
@@ -163,13 +163,13 @@
                                                                                     <tr>
                                                                                         <td>{{ dispositivos.nome }}</td>
 
-                                                                                        <td><a href=""
+                                                                                        <td><a href="{% url 'device_network_messages' dispositivos.serial %}"
                                                                                                class="text-dark">
                                                                                             <i class="bi bi-envelope-fill"></i>
                                                                                         </a></td>
 
                                                                                         <td>
-                                                                                            <a href=""
+                                                                                            <a href="{% url 'device_network_statistics' dispositivos.serial %}"
                                                                                                class="text-dark">
                                                                                                <i class="bi bi-file-bar-graph-fill"></i>
                                                                                             </a>

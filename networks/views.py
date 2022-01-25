@@ -3,10 +3,11 @@ from django.contrib.auth.decorators import login_required
 from accounts.models import Account, Plano
 from devicesapi.models import Dispositivo, Acoes, Configuracoes, Dados, Mensagens
 from devices.forms import AcaoForm, ConfiguracaoForm
-from .models import Rede, DispositivoRede
+from .models import Rede, DispositivoRede, MetricasRede
 from .forms import DispositivoRedeForm
 import hashlib
 import time
+import statistics
 
 # limite de 10 dispositivos por rede (container)
 # pessoal: 3 redes; empresarial: 15 redes
@@ -196,12 +197,32 @@ def device_network_serial(request, dispositivo_serial):
 
 
 # ========================= in progress ==============================================================================
+# passará por melhorias, todo:incluir limite de mensagens do plano
 def device_network_messages(request, dispositivo_serial):
-    return
+    flag_not_messages = False
+    flag_not_critic = True
+    dispositivo_rede = DispositivoRede.objects.get(serial=dispositivo_serial)
+    mensagens = Mensagens.objects.filter(dispositivo_rede=dispositivo_rede)
+    alertas_criticos = []
+    if len(mensagens) == 0:
+        flag_not_messages = True
+    else:
+        for mensagem in mensagens:
+            if mensagem.is_critic is True:
+                flag_not_critic = False
+                alertas_criticos.append(mensagem)
+    context = {
+        'dispositivo_rede': dispositivo_rede,
+        'mensagens': mensagens,
+        'alertas_criticos': alertas_criticos,
+        'flag_not_messages': flag_not_messages,
+        'flag_not_critic': flag_not_critic
+    }
+    return render(request, 'networks/device_network_messages.html', context)
 
 
 def device_network_statistics(request, dispositivo_serial):
-    return
+    return render(request, 'networks/device_network_statistics.html')
 
 
 # ================================ Network Dashboard ==================================================================

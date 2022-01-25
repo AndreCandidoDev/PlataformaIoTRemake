@@ -7,6 +7,8 @@ from .views import device_network_update
 from .views import device_network_delete
 from .views import device_network_configuration
 from .views import device_network_serial
+from .views import device_network_messages
+from .views import device_network_statistics
 
 urlpatterns = [
     path('network_register/<int:pk>/', network_register, name='network_register'),
@@ -16,5 +18,7 @@ urlpatterns = [
     path('device_network_update/<slug:dispositivo_serial>/', device_network_update, name='device_network_update'),
     path('device_network_delete/<slug:dispositivo_serial>/', device_network_delete, name='device_network_delete'),
     path('device_network_configuration/<slug:dispositivo_serial>/', device_network_configuration, name='device_network_configuration'),
-    path('device_network_serial/<slug:dispositivo_serial>/', device_network_serial, name='device_network_serial')
+    path('device_network_serial/<slug:dispositivo_serial>/', device_network_serial, name='device_network_serial'),
+    path('device_network_messages/<slug:dispositivo_serial>/', device_network_messages, name='device_network_messages'),
+    path('device_network_statistics/<slug:dispositivo_serial>/', device_network_statistics, name='device_network_statistics')
 ]

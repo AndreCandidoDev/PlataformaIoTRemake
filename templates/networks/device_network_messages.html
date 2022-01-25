@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block main %}
+    <br><br>
+    <h4>Alertas e mensagens do dispositivo <b>{{ dispositivo_rede.nome }}</b></h4>
+<!--     if flag_limit_msgs -->
+<!--        <br>-->
+<!--        <h5 style="color:red">Limite de alertas atingidos para esse dispositivo</h5>-->
+<!--     endif -->
+    <br><br>
+    {% if flag_not_messages %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body" style="text-align:center">
+                        <h3 style="color:red">Não há alertas para esse dispositivo</h3>
+                        <p>Consulte a documentação da API para utilização dessa feature</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
+    {% else %}
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body" style="text-align:center">
+                    <h5>Alertas e mensagens</h5>
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">Horario</th>
+                                <th scope="col">Alerta</th>
+                                <th scope="col">Mensagem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mensagem in mensagens %}
+                                <tr>
+                                    <td>{{ mensagem.criacao }}</td>
+                                    <td>{{ mensagem.alerta }}</td>
+                                    <td>{{ mensagem.mensagem }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <br><br>
+        {% if flag_not_critc %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h4 style="color:red">Não há alertas criticos</h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-body" style="text-align:center">
+                            <h5><b>Alertas criticos</b></h5>
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Horario</th>
+                                        <th scope="col">Alerta</th>
+                                        <th scope="col">Mensagem</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for critica in alertas_criticos %}
+                                        <tr>
+                                            <td>{{ critica.criacao }}</td>
+                                            <td>{{ critica.alerta }}</td>
+                                            <td>{{ critica.mensagem }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br><br>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-primary">Voltar</a>
+        {% endif %}
+    {% endif %}
+    <br><br>
+{% endblock %}

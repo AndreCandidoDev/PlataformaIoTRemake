@@ -43,3 +43,17 @@ class DispositivoRede(Base):
     def __str__(self):
         return self.nome
 
+
+class MetricasRede(Base):
+    rede = models.ForeignKey(Rede, on_delete=models.CASCADE)
+    taxa_de_dados = models.FloatField(blank=True, null=True, default=0.0)
+    taxa_de_mensagens = models.FloatField(blank=True, null=True, default=0.0)
+    dados_consumidos = models.FloatField(blank=True, null=True, default=0.0)
+
+    class Meta:
+        verbose_name = 'Metricas-Rede'
+        verbose_name_plural = 'Metricas-Rede'
+        ordering = ['id']
+
+    def __str__(self):
+        return f'Metricas da rede {str(self.rede)}'

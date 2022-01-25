@@ -16,23 +16,42 @@ import requests
 
 
 # ================================= Validadores ======================================================================
-# API: https://www.gov.br/conecta/catalogo/apis/cadastro-base-do-cidadao-cbc-cpf/cpf-light-2-0-0-json/swagger_view
-# regra de validação (calculo) ---- vide github
-def validador_cpf(cpf):
-    return
+
+# todo: estudar e inserir algoritmo de coleta de dados de imagens
+def validador_documento(tipo_documento, documento):
+    if tipo_documento == 'CPF':
+        return
+    elif tipo_documento == 'RG':
+        if len(str(documento)) == 9:
+            return True
+        else:
+            return False
 
 
-# API: https://docs.awesomeapi.com.br/api-cep
-def validador_endereco():
-    return
+def validador_endereco(cep, logradouro, endereco):
+    base_url = 'https://cep.awesomeapi.com.br/json/'
+    url = base_url + str(cep)
+    req = requests.get(url=url)
+    if req.status_code == 200:
+        res = req.json()
+        logradouro_res = res['address_type']
+        endereco_res = res['address_name']
+        if logradouro_res == logradouro and endereco_res.lower() == endereco.lower():
+            return True
+        else:
+            return False
+    else:
+        return False
 
 
 # todo: definir critérios especificos para senha
+# critérios: minimo de 8 digitos, ao menos 1 letra maiscuscula, 1 minuscula, 1 numero e 1 char especial
 def validador_senha():
     return
 
 
 # todo: criar confirmação de número de telefone usando cógigo enviado por sms
+# tutorial: https://www.tutorialspoint.com/send-sms-updates-to-mobile-phone-using-python
 def validador_telefone():
     return
 
@@ -43,10 +62,12 @@ def validador_telefone():
 def profile_register(request):
     user = request.user
     if request.method == 'POST':
-        form = UserProfileForm(request.POST or None)
+        form = UserProfileForm(request.POST or None, request.FILES)
         if form.is_valid():
             tipo_documento = form.cleaned_data['tipo_documento']
             documento = form.cleaned_data['documento']
+            foto_documento = form.cleaned_data['foto_documento']
+            foto_perfil = form.cleaned_data['foto_perfil']
             logradouro = form.cleaned_data['logradouro']
             endereco = form.cleaned_data['endereco']
             numero = form.cleaned_data['numero']
@@ -56,11 +77,15 @@ def profile_register(request):
             cidade = form.cleaned_data['cidade']
             estado = form.cleaned_data['estado']
             perfil = UserProfile.objects.create(user=user, tipo_documento=tipo_documento, documento=documento,
+                                                foto_documento=foto_documento, foto_perfil=foto_perfil,
                                                 logradouro=logradouro, endereco=endereco,
                                                 numero=numero, complemento=complemento, bairro=bairro,
                                                 cep=cep, cidade=cidade, estado=estado)
-            perfil.save()
-            return redirect('dashboard')
+            if validador_endereco(cep=cep, logradouro=logradouro, endereco=endereco) is True:
+                perfil.save()
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Endereço invalido, verifique o cep e tente novamente')
     else:
         form = UserProfileForm()
     context = {'form': form}
@@ -71,10 +96,16 @@ def profile_register(request):
 def profile_update(request, pk):
     profile = UserProfile.objects.get(user=pk)
     if request.method == 'POST':
-        form = UserProfileForm(request.POST, instance=profile)
+        form = UserProfileForm(request.POST, request.FILES, instance=profile)
         if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+            cep = form.cleaned_data['cep']
+            logradouro = form.cleaned_data['logradouro']
+            endereco = form.cleaned_data['endereco']
+            if validador_endereco(cep=cep, logradouro=logradouro, endereco=endereco) is True:
+                form.save()
+                return redirect('dashboard')
+            else:
+                messages.error(request, 'Endereço invalido, verifique o cep e tente novamente')
     else:
         form = UserProfileForm(instance=profile)
     context = {'form': form}
